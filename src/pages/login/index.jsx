@@ -12,7 +12,7 @@ import {
   Heart,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import AroginiLogo from "@/assets/icons/Aroginilogo";
+import MedNdiLogo from "@/assets/icons/MedNdiLogo";
 import axios from "axios";
 import toast from "react-hot-toast";
 import useAppStore from "@/store/useAppStore";
@@ -94,7 +94,7 @@ const Login = () => {
 
         {/* Logo & Title */}
         <div className="relative z-10">
-          <AroginiLogo
+          <MedNdiLogo
             onClick={() => navigate("/")}
             className=" cursor-pointer"
           />
@@ -168,7 +168,7 @@ const Login = () => {
         <div className="max-w-md mx-auto w-full">
           {/* Register Button */}
           <div className="flex justify-between items-center mb-12">
-            <span className="text-gray-500">New to Arogini?</span>
+            <span className="text-gray-500">New to MedNdi?</span>
             <motion.button
               whileHover={{ scale: 1.05 }}
               onClick={() => navigate("/register")}

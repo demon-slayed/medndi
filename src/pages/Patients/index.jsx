@@ -163,7 +163,7 @@ export default function PatientDashboard() {
             className="mb-8 text-center"
           >
             <h1 className="text-4xl font-bold mb-2 text-blue-800">
-              Arogini Medical Tourism
+              MedNdi Medical Tourism
             </h1>
             <p className="text-xl text-gray-600">
               Your Journey to Health and Wellness
@@ -442,7 +442,7 @@ export default function PatientDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-2xl">
-                  Why Choose Arogini Medical Tourism?
+                  Why Choose MedNdi Medical Tourism?
                 </CardTitle>
               </CardHeader>
               <CardContent>

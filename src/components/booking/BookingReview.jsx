@@ -552,7 +552,7 @@ const BookingReview = ({ onEditBooking }) => {
                         </div>
                         <div className="flex items-center gap-2">
                           <Mail className="w-4 h-4 text-[#3252DF]" />
-                          <span>support@arogini.com</span>
+                          <span>support@medndi.com</span>
                         </div>
                       </div>
                     </div>

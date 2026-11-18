@@ -137,7 +137,7 @@ const TreatmentCards = () => {
           <h2 className="font-poppins font-bold text-5xl max-lg:text-4xl max-md:text-3xl max-sm:text-[26px] text-[#283841]">
             Available{" "}
             <span className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] bg-clip-text text-transparent">
-              Treatments at Arogini
+              Treatments at MedNdi
             </span>
           </h2>
           <p className="mt-4 text-gray-600 max-w-[80%] mx-auto max-sm:text-sm">

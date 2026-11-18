@@ -220,7 +220,7 @@ const MedicalBooking = () => {
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Email support</p>
-                      <p className="font-medium">support@arogini.com</p>
+                      <p className="font-medium">support@medndi.com</p>
                     </div>
                   </div>
                 </div>

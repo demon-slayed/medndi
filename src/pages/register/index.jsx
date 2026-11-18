@@ -14,7 +14,7 @@ import {
   Heart,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import AroginiLogo from "@/assets/icons/Aroginilogo";
+import MedNdiLogo from "@/assets/icons/MedNdiLogo";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -119,7 +119,7 @@ const Register = () => {
 
         {/* Logo & Title */}
         <div className="relative z-10">
-          <AroginiLogo onClick={() => navigate("/")} className=' cursor-pointer'/>
+          <MedNdiLogo onClick={() => navigate("/")} className=' cursor-pointer'/>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}

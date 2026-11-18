@@ -145,7 +145,7 @@ export default function ApplicationStatusStepper({currentStatus}) {
           <AlertCircle className="text-red-600 mr-3" />
           <div>
             <h4 className="font-semibold text-red-700">Application not approved</h4>
-            <p className="text-sm text-red-600">Our team couldn&apos;t approve this request. Please contact support@arogini.com for next steps.</p>
+            <p className="text-sm text-red-600">Our team couldn&apos;t approve this request. Please contact support@medndi.com for next steps.</p>
           </div>
         </div>
       )}

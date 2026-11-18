@@ -5,7 +5,7 @@ import {
   Menu, Heart, Activity, Search, Phone, ChevronDown, 
   Stethoscope, User, Lock, HelpCircle, Hospital, LogOut
 } from "lucide-react";
-import AroginiLogo from '@/assets/icons/Aroginilogo';
+import MedNdiLogo from '@/assets/icons/MedNdiLogo';
 import logo from '@/assets/logo.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -166,7 +166,7 @@ const Header = () => {
               className="flex-shrink-0 flex items-center gap-0"
             >
               <img src={logo} alt="logo.png" className="h-16 w-16 max-sm:w-16 max-sm:h-16" />
-              <AroginiLogo className="cursor-pointer p-0 -ml-3" onClick={handleClickLogo}/>
+              <MedNdiLogo className="cursor-pointer p-0 -ml-3" onClick={handleClickLogo}/>
             </motion.div>
 
             {/* Desktop Navigation */}
@@ -304,7 +304,7 @@ const Header = () => {
                 <SheetContent side="left" className="w-80 bg-[#0c1445] border-r border-blue-900">
                   <div className="py-6">
                     <div className="mb-8">
-                      <AroginiLogo />
+                      <MedNdiLogo />
                     </div>
                     <nav className="space-y-6">
                       {navigationItems.map((item, idx) => (

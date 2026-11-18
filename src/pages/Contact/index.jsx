@@ -198,8 +198,8 @@ const ContactPage = () => {
                     <Mail className="w-5 h-5 text-blue-600 mt-1" />
                     <div>
                       <h3 className="font-semibold">Email</h3>
-                      <p className="text-gray-600">info@arogini.com</p>
-                      <p className="text-gray-600">support@arogini.com</p>
+                      <p className="text-gray-600">info@medndi.com</p>
+                      <p className="text-gray-600">support@medndi.com</p>
                     </div>
                   </div>
                 </CardContent>

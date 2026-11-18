@@ -7,7 +7,7 @@ import {
   MapPin, Phone, Mail, ArrowUpRight,
   Shield, Award, Heart
 } from 'lucide-react';
-import AroginiLogo from '@/assets/icons/Aroginilogo';
+import MedNdiLogo from '@/assets/icons/MedNdiLogo';
 import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
@@ -19,7 +19,7 @@ const Footer = () => {
     { name: "Find Hospitals", link: "/hospitals" },
     { name: "Browse Treatments", link: "/treatments" },
     { name: "Patient Portal", link: "/patient" },
-    { name: "About Arogini", link: "/about" },
+    { name: "About MedNdi", link: "/about" },
     { name: "Contact Support", link: "/contact" }
   ];
 
@@ -33,7 +33,7 @@ const Footer = () => {
 
   const contactInfo = [
     { icon: Phone, info: "+1 800 123 4567", label: "24/7 Support" },
-    { icon: Mail, info: "care@arogini.com", label: "Email Us" },
+    { icon: Mail, info: "care@medndi.com", label: "Email Us" },
     { icon: MapPin, info: "Mumbai, India", label: "Head Office" }
   ];
 
@@ -50,7 +50,7 @@ const Footer = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <AroginiLogo/>
+              <MedNdiLogo textColor="#152C5B" tagColor="#3252DF" accentColor="#fff" />
               <p className="mt-6 text-gray-600 leading-relaxed">
                 Connecting patients with world-class healthcare facilities and expert medical professionals for affordable, quality treatments.
               </p>
@@ -155,7 +155,7 @@ const Footer = () => {
         <div className="mt-16 pt-8 border-t border-gray-200">
           <div className="flex flex-wrap items-center justify-between gap-4 max-sm:justify-center">
             <p className="text-sm text-gray-600">
-              © {new Date().getFullYear()} Arogini. All rights reserved.
+              © {new Date().getFullYear()} MedNdi. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <Link to="/about" className="text-sm text-gray-600 hover:text-[#3252DF]">About Us</Link>

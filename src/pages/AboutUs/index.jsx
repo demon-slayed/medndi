@@ -110,7 +110,7 @@ const AboutUs = () => {
               transition={{ delay: 0.2 }}
               className="text-3xl md:text-5xl font-bold mb-4 text-center"
             >
-              Welcome to Arogini Medical Tourism
+              Welcome to MedNdi Medical Tourism
             </motion.h1>
             <motion.p
               initial={{ y: 20, opacity: 0 }}
@@ -147,7 +147,7 @@ const AboutUs = () => {
                   </div>
                   <div>
                     <p className="text-gray-600 mb-4 text-lg font-poppins">
-                       <span className=' text-[#3552DF] text-2xl'>Arogini Medical Tourism</span> has been at the forefront of revolutionizing healthcare tourism in India. We bridge the gap between international patients and India's premier medical facilities.
+                       <span className=' text-[#3552DF] text-2xl'>MedNdi Medical Tourism</span> has been at the forefront of revolutionizing healthcare tourism in India. We bridge the gap between international patients and India's premier medical facilities.
                     </p>
                     <p className="text-gray-600">
                       Our mission is to provide seamless medical tourism experiences by combining cutting-edge medical treatments with comprehensive patient care services.
@@ -246,7 +246,7 @@ const AboutUs = () => {
             className="max-w-6xl mx-auto"
           >
             <h2 className="text-3xl font-bold mb-8 text-center">
-              Why Choose Arogini
+              Why Choose MedNdi
             </h2>
 
             <div className="flex flex-wrap gap-6 justify-center">
