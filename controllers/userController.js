@@ -2,12 +2,16 @@ import User from "../models/userModel.js";
 import { hashPassword, verifyPassword } from "../utils/bcryptHelper.js";
 import { createJWT } from "../utils/webtokenHelper.js";
 
-// Cross-site cookies (Vercel -> API) need SameSite=None + Secure; on local http that would be rejected by some browsers.
+// Cross-site cookies (Vercel -> API) need SameSite=None + Secure; on plain http that would be rejected.
+// COOKIE_SECURE / COOKIE_SAMESITE override the defaults (e.g. same-origin Docker deploy over http).
 const isProduction = process.env.NODE_ENV === "production";
+const cookieSecure = process.env.COOKIE_SECURE
+  ? process.env.COOKIE_SECURE === "true"
+  : isProduction;
 const authCookieOptions = {
   httpOnly: true,
-  secure: isProduction,
-  sameSite: isProduction ? "None" : "Lax",
+  secure: cookieSecure,
+  sameSite: process.env.COOKIE_SAMESITE || (cookieSecure ? "None" : "Lax"),
   path: "/",
 };
 

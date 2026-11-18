@@ -1,8 +1,9 @@
 node_modules
 .env
 .git
-
 .DS_Store
-
 dist
 .coverage
+uploads
+Dockerfile
+.dockerignore

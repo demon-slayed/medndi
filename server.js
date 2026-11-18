@@ -31,7 +31,11 @@ if (!fs.existsSync(uploadsDir)) {
 
 const app = express();
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:4173", "https://arogini-frontend-z4pz.vercel.app", "https://arogini-frontend-7skl.vercel.app", "https://arogini-frontend-z4pz-git-viv-vivek-ranjans-projects-ece138e0.vercel.app"],
+    origin: [
+      "http://localhost:5173", "http://localhost:4173", "https://arogini-frontend-z4pz.vercel.app", "https://arogini-frontend-7skl.vercel.app", "https://arogini-frontend-z4pz-git-viv-vivek-ranjans-projects-ece138e0.vercel.app",
+      // Extra comma-separated origins, e.g. CORS_ORIGINS=https://medndi.example.com
+      ...(process.env.CORS_ORIGINS || "").split(",").map((o) => o.trim()).filter(Boolean),
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]

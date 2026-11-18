@@ -1,5 +1,6 @@
 // Seeds a local database with demo catalog data and two accounts.
-// Usage: npm run seed   (wipes catalog, applications and post-care forms first; keeps other users)
+// Usage: npm run seed                  wipes catalog, applications and post-care forms, then reloads (keeps other users)
+//        node scripts/seed.js --if-empty   only seeds a fresh database (used by Docker on start)
 // Catalog data lives in ../data/*.json (see data/README.md). All prices are in INR.
 import fs from "fs";
 import mongoose from "mongoose";
@@ -72,6 +73,13 @@ async function upsertUser({ email, password }, extra) {
 async function seed() {
   validateReferences();
   await mongoose.connect(process.env.MONGO_DB_URL);
+
+  // --if-empty: used on container start so a redeploy never wipes real data
+  if (process.argv.includes("--if-empty") && (await Hospital.countDocuments()) > 0) {
+    console.log("Database already has data; skipping seed.");
+    await mongoose.disconnect();
+    return;
+  }
 
   await Promise.all([Hospital, Treatment, Hotel, Insurance, PostTreatment, Application, PostCareForm].map((m) => m.deleteMany({})));
 
