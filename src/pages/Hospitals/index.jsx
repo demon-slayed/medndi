@@ -1,52 +1,61 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import {
-  Heart,
-  MapPin,
-  Star,
-  Check,
-  ArrowRight,
-  Activity,
-  Stethoscope,
-  Clock,
-  Users,
-  Award,
-  Microscope,
-  ThumbsUp,
   SlidersHorizontal,
   Search,
-  Filter,
   Building2,
   ChevronDown,
   Sparkles,
   ShieldCheck,
+  X,
 } from "lucide-react";
 import HospitalCard from "@/components/HospitalCard";
 import Layout from "@/components/Layout/Layout";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import LoadingSkelton from "@/components/LoadingSkelton";
 
-const MedicalCardCenter = () => {
+const SORT_OPTIONS = [
+  "Recommended",
+  "Price: Low to High",
+  "Price: High to Low",
+  "Rating",
+];
+
+const sortHospitals = (list, sortBy) => {
+  const sorted = [...list];
+  switch (sortBy) {
+    case "Price: Low to High":
+      return sorted.sort((a, b) => (a?.treatmentCost ?? Infinity) - (b?.treatmentCost ?? Infinity));
+    case "Price: High to Low":
+      return sorted.sort((a, b) => (b?.treatmentCost ?? -Infinity) - (a?.treatmentCost ?? -Infinity));
+    case "Rating":
+      return sorted.sort((a, b) => (b?.rating ?? 0) - (a?.rating ?? 0));
+    default:
+      return sorted;
+  }
+};
+
+const Hospitals = () => {
   const [hospitals, setHospitals] = useState([]);
   const [hoveredCard, setHoveredCard] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [sortBy, setSortBy] = useState("recommended");
+  const [error, setError] = useState(false);
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("Recommended");
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchHospitals = async () => {
       try {
         setLoading(true); // start loading
+        setError(false);
         const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/hospitals`
         );
-        setHospitals([...response.data]); // store hospitals
-        console.log("hospitals are: ", response.data);
+        setHospitals(Array.isArray(response?.data) ? response.data : []);
       } catch (error) {
         console.error("Error fetching hospitals:", error);
+        setError(true);
       } finally {
         setLoading(false); // stop loading after fetch attempt
       }
@@ -54,6 +63,18 @@ const MedicalCardCenter = () => {
 
     fetchHospitals();
   }, []);
+
+  const visibleHospitals = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    const filtered = q
+      ? hospitals.filter((h) =>
+          [h?.hospital_name, h?.address, h?.accreditation, ...(h?.specialties ?? [])]
+            .filter(Boolean)
+            .some((field) => String(field).toLowerCase().includes(q))
+        )
+      : hospitals;
+    return sortHospitals(filtered, sortBy);
+  }, [hospitals, search, sortBy]);
 
   return (
     <Layout>
@@ -74,26 +95,28 @@ const MedicalCardCenter = () => {
                 </h2>
               </motion.div>
               <p className="text-gray-600 max-w-2xl">
-                Explore our network of JCI-accredited hospitals offering
+                Explore our network of accredited hospitals offering
                 world-class medical treatments with experienced healthcare
                 professionals.
               </p>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-3"
-            >
-              <div className="bg-blue-50 px-4 py-2 rounded-lg">
-                <span className="text-[#3252DF] font-semibold">
-                  15+ Hospitals
-                </span>
-              </div>
-            </motion.div>
+            {!loading && hospitals.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center gap-3"
+              >
+                <div className="bg-blue-50 px-4 py-2 rounded-lg">
+                  <span className="text-[#3252DF] font-semibold">
+                    {hospitals.length} {hospitals.length === 1 ? "Hospital" : "Hospitals"}
+                  </span>
+                </div>
+              </motion.div>
+            )}
           </div>
 
-          {/* Filters and Sort Bar */}
+          {/* Search and Sort Bar */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -104,7 +127,7 @@ const MedicalCardCenter = () => {
               <div className="flex flex-wrap items-center gap-6">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-[#3252DF]" />
-                  <span className="text-gray-700">JCI Accredited</span>
+                  <span className="text-gray-700">Accredited</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-[#3252DF]" />
@@ -122,10 +145,22 @@ const MedicalCardCenter = () => {
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Search hospitals..."
-                    className="w-64 pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3252DF]/20"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search hospitals, cities, specialties..."
+                    className="w-64 pl-10 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3252DF]/20"
                   />
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  {search && (
+                    <button
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => setSearch("")}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
 
                 {/* Sort Dropdown */}
@@ -150,21 +185,17 @@ const MedicalCardCenter = () => {
                         exit={{ opacity: 0, y: 10 }}
                         className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-10"
                       >
-                        {[
-                          "Recommended",
-                          "Price: Low to High",
-                          "Price: High to Low",
-                          "Rating",
-                          "Experience",
-                        ].map((option) => (
+                        {SORT_OPTIONS.map((option) => (
                           <motion.button
                             key={option}
                             whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
                             onClick={() => {
-                              setSortBy(option.toLowerCase());
+                              setSortBy(option);
                               setShowSortMenu(false);
                             }}
-                            className="w-full px-4 py-2 text-left text-gray-700 hover:text-[#3252DF]"
+                            className={`w-full px-4 py-2 text-left hover:text-[#3252DF] ${
+                              sortBy === option ? "text-[#3252DF] font-medium" : "text-gray-700"
+                            }`}
                           >
                             {option}
                           </motion.button>
@@ -173,39 +204,9 @@ const MedicalCardCenter = () => {
                     )}
                   </AnimatePresence>
                 </div>
-
-                {/* Filter Button */}
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#3252DF] text-white rounded-lg hover:shadow-md"
-                >
-                  <Filter className="w-4 h-4" />
-                  <span>Filters</span>
-                </motion.button>
               </div>
             </div>
           </motion.div>
-
-          {/* Active Filters */}
-          <div className="flex items-center gap-3 mb-8">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-2 px-3 py-1 bg-blue-50 text-[#3252DF] rounded-full text-sm"
-            >
-              <span>JCI Accredited</span>
-              <button className="hover:text-blue-700">×</button>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-2 px-3 py-1 bg-blue-50 text-[#3252DF] rounded-full text-sm"
-            >
-              <span>Multi-Specialty</span>
-              <button className="hover:text-blue-700">×</button>
-            </motion.div>
-          </div>
         </div>
 
         {/* Hospital Cards Grid */}
@@ -215,11 +216,33 @@ const MedicalCardCenter = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
         >
           {loading ? (
-            <LoadingSkelton length={12} />
+            <LoadingSkelton length={6} />
+          ) : visibleHospitals.length === 0 ? (
+            <div className="col-span-full text-center py-16 bg-white rounded-2xl shadow-sm">
+              <Building2 className="w-12 h-12 text-[#3252DF] mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                {error ? "Couldn't load hospitals" : "No hospitals found"}
+              </h3>
+              <p className="text-gray-600">
+                {error
+                  ? "Please check your connection and try again."
+                  : search
+                  ? "Try a different search term."
+                  : "Hospitals will appear here once they are added."}
+              </p>
+              {search && (
+                <button
+                  onClick={() => setSearch("")}
+                  className="mt-4 text-[#3252DF] font-medium hover:underline"
+                >
+                  Clear search
+                </button>
+              )}
+            </div>
           ) : (
-            hospitals && hospitals?.map((hospital, index) => (
+            visibleHospitals.map((hospital, index) => (
               <HospitalCard
-                key={index}
+                key={hospital?._id || index}
                 hospital={hospital}
                 index={index}
                 hoveredCard={hoveredCard}
@@ -227,12 +250,10 @@ const MedicalCardCenter = () => {
               />
             ))
           )}
-
-          {/* Your existing hospital card mapping code here */}
         </motion.div>
       </div>
     </Layout>
   );
 };
 
-export default MedicalCardCenter;
+export default Hospitals;

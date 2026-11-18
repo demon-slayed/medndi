@@ -1,136 +1,72 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import {
-  Heart,
-  MapPin,
-  Star,
-  Check,
-  ArrowRight,
-  Activity,
-  Stethoscope,
-  Clock,
-  Users,
-  Award,
-  Microscope,
-  ThumbsUp,
-  SlidersHorizontal,
   Search,
-  Filter,
   Building2,
   ChevronDown,
+  SlidersHorizontal,
   Sparkles,
   ShieldCheck,
+  X,
 } from "lucide-react";
 import HospitalCard from "@/components/HospitalCard";
-import { useContext } from "react";
-import { HospitalInfoContext } from "@/context/HospitalInfo";
-import axios from "axios";
 import useAppStore from "@/store/useAppStore";
-import LoadingSkelton from "@/components/LoadingSkelton";
-// import { TreatmentInfoContext } from '@/context/TreatmentInfo';
 
-const MedicalCardCenter = () => {
+const SORT_OPTIONS = ["Recommended", "Price: Low to High", "Price: High to Low", "Rating"];
+
+const sortHospitals = (list, sortBy) => {
+  const sorted = [...list];
+  switch (sortBy) {
+    case "Price: Low to High":
+      return sorted.sort((a, b) => (a?.treatmentCost ?? Infinity) - (b?.treatmentCost ?? Infinity));
+    case "Price: High to Low":
+      return sorted.sort((a, b) => (b?.treatmentCost ?? -Infinity) - (a?.treatmentCost ?? -Infinity));
+    case "Rating":
+      return sorted.sort((a, b) => (b?.rating ?? 0) - (a?.rating ?? 0));
+    default:
+      return sorted;
+  }
+};
+
+// Hospitals offering the current treatment (treatment.available_hospitals is populated by the API)
+const MedicalCardCenter = ({ treatment }) => {
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [sortBy, setSortBy] = useState("recommended");
+  const [sortBy, setSortBy] = useState("Recommended");
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [hospitals, setHospitals] = useState([]);
-  const { treatment } = useAppStore();
-  // const { treatment } = useContext(TreatmentInfoContext);
+  const [search, setSearch] = useState("");
+  const { setTreatment, setHospital } = useAppStore();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchHospitals = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/hospitals`
-        ); // Replace with your actual API
-        setHospitals(response.data); // Assuming response.data is an array of hospitals
-        console.log("hospitals are: ", response.data);
-      } catch (error) {
-        console.error("Error fetching hospitals:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHospitals();
-  }, [setHospitals]);
-
-  const treatmentWords = treatment?.treatment_name?.toLowerCase().split(" ");
-  const availableHospitals = hospitals?.filter((hospital) =>
-    hospital.specialties.some((specialty) => {
-      const lowerSpecialty = specialty?.toLowerCase();
-      return treatmentWords.some((word) => lowerSpecialty.includes(word));
-    })
+  const availableHospitals = useMemo(
+    () =>
+      (treatment?.available_hospitals ?? []).filter(
+        (h) => h && typeof h === "object"
+      ),
+    [treatment]
   );
 
-  // const hospitals = [
-  //   {
-  //     name: "Apollo Specialty Hospital",
-  //     address: "City Center, Pune",
-  //     accreditation: "JCI & NABH Accredited",
-  //     rating: 4.8,
-  //     treatmentCost: 245000,
-  //     image: "https://images.unsplash.com/photo-1566073771259-6a8506099945",
-  //     stats: {
-  //       successRate: "98%",
-  //       experience: "25+ Years",
-  //       patients: "50k+"
-  //     },
-  //     badges: ["Center of Excellence", "Advanced Technology"],
-  //     specialties: ["Oncology", "Cardiology", "Neurosurgery", "Orthopedics"],
-  //     treatments: {
-  //       upcoming: "Next Available: Tomorrow",
-  //       duration: "2-3 Hours",
-  //       consultationType: "Online/In-Person"
-  //     }
-  //   },
-  //   {
-  //     name: "Fortis Healthcare",
-  //     address: "Koregaon Park, Mumbai",
-  //     accreditation: "NABH Certified",
-  //     rating: 4.7,
-  //     treatmentCost: 195000,
-  //     image: "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc",
-  //     stats: {
-  //       successRate: "96%",
-  //       experience: "20+ Years",
-  //       patients: "40k+"
-  //     },
-  //     badges: ["Premium Care", "Multi-Specialty"],
-  //     specialties: ["Orthopedics", "Neurology", "Cardiology", "Gastroenterology"],
-  //     treatments: {
-  //       upcoming: "Next Available: Today",
-  //       duration: "1-2 Hours",
-  //       consultationType: "In-Person"
-  //     }
-  //   },
-  //   {
-  //     name: "Max Super Specialty",
-  //     address: "Baner, Pune",
-  //     accreditation: "JCI Accredited",
-  //     rating: 4.9,
-  //     treatmentCost: 285000,
-  //     image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d",
-  //     stats: {
-  //       successRate: "99%",
-  //       experience: "30+ Years",
-  //       patients: "60k+"
-  //     },
-  //     badges: ["Top Rated", "Latest Technology"],
-  //     specialties: ["Cardiac Surgery", "Oncology", "Spine Surgery", "Transplants"],
-  //     treatments: {
-  //       upcoming: "Next Available: Tomorrow",
-  //       duration: "2-4 Hours",
-  //       consultationType: "Online/In-Person"
-  //     }
-  //   }
-  // ];
+  const visibleHospitals = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    const filtered = q
+      ? availableHospitals.filter((h) =>
+          [h?.hospital_name, h?.address, h?.accreditation, ...(h?.specialties ?? [])]
+            .filter(Boolean)
+            .some((field) => String(field).toLowerCase().includes(q))
+        )
+      : availableHospitals;
+    return sortHospitals(filtered, sortBy);
+  }, [availableHospitals, search, sortBy]);
+
+  // Booking reads store.treatment + store.hospital
+  const handleBook = (hospital) => {
+    setTreatment(treatment);
+    setHospital(hospital);
+    navigate("/booking");
+  };
 
   return (
-    <div className="px-6 md:px-16 p-10 lg:px-24 bg-gradient-to-b from-white to-blue-50">
+    <div id="treatment-hospitals" className="px-6 md:px-16 p-10 lg:px-24 bg-gradient-to-b from-white to-blue-50 scroll-mt-32">
       {/* Header Section */}
       <div className="max-w-7xl mx-auto mb-12">
         {/* Title and Description */}
@@ -143,142 +79,123 @@ const MedicalCardCenter = () => {
             >
               <div className="h-10 w-1.5 rounded-full bg-gradient-to-b from-[#3252DF] to-[#4466ff]" />
               <h2 className="text-3xl font-bold text-gray-900">
-                Available Hospitals For Same Treatment
+                Hospitals Offering {treatment?.treatment_name || "This Treatment"}
               </h2>
             </motion.div>
             <p className="text-gray-600 max-w-2xl">
-              Explore our network of JCI-accredited hospitals offering
-              world-class medical treatments with experienced healthcare
-              professionals.
+              Compare accredited partner hospitals and book your consultation
+              with experienced healthcare professionals.
             </p>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3"
-          >
-            <div className="bg-blue-50 px-4 py-2 rounded-lg">
-              <span className="text-[#3252DF] font-semibold">
-                15+ Hospitals
-              </span>
-            </div>
-          </motion.div>
+          {availableHospitals.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-3"
+            >
+              <div className="bg-blue-50 px-4 py-2 rounded-lg">
+                <span className="text-[#3252DF] font-semibold">
+                  {availableHospitals.length} {availableHospitals.length === 1 ? "Hospital" : "Hospitals"}
+                </span>
+              </div>
+            </motion.div>
+          )}
         </div>
 
-        {/* Filters and Sort Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-xl shadow-sm p-4 mb-6"
-        >
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            {/* Quick Stats */}
-            <div className="flex flex-wrap items-center gap-6">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-[#3252DF]" />
-                <span className="text-gray-700">JCI Accredited</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#3252DF]" />
-                <span className="text-gray-700">Advanced Facilities</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-[#3252DF]" />
-                <span className="text-gray-700">Multiple Locations</span>
-              </div>
-            </div>
-
-            {/* Controls */}
-            <div className="flex items-center flex-wrap gap-4">
-              {/* Search */}
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search hospitals..."
-                  className="w-64 pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3252DF]/20"
-                />
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        {/* Search and Sort Bar */}
+        {availableHospitals.length > 1 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-xl shadow-sm p-4 mb-6"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              {/* Quick Stats */}
+              <div className="flex flex-wrap items-center gap-6">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-[#3252DF]" />
+                  <span className="text-gray-700">Accredited</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-[#3252DF]" />
+                  <span className="text-gray-700">Advanced Facilities</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Building2 className="w-5 h-5 text-[#3252DF]" />
+                  <span className="text-gray-700">Multiple Locations</span>
+                </div>
               </div>
 
-              {/* Sort Dropdown */}
-              <div className="relative">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setShowSortMenu(!showSortMenu)}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100"
-                >
-                  <SlidersHorizontal className="w-4 h-4 text-[#3252DF]" />
-                  <span>Sort by: </span>
-                  <span className="font-medium">{sortBy}</span>
-                  <ChevronDown className="w-4 h-4" />
-                </motion.button>
-
-                <AnimatePresence>
-                  {showSortMenu && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-10"
+              {/* Controls */}
+              <div className="flex items-center flex-wrap gap-4">
+                {/* Search */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search hospitals..."
+                    className="w-64 pl-10 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3252DF]/20"
+                  />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  {search && (
+                    <button
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => setSearch("")}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {[
-                        "Recommended",
-                        "Price: Low to High",
-                        "Price: High to Low",
-                        "Rating",
-                        "Experience",
-                      ].map((option) => (
-                        <motion.button
-                          key={option}
-                          whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
-                          onClick={() => {
-                            setSortBy(option?.toLowerCase());
-                            setShowSortMenu(false);
-                          }}
-                          className="w-full px-4 py-2 text-left text-gray-700 hover:text-[#3252DF]"
-                        >
-                          {option}
-                        </motion.button>
-                      ))}
-                    </motion.div>
+                      <X className="w-4 h-4" />
+                    </button>
                   )}
-                </AnimatePresence>
+                </div>
+
+                {/* Sort Dropdown */}
+                <div className="relative">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowSortMenu(!showSortMenu)}
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100"
+                  >
+                    <SlidersHorizontal className="w-4 h-4 text-[#3252DF]" />
+                    <span>Sort by: </span>
+                    <span className="font-medium">{sortBy}</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </motion.button>
+
+                  <AnimatePresence>
+                    {showSortMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-10"
+                      >
+                        {SORT_OPTIONS.map((option) => (
+                          <motion.button
+                            key={option}
+                            whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
+                            onClick={() => {
+                              setSortBy(option);
+                              setShowSortMenu(false);
+                            }}
+                            className={`w-full px-4 py-2 text-left hover:text-[#3252DF] ${
+                              sortBy === option ? "text-[#3252DF] font-medium" : "text-gray-700"
+                            }`}
+                          >
+                            {option}
+                          </motion.button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
-
-              {/* Filter Button */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-2 px-4 py-2 bg-[#3252DF] text-white rounded-lg hover:shadow-md"
-              >
-                <Filter className="w-4 h-4" />
-                <span>Filters</span>
-              </motion.button>
             </div>
-          </div>
-        </motion.div>
-
-        {/* Active Filters */}
-        <div className="flex items-center gap-3 mb-8">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-2 px-3 py-1 bg-blue-50 text-[#3252DF] rounded-full text-sm"
-          >
-            <span>JCI Accredited</span>
-            <button className="hover:text-blue-700">×</button>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-2 px-3 py-1 bg-blue-50 text-[#3252DF] rounded-full text-sm"
-          >
-            <span>Multi-Specialty</span>
-            <button className="hover:text-blue-700">×</button>
-          </motion.div>
-        </div>
+        )}
       </div>
 
       {/* Hospital Cards Grid */}
@@ -287,31 +204,34 @@ const MedicalCardCenter = () => {
         animate={{ opacity: 1, y: 0 }}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
       >
-        {loading ? (
-          <LoadingSkelton length={3} />
-        ) : availableHospitals?.length === 0 ? (
+        {visibleHospitals.length === 0 ? (
           <div className="col-span-full flex flex-col items-center justify-center py-16 text-center bg-blue-50 rounded-xl shadow-sm border border-blue-100">
-            <img
-              src="/no-hospitals.svg"
-              alt="No hospitals"
-              className="w-32 h-32 mb-6"
-            />
+            <Building2 className="w-16 h-16 text-[#3252DF] mb-6" />
             <h3 className="text-2xl font-semibold text-[#3252DF] mb-2">
               No Hospitals Found
             </h3>
             <p className="text-gray-600 max-w-md">
-              Currently, there are no hospitals offering this treatment. We are
-              working to add more partners soon. Please check back later!
+              {search
+                ? `No partner hospital matches "${search}".`
+                : "Currently, there are no hospitals offering this treatment. We are working to add more partners soon. Please contact us and we'll help you find the right option."}
             </p>
+            <button
+              onClick={() => (search ? setSearch("") : navigate("/contact"))}
+              className="mt-4 text-[#3252DF] font-medium hover:underline"
+            >
+              {search ? "Clear search" : "Contact us"}
+            </button>
           </div>
         ) : (
-          availableHospitals.map((hospital, index) => (
+          visibleHospitals.map((hospital, index) => (
             <HospitalCard
-              key={index}
+              key={hospital?._id || index}
               hospital={hospital}
               index={index}
               hoveredCard={hoveredCard}
               setHoveredCard={setHoveredCard}
+              ctaLabel="Book Consult"
+              onCtaClick={handleBook}
             />
           ))
         )}

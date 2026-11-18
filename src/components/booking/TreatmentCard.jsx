@@ -53,7 +53,7 @@ const TreatmentCard = ({ treatment }) => {
           <div className="flex items-center gap-2">
             <IndianRupee className="w-4 h-4 text-gray-500" />
             <span className="text-sm text-gray-600">
-              {treatment?.estimated_cost?.min} - {treatment?.estimated_cost?.max}
+              {treatment?.estimated_cost?.min?.toLocaleString()} - {treatment?.estimated_cost?.max?.toLocaleString()}
             </span>
           </div>
           <div className="flex items-center gap-2">

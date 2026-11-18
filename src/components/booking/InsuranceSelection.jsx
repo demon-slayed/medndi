@@ -40,9 +40,7 @@ const InsuranceSelection = ({ onSelect }) => {
 
   const handleSelectPlan = (plan) => {
     setSelectedPlan(plan);
-    console.log("plan selected is: ", plan);
     toast.success(`${plan?.name} insurance selected`);
-    console.log("selec", selectedPlan);
   };
 
   useEffect(() => {
@@ -55,8 +53,7 @@ const InsuranceSelection = ({ onSelect }) => {
             withCredentials: true,
           }
         );
-        setInsurances(res.data);
-        console.log(res.data);
+        setInsurances(Array.isArray(res.data) ? res.data : []);
       } catch (error) {
         console.error("Error fetching treatments:", error);
       }
@@ -224,7 +221,7 @@ const InsuranceSelection = ({ onSelect }) => {
                   </h3>
 
                   <div className="text-2xl font-bold text-[#3252DF] mb-4">
-                    ₹{plan.price}
+                    ₹{plan.price?.toLocaleString()}
                     <span className="text-sm font-normal text-gray-600">
                       /year
                     </span>
@@ -232,7 +229,7 @@ const InsuranceSelection = ({ onSelect }) => {
 
                   {/* Feature List with flex-grow to distribute remaining space */}
                   <ul className="flex-grow mb-4 space-y-3">
-                    {plan.features.map((feature, idx) => (
+                    {plan.features?.map((feature, idx) => (
                       <li
                         key={idx}
                         className="flex items-center gap-3 text-sm text-gray-600"

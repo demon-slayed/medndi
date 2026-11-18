@@ -19,14 +19,39 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus, Check, ChevronsUpDown, X, Edit, Trash } from "lucide-react";
 import toast from "react-hot-toast";
+import { getErrorMessage, scrollToTop } from "../utils";
 
-const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
+const emptyTreatment = {
+  treatment_id: "",
+  treatment_name: "",
+  location: "",
+  rating: "",
+  min_cost: "",
+  max_cost: "",
+  email: "",
+  phone: "",
+  duration: "",
+  success_rate: "",
+  patients: "",
+  tags: "",
+  experience: "",
+  support: "",
+  description: "",
+  category: "",
+  features: [],
+  hospitals: "",
+  image: "",
+};
+
+const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment, onSaved }) => {
   const [hospitals, setHospitals] = useState();
   const [selectedHospitalIds, setSelectedHospitalIds] = useState([]);
-  const [selectedHospitals, setSelectedHospitals] = useState([]);
   const [featureInput, setFeatureInput] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
+  const isEditing = Boolean(selectedTreatment?._id);
+  const selectedHospitals =
+    hospitals?.filter((h) => selectedHospitalIds?.includes(h._id)) || [];
 
   // Add feature
   const handleAddFeature = () => {
@@ -83,49 +108,30 @@ const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
     fetchHospitals();
   }, []);
 
-  const [treatmentData, setTreatmentData] = useState({
-    treatment_id: "",
-    treatment_name: "",
-    location: "",
-    rating: "",
-    min_cost: "",
-    max_cost: "",
-    email: "",
-    phone: "",
-    duration: "",
-    success_rate: "",
-    patients: "",
-    tags: "",
-    experience: "",
-    support: "",
-    description: "",
-    category: "",
-    features: [],
-    hospitals: "",
-    image: "",
-  });
+  const [treatmentData, setTreatmentData] = useState(emptyTreatment);
 
   useEffect(() => {
-    if (selectedTreatment) {
-      console.log("Selected treatment for update is: ", selectedTreatment);
-      console.log(
-        "data type of selected treatment is: ",
-        typeof selectedTreatment
-      );
-
-      setTreatmentData((prev) => ({
-        ...prev,
-        ...selectedTreatment,
-        min_cost: selectedTreatment?.estimated_cost?.min,
-        max_cost: selectedTreatment?.estimated_cost?.max,
-      }));
-      setSelectedHospitalIds(selectedTreatment?.available_hospitals);
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }
+    if (!selectedTreatment?._id) return;
+    setTreatmentData({
+      ...emptyTreatment,
+      ...selectedTreatment,
+      features: selectedTreatment.features || [],
+      min_cost: selectedTreatment.estimated_cost?.min ?? "",
+      max_cost: selectedTreatment.estimated_cost?.max ?? "",
+    });
+    setSelectedHospitalIds(
+      (selectedTreatment.available_hospitals || []).map((h) => h?._id || h)
+    );
+    scrollToTop();
   }, [selectedTreatment]);
+
+  // back to "Add" mode with a blank form
+  const resetForm = () => {
+    setTreatmentData(emptyTreatment);
+    setSelectedHospitalIds([]);
+    setFeatureInput("");
+    setSelectedTreatment({});
+  };
 
   // Handle form submissions
   const handleTreatmentSubmit = async (e) => {
@@ -172,7 +178,7 @@ const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
       return;
     }
 
-    if (!selectedHospitalIds.length) {
+    if (!selectedHospitalIds?.length) {
       toast.error("Please select at least one hospital");
       setIsSubmitting(false);
       return;
@@ -203,10 +209,8 @@ const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
         category: treatmentData.category,
       };
 
-      let response;
-
-      if (selectedTreatment && Object.keys(selectedTreatment).length > 0) {
-        response = await axios.put(
+      if (isEditing) {
+        await axios.put(
           `${import.meta.env.VITE_BASE_URL}/treatments/${
             selectedTreatment._id
           }`,
@@ -215,7 +219,7 @@ const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
         );
         toast.success("Treatment updated successfully!");
       } else {
-        response = await axios.post(
+        await axios.post(
           `${import.meta.env.VITE_BASE_URL}/treatments/create`,
           processedData,
           { withCredentials: true }
@@ -223,34 +227,11 @@ const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
         toast.success("Treatment created successfully!");
       }
 
-      console.log("Treatment response:", response.data);
-
-      setTreatmentData({
-        treatment_id: "",
-        treatment_name: "",
-        location: "",
-        rating: "",
-        min_cost: "",
-        max_cost: "",
-        email: "",
-        phone: "",
-        duration: "",
-        success_rate: "",
-        patients: "",
-        tags: "",
-        experience: "",
-        support: "",
-        description: "",
-        category: "",
-        features: [],
-        hospitals: "",
-        image: "",
-      });
-
-      setSelectedHospitalIds([]);
+      resetForm();
+      onSaved?.();
     } catch (err) {
       console.error("Error submitting treatment:", err);
-      toast.error("Something went wrong while submitting treatment");
+      toast.error(getErrorMessage(err, "Failed to save treatment"));
     } finally {
       setIsSubmitting(false);
     }
@@ -258,50 +239,29 @@ const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
 
   // delete treatment
   const handleDeleteTreatment = async () => {
-    if (!selectedTreatment || !selectedTreatment._id) {
+    if (!isEditing) {
       toast.error("No treatment selected to delete.");
       return;
     }
-  
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete treatment "${selectedTreatment.treatment_name}"? This action cannot be undone.`
+    );
+    if (!confirmed) return;
+
     setIsSubmitting(true);
-  
+
     try {
-      // Send DELETE request to delete the treatment
-      const response = await axios.delete(
+      await axios.delete(
         `${import.meta.env.VITE_BASE_URL}/treatments/${selectedTreatment._id}`,
         { withCredentials: true }
       );
-  
-      console.log("Treatment deleted:", response.data);
-  
-      // Optionally reset treatment data or handle after delete
-      setSelectedTreatment({});
-      setTreatmentData({
-        treatment_id: "",
-        treatment_name: "",
-        location: "",
-        rating: "",
-        min_cost: "",
-        max_cost: "",
-        email: "",
-        phone: "",
-        duration: "",
-        success_rate: "",
-        patients: "",
-        tags: "",
-        experience: "",
-        support: "",
-        description: "",
-        category: "",
-        features: [],
-        hospitals: "",
-        image: "",
-      });
-  
+      resetForm();
+      onSaved?.();
       toast.success("Treatment deleted successfully!");
     } catch (err) {
       console.error("Error deleting treatment:", err);
-      toast.error(err?.response?.data?.message || "Something went wrong while deleting Treatment");
+      toast.error(getErrorMessage(err, "Failed to delete treatment"));
     } finally {
       setIsSubmitting(false);
     }
@@ -711,6 +671,7 @@ const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
               </label>
               {selectedHospitalIds?.length > 0 && (
                 <Button
+                  type="button"
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedHospitalIds([])}
@@ -809,6 +770,7 @@ const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
                     >
                       {hospital.hospital_name}
                       <button
+                        type="button"
                         onClick={() => removeHospital(hospital._id)}
                         className="ml-1 rounded-full hover:bg-blue-200 p-1"
                       >
@@ -850,25 +812,21 @@ const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
         >
           {isSubmitting ? (
             <span>
-              {Object.keys(selectedTreatment).length > 0
-                ? "Updating"
-                : "Adding"}{" "}
-              Treatment...
+              {isEditing ? "Updating" : "Adding"} Treatment...
             </span>
           ) : (
             <>
-              {Object.keys(selectedTreatment).length > 0 ? (
+              {isEditing ? (
                 <Edit className="w-4 h-4 mr-2" />
               ) : (
                 <Plus className="w-4 h-4 mr-2" />
               )}
-              {Object.keys(selectedTreatment).length > 0 ? "Update" : "Add"}{" "}
-              Treatment
+              {isEditing ? "Update" : "Add"} Treatment
             </>
           )}
         </Button>
 
-        {Object.keys(selectedTreatment).length > 0 && (
+        {isEditing && (
           <Button
             type="button"
             className="w-full mt-6 py-3 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700"
@@ -883,6 +841,18 @@ const TreatmentCreate = ({ selectedTreatment, setSelectedTreatment }) => {
                 Delete Treatment
               </>
             )}
+          </Button>
+        )}
+
+        {isEditing && (
+          <Button
+            type="button"
+            className="w-full mt-2 py-3 bg-gray-200 text-gray-800 rounded-lg shadow-md hover:bg-gray-300"
+            onClick={resetForm}
+            disabled={isSubmitting}
+          >
+            <X className="w-4 h-4 mr-2" />
+            Cancel Edit
           </Button>
         )}
       </form>

@@ -23,14 +23,16 @@ const Header = () => {
   const navigate = useNavigate();
   let timeoutId = null;
   const profileMenuRef = useRef(null);
+  const isLoggedIn = Boolean(auth?._id);
+  const displayName = auth?.fullName || auth?.email?.split('@')[0];
 
   const handleDoctorLogin = ()=>{
-    console.log("auth is: ", auth);
-    
        if(auth?.role==='Admin'){
         navigate('/admin-dashboard');
+       } else if (!isLoggedIn) {
+         navigate('/login');
        } else{
-         toast.error("Only Admins Route!")
+         toast.error("The doctor portal is only available to admin accounts.")
        }
   }
   const handleClickLogo = () => {
@@ -44,13 +46,15 @@ const Header = () => {
   }
 
   const handleLogout = async () => {
+    setProfileMenuOpen(false);
     try {
       await axios.post(`${import.meta.env.VITE_BASE_URL}/users/logout`, {}, { withCredentials: true });
-      setAuth(null);
-      navigate('/');
     } catch (err) {
       console.error("Logout error", err);
-      toast.error("Failed to log out");
+    } finally {
+      // Always clear local session, even if the server is unreachable
+      setAuth(null);
+      navigate('/');
     }
   };
   
@@ -75,30 +79,25 @@ const Header = () => {
       icon: Stethoscope,
       path: "/treatments",
       subItems: [
-        { label: "Bariatric Surgery", path: "/treatments/bariatric" },
-        { label: "Orthopedic", path: "/treatments/orthopedic" },
-        { label: "Cardiology", path: "/treatments/cardiology" },
-        { label: "View All Treatments", path: "/treatments/all" }
+        { label: "Orthopedics", path: "/treatments?q=Orthopedics" },
+        { label: "Cardiology", path: "/treatments?q=Cardiology" },
+        { label: "Oncology", path: "/treatments?q=Oncology" },
+        { label: "View All Treatments", path: "/treatments" }
       ]
     },
     {
       label: "Hospitals",
       icon: Hospital,
-      path: "/hospitals",
-      subItems: [
-        { label: "Top Hospitals", path: "/hospitals/top" },
-        { label: "Compare Hospitals", path: "/hospitals/compare" },
-        { label: "Hospital Network", path: "/hospitals/network" }
-      ]
+      path: "/hospitals"
     },
     {
       label: "For Patients",
       icon: Heart,
       path: "/patient",
       subItems: [
-        { label: "Patient Journey", path: "/patients/journey" },
-        { label: "Success Stories", path: "/patients/stories" },
-        { label: "Insurance", path: "/patients/insurance" }
+        { label: "My Bookings", path: "/patient" },
+        { label: "Medical Report Analyser", path: "/patient/query" },
+        { label: "Book a Treatment", path: "/treatments" }
       ]
     },
     { label: "About Us", icon: User, path: "/about" },
@@ -210,12 +209,14 @@ const Header = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="p-2 rounded-full bg-blue-900/50 text-blue-200 hover:bg-blue-900 transition-colors"
+                onClick={()=>{navigate('/treatments')}}
+                aria-label="Search treatments"
               >
-                <Search className="w-5 h-5" onClick={()=>{navigate('/treatments')}}/>
+                <Search className="w-5 h-5" />
               </motion.button>
 
               {/* Conditional rendering based on auth state */}
-              {auth && auth.length !== 0 ? (
+              {isLoggedIn ? (
                 <div className="relative" ref={profileMenuRef}>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -236,10 +237,21 @@ const Header = () => {
                         className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl py-3 z-50"
                       >
                         <div className="px-4 py-3 border-b border-gray-100">
-                          <div className="font-medium text-gray-800">{auth.fullName}</div>
+                          <div className="font-medium text-gray-800">{displayName}</div>
                           <div className="text-sm text-gray-500 truncate">{auth.email}</div>
                         </div>
                         <div className="mt-2">
+                          <motion.button
+                            whileHover={{ x: 5, backgroundColor: '#f3f4f6' }}
+                            onClick={() => {
+                              setProfileMenuOpen(false);
+                              navigate(auth?.role === 'Admin' ? '/admin-dashboard' : '/patient');
+                            }}
+                            className="flex items-center gap-2 px-4 py-2 w-full text-left text-gray-700 hover:text-[#3252DF]"
+                          >
+                            <User className="w-4 h-4" />
+                            {auth?.role === 'Admin' ? 'Admin Dashboard' : 'My Dashboard'}
+                          </motion.button>
                           <motion.button
                             whileHover={{ x: 5, backgroundColor: '#f3f4f6' }}
                             onClick={handleLogout}
@@ -296,11 +308,15 @@ const Header = () => {
                     </div>
                     <nav className="space-y-6">
                       {navigationItems.map((item, idx) => (
-                        <div key={idx} className="space-y-2" onClick={()=>{navigate(item.path)}}>
-                          <div className="flex items-center gap-2 text-gray-100 font-medium">
+                        <div key={idx} className="space-y-2">
+                          <Link
+                            to={item.path}
+                            onClick={() => setOpen(false)}
+                            className="flex items-center gap-2 text-gray-100 font-medium"
+                          >
                             <item.icon className="w-5 h-5 text-blue-300" />
                             {item.label}
-                          </div>
+                          </Link>
                           {item.subItems && (
                             <div className="pl-7 space-y-2">
                               {item.subItems.map((subItem, subIdx) => (
@@ -319,9 +335,9 @@ const Header = () => {
                       ))}
                     </nav>
                     <div className="mt-8 space-y-4">
-                      {auth && auth.length !== 0 ? (
+                      {isLoggedIn ? (
                         <div className="bg-blue-900/30 rounded-lg p-4">
-                          <div className="text-white font-medium mb-1">{auth.fullName}</div>
+                          <div className="text-white font-medium mb-1">{displayName}</div>
                           <div className="text-blue-300 text-sm mb-4 truncate">{auth.email}</div>
                           <Button 
                             variant="outline"
@@ -341,7 +357,7 @@ const Header = () => {
                             className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                             onClick={() => {
                               setOpen(false);
-                              navigate('/login');
+                              handleLoginClick();
                             }}
                           >
                             Sign In

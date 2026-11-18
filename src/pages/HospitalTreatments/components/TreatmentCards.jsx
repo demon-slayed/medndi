@@ -1,76 +1,89 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { 
-  MapPin, 
-  Star, 
-  Mail, 
-  Phone, 
-  ArrowRight, 
-  Activity,
-  Calendar,
-  Clock,
-  IndianRupee,
-  CheckCircle2,Home,
-  Loader2
-} from 'lucide-react';
-import SearchBar from './SearchBar';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { Phone, Home, Stethoscope } from 'lucide-react';
 import { BreadcrumbItem } from '@/pages/TreatmentHospital/components/TreatmentIfo';
 import SearchCard from '@/components/SearchCard';
 import axios from 'axios';
 import useAppStore from '@/store/useAppStore';
 import LoadingSkelton from '@/components/LoadingSkelton';
+import TreatmentCard from '@/pages/SearchResults/Components/TreatmentCard';
+import { matchesTreatmentQuery } from '@/pages/SearchResults/Components/treatmentSearch';
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
 
 const TreatmentCards = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [ treatments, setTreatments ] = useState([]);
-  const [ searchTreatment, setSearchTreatment ] = useState("");
-  const [ loading, setLoading ] = useState(true);
-  const { hospital } = useAppStore();
-  // console.log("treatment from context is: ", treatments);
+  const [treatments, setTreatments] = useState([]);
+  const [hospital, setLocalHospital] = useState(null);
+  const [searchTreatment, setSearchTreatment] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); // null | "notfound" | "failed"
+  const { setTreatment, setHospital } = useAppStore();
+  const { hospital_id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchTreatments = async () => {
+    let cancelled = false;
+    const fetchData = async () => {
       try {
-        setLoading(true)
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/treatments/hospital/${hospital._id}`);      
-        setTreatments(response?.data); // Assuming response.data is an array of treatments
-        console.log("treatmens : ", response?.data);
-        
-      } catch (error) {
-        console.error("Error fetching treatments:", error);
+        setLoading(true);
+        setError(null);
+        setLocalHospital(null);
+        setTreatments([]);
+        const base = import.meta.env.VITE_BASE_URL;
+        const [hospitalRes, treatmentsRes] = await Promise.all([
+          axios.get(`${base}/hospitals/${hospital_id}`),
+          axios.get(`${base}/treatments/hospital/${hospital_id}`),
+        ]);
+        if (cancelled) return;
+        setLocalHospital(hospitalRes?.data ?? null);
+        setTreatments(Array.isArray(treatmentsRes?.data) ? treatmentsRes.data : []);
+      } catch (err) {
+        console.error("Error fetching hospital treatments:", err);
+        if (!cancelled) setError(err?.response?.status === 404 ? "notfound" : "failed");
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
-    fetchTreatments();
-  }, []);
-  
-  const navigate = useNavigate();
+    fetchData();
+    return () => {
+      cancelled = true;
+    };
+  }, [hospital_id]);
 
-  const handleClickCard = () => {
-    navigate('/treatment-details')
-  }
+  const visibleTreatments = useMemo(
+    () => treatments.filter((t) => matchesTreatmentQuery(t, searchTreatment)),
+    [treatments, searchTreatment]
+  );
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
+  const openTreatment = (treatment) => {
+    navigate(`/treatment-details/${treatment?.treatment_id}`);
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+  // Booking reads the selected treatment + hospital from the store
+  const bookTreatment = (treatment) => {
+    setTreatment(treatment);
+    setHospital(hospital);
+    navigate('/booking');
   };
 
   const PageBreadcrumb = () => (
-    <motion.nav 
+    <motion.nav
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100 max-sm:mt-3"
@@ -79,18 +92,23 @@ const TreatmentCards = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 max-sm:gap-0 flex-wrap text-sm">
             <BreadcrumbItem><Home className="w-4 h-4" onClick={()=>{navigate('/')}}/></BreadcrumbItem>
-            <BreadcrumbItem>Medical Treatments</BreadcrumbItem>
-            <BreadcrumbItem>Available Treatments</BreadcrumbItem>
-          
+            <BreadcrumbItem><Link to="/hospitals">Hospitals</Link></BreadcrumbItem>
+            {hospital?.hospital_name && (
+              <BreadcrumbItem>
+                <Link to={`/hospital-details/${hospital_id}`}>{hospital.hospital_name}</Link>
+              </BreadcrumbItem>
+            )}
+            <BreadcrumbItem isLast>Treatments</BreadcrumbItem>
           </div>
           <div className="flex items-center gap-4">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={()=>{navigate('/contact')}}
               className="flex items-center gap-2 px-4 py-2 bg-[#3252DF]/10 rounded-lg text-[#3252DF]"
             >
               <Phone className="w-4 h-4" />
-              <span className="text-sm max-sm:text-xs font-medium" onClick={()=>{navigate('/contact')}}>Get Expert Help</span>
+              <span className="text-sm max-sm:text-xs font-medium">Get Expert Help</span>
             </motion.button>
           </div>
         </div>
@@ -98,13 +116,43 @@ const TreatmentCards = () => {
     </motion.nav>
   );
 
+  const renderEmpty = () => {
+    let title = "No treatments found";
+    let message = "This hospital hasn't listed any treatments yet.";
+    if (error === "notfound") {
+      title = "Hospital not found";
+      message = "We couldn't find this hospital. It may have been removed or the link is incorrect.";
+    } else if (error) {
+      title = "Couldn't load treatments";
+      message = "Please check your connection and try again.";
+    } else if (searchTreatment) {
+      message = `Nothing matches "${searchTreatment}" at this hospital.`;
+    }
+    return (
+      <div className="col-span-full text-center py-16 bg-white rounded-2xl shadow-sm">
+        <Stethoscope className="w-12 h-12 text-[#3252DF] mx-auto mb-4" />
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
+        <p className="text-gray-600">{message}</p>
+        {searchTreatment && !error ? (
+          <button onClick={() => setSearchTreatment("")} className="mt-4 text-[#3252DF] font-medium hover:underline">
+            Show all treatments
+          </button>
+        ) : (
+          <button onClick={() => navigate(error === "notfound" ? "/hospitals" : "/treatments")} className="mt-4 text-[#3252DF] font-medium hover:underline">
+            {error === "notfound" ? "Browse all hospitals" : "Browse all treatments"}
+          </button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="relative bg-gradient-to-b from-[#ECF1FF] to-white overflow-hidden min-h-screen">
-      {/* Animated background elements */}
       <PageBreadcrumb/>
-      <div className="absolute inset-0">
-        <motion.div 
-          animate={{ 
+      {/* Animated background elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div
+          animate={{
             scale: [1, 1.2, 1],
             rotate: [0, 90, 0]
           }}
@@ -112,7 +160,7 @@ const TreatmentCards = () => {
           className="absolute w-96 h-96 bg-gradient-to-r from-blue-200 to-purple-200 rounded-full filter blur-3xl opacity-20 -top-20 -left-20"
         />
         <motion.div
-          animate={{ 
+          animate={{
             scale: [1, 1.1, 1],
             rotate: [0, -90, 0]
           }}
@@ -128,135 +176,54 @@ const TreatmentCards = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-         
           <h2 className="font-poppins font-bold text-5xl max-lg:text-4xl max-md:text-3xl max-sm:text-[26px] text-[#283841]">
-            Availabale{" "} Treatments at {" "}
-            <span className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] bg-clip-text text-transparent">
-               {hospital?.hospital_name}
-            </span>
+            Available Treatments{hospital?.hospital_name ? " at " : ""}
+            {hospital?.hospital_name && (
+              <span className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] bg-clip-text text-transparent">
+                {hospital.hospital_name}
+              </span>
+            )}
           </h2>
           <p className="mt-4 text-gray-600 max-w-[80%] mx-auto max-sm:text-sm">
-            Discover world-class medical treatments with cutting-edge technology and expert healthcare professionals across India
+            Choose a treatment to view details or book your consultation
           </p>
         </motion.div>
 
+        <SearchCard
+          value={searchTreatment}
+          onChange={setSearchTreatment}
+          onClear={() => setSearchTreatment("")}
+          title="Treatments at this hospital"
+          subtitle={hospital?.address || "Find the right treatment for you"}
+          placeholder="Search treatments..."
+          resultCount={loading || error ? undefined : visibleTreatments.length}
+        />
 
-          <SearchBar  setSearchTreatment={setSearchTreatment} searchTreatment={ searchTreatment}/>
-
-
-        <motion.div 
+        <motion.div
           variants={containerVariants}
-          whileInView="visible"
+          initial="visible"
+          animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
          {
             loading ? (
-              <LoadingSkelton length={6}/>
-             ) : (
-              treatments?.map((treatment, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              onClick={() => { navigate(`/treatment-details/${treatment?.treatment_id}`)}}
-              onHoverStart={() => setHoveredIndex(index)}
-              onHoverEnd={() => setHoveredIndex(null)}
-              className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
-            >
-              {/* Image Container */}
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  // src={treatment?.image}
-                  src="https://plus.unsplash.com/premium_photo-1674841252566-093bace39993?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt={treatment?.treatment_name}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+              <LoadingSkelton length={3}/>
+            ) : error || visibleTreatments.length === 0 ? (
+              renderEmpty()
+            ) : (
+              visibleTreatments.map((treatment, index) => (
+                <TreatmentCard
+                  key={treatment?._id || index}
+                  treatment={treatment}
+                  index={index}
+                  hovered={hoveredIndex === index}
+                  onHoverChange={setHoveredIndex}
+                  onOpen={openTreatment}
+                  ctaLabel="Book Now"
+                  onCtaClick={bookTreatment}
+                  variants={itemVariants}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                  <Star className="w-4 h-4 text-yellow-500" />
-                  <span className="text-sm font-medium">{treatment?.rating}</span>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="font-poppins font-semibold text-xl text-[#152C5B] mb-2">
-                  {treatment?.treatment_name}
-                </h3>
-                
-                <div className="flex items-center gap-2 mb-4">
-                  <MapPin className="w-4 h-4 text-[#3252DF]" />
-                  <p className="text-gray-600 text-sm">{treatment?.location}</p>
-                </div>
-
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2">
-                    <IndianRupee className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">{treatment?.estimated_cost?.min}-{treatment?.estimated_cost?.max}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">Duration: {treatment?.duration}</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {treatment.features.map((feature, idx) => (
-                    <span
-                      key={idx}
-                      className="text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-600"
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    <span className="text-sm text-gray-600">Success Rate: {treatment?.success_rate}</span>
-                  </div>
-                  
-                  <button 
-                    className="px-4 py-2 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-lg text-sm font-medium flex items-center gap-2 hover:shadow-lg transition-shadow"
-                    
-                  >
-                    Book Now
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Hover overlay */}
-              <motion.div
-                initial={false}
-                animate={{
-                  opacity: hoveredIndex === index ? 1 : 0,
-                  y: hoveredIndex === index ? 0 : 20
-                }}
-                className="absolute inset-0 bg-gradient-to-t from-[#3252DF]/90 to-[#4466ff]/90 flex items-center justify-center opacity-0 transition-opacity duration-300 max-sm:hidden"
-              >
-                <div className="text-white text-center p-6">
-                  <Activity className="w-12 h-12 mx-auto mb-4" />
-                  <h4 className="font-semibold text-xl mb-2">Contact Specialists</h4>
-                  <div className="space-y-2 mb-4">
-                    <p className="text-sm flex items-center justify-center gap-2">
-                      <Mail className="w-4 h-4" />
-                      {treatment?.email}
-                    </p>
-                    <p className="text-sm flex items-center justify-center gap-2">
-                      <Phone className="w-4 h-4" />
-                      {treatment?.phone}
-                    </p>
-                  </div>
-                  <button className="bg-white text-[#3252DF] px-6 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors duration-300"
-                  onClick={handleClickCard}
-                  >
-                    Schedule Consultation
-                  </button>
-                </div>
-              </motion.div>
-            </motion.div>
-          ))
+              ))
             )
          }
         </motion.div>

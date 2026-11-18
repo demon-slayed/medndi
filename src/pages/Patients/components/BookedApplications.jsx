@@ -31,70 +31,23 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import ApplicationStatusStepper from "./ApplicationStatusStepper";
+import { formatDateTime } from "@/components/booking/formatDateTime";
 
-const demoData = {
-  treatment: {
-    name: "Advanced Cardiac Surgery",
-    location: "Fortis Memorial, Gurgaon",
-    image: "/assets/hospital2.png",
-    rating: 4.9,
-    prices: {
-      checkup: 240000,
-      consultation: 5000,
-    },
-    doctor: "Dr. Rajesh Kumar",
-    department: "Cardiology",
-  },
-  hotel: {
-    name: "The Leela Palace",
-    location: "Diplomatic Enclave, New Delhi",
-    image: "/assets/hospital2.png",
-    rating: 4.8,
-    price: 12999,
-    roomType: "Deluxe Room",
-    nights: 5,
-    checkIn: "2024-02-15",
-    checkOut: "2024-02-20",
-  },
-  flight: {
-    airline: "Air India",
-    departure: "Mumbai (BOM)",
-    arrival: "Delhi (DEL)",
-    departureTime: "10:00 AM",
-    arrivalTime: "12:30 PM",
-    date: "2024-02-14",
-    price: 5999,
-    class: "Economy",
-    flightNumber: "AI-213",
-  },
-  transport: {
-    type: "Premium Medical Transport",
-    price: 2999,
-    features: [
-      "24/7 Medical Support",
-      "Wheelchair Accessible",
-      "Air Conditioned Vehicle",
-      "Professional Medical Staff",
-    ],
-    duration: "5 Days",
-  },
-  insurance: {
-    name: "Premium Medical Coverage",
-    price: "3,999",
-    features: [
-      "Medical expenses up to ₹1,00,000",
-      "24/7 support assistance",
-      "Ambulance coverage",
-      "Room rent covered",
-      "Pre & post hospitalization",
-    ],
-    provider: "Arogya Insurance Co.",
-    validity: "1 Year",
-  },
+// Status keys come from the backend enum (including its historical typos)
+const STATUS_LABELS = {
+  initilal_assessment: "Initial Assessment",
+  document_verification: "Document Verification",
+  board_meeting: "Medical Board Review",
+  travel_accomodation: "Travel & Accommodation",
+  insurance: "Insurance",
+  approved: "Approved",
+  rejected: "Not Approved",
 };
 
-const BookedApplications = () => {
-  const [applications, setApplications] = useState([]);
+const statusLabel = (status) => STATUS_LABELS[status] || status || "Pending";
+
+const BookedApplications = ({ applications: initialApplications }) => {
+  const [applications, setApplications] = useState(initialApplications ?? []);
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -128,6 +81,11 @@ const BookedApplications = () => {
   }, [showSuccessModal]);
 
   useEffect(() => {
+    // The dashboard passes applications in; only fetch when used standalone
+    if (initialApplications) {
+      setApplications(initialApplications);
+      return;
+    }
     const fetchApplicationsByUser = async () => {
       try {
         const res = await axios.get(
@@ -140,8 +98,7 @@ const BookedApplications = () => {
         );
 
         const data = res?.data;
-        setApplications(data);
-        console.log("Applications for user is: ", data);
+        setApplications(Array.isArray(data) ? data : []);
 
         // use data[0] directly instead of application[0]
         // setSelectedTreatment(data[0]?.treatment_id);
@@ -159,7 +116,7 @@ const BookedApplications = () => {
     };
 
     fetchApplicationsByUser();
-  }, []);
+  }, [initialApplications, auth?._id]);
 
   const handleCardClick = (application) => {
     setSelectedApplication(application);
@@ -181,21 +138,10 @@ const BookedApplications = () => {
       rejected: "bg-red-100 text-red-800",
     };
 
-    return statusMap[status.toLowerCase()] || "bg-gray-100 text-gray-700";
+    return statusMap[status?.toLowerCase()] || "bg-gray-100 text-gray-700";
   };
 
-  // Format date function
-  const formatDate = (dateString) => {
-    if (!dateString) return "Not specified";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
+  const formatDate = (value) => formatDateTime(value);
 
   // const estimatedTotal =
   //   selectedTreatment?.estimated_cost.max +
@@ -256,7 +202,7 @@ const BookedApplications = () => {
                       `${application?.status}`
                     )}`}
                   >
-                    {application?.status}
+                    {statusLabel(application?.status)}
                   </span>
                 </div>
 

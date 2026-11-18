@@ -78,15 +78,10 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
   };
 
   const handleSelectDateAndTime = (selectedTime) => {
-       const formatedDateTime = selectedTime.toLocaleString("en-IN", {
-        dateStyle: "medium",
-        timeStyle: "short",
-        timeZone: "Asia/Kolkata",
-      })
-       setSelectedDateAndTime(formatedDateTime);
-       console.log(formatedDateTime);
-       
-       toast.success("date and time selected")
+       // Store ISO so it parses in every browser; format only for display
+       setSelectedDateAndTime(selectedTime.toISOString());
+
+       toast.success("Date and time confirmed")
   }
 
   const timeSlots = {

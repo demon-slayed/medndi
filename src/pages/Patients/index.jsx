@@ -14,6 +14,8 @@ import {
   Circle,
   Utensils,
   Smile,
+  Loader2,
+  CalendarPlus,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -117,12 +119,15 @@ const destinations = [
 ];
 
 export default function PatientDashboard() {
-  const [application, setApplication] = useState();
-  const [currentStatus, setCurrentStatus] = useState("");
+  const [application, setApplication] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const { auth } = useAppStore();
 
   useEffect(() => {
     const fetchApplicationsByUser = async () => {
+      setLoading(true);
+      setLoadError(false);
       try {
         const res = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/application/getByUserId/${
@@ -133,19 +138,17 @@ export default function PatientDashboard() {
           }
         );
 
-        const data = res?.data;
-        console.log("application fetched is: ", data);
-
-        setApplication(data);
-        setCurrentStatus(data[0]?.status);
+        setApplication(Array.isArray(res?.data) ? res.data : []);
       } catch (error) {
         console.error("Failed to fetch applications:", error);
-        return [];
+        setLoadError(true);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchApplicationsByUser();
-  }, []);
+  }, [auth?._id]);
 
   const navigate = useNavigate();
 
@@ -250,10 +253,24 @@ export default function PatientDashboard() {
 
             {/* tab 2 content */}
             <TabsContent value="application">
-              {application && application.length > 0 ? (
+              {loading ? (
+                <div className="flex justify-center py-20">
+                  <Loader2 className="w-8 h-8 animate-spin text-[#3252DF]" />
+                </div>
+              ) : loadError ? (
+                <div className="text-center py-16 bg-white rounded-lg shadow-sm">
+                  <h2 className="text-xl font-semibold text-gray-700">
+                    We couldn&apos;t load your bookings
+                  </h2>
+                  <p className="text-gray-500 mt-2">Please check your connection and try again.</p>
+                  <Button className="mt-6" onClick={() => window.location.reload()}>
+                    Try again
+                  </Button>
+                </div>
+              ) : application.length > 0 ? (
                 <>
                   {/* booked application confirmation page */}
-                  <BookedApplications />
+                  <BookedApplications applications={application} />
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
                     {/* Card 1 */}
                     <motion.div {...fadeIn} className="w-full">
@@ -364,11 +381,9 @@ export default function PatientDashboard() {
                   transition={{ duration: 0.4 }}
                   className="flex flex-col items-center justify-center py-20 text-center space-y-4"
                 >
-                  <img
-                    src="/empty-booking.svg"
-                    alt="No Bookings"
-                    className="w-32 h-32 opacity-70"
-                  />
+                  <div className="w-20 h-20 rounded-full bg-blue-50 flex items-center justify-center">
+                    <CalendarPlus className="w-10 h-10 text-[#3252DF]" />
+                  </div>
                   <h2 className="text-xl font-semibold text-gray-700">
                     Your bookings will show here
                   </h2>
@@ -376,6 +391,9 @@ export default function PatientDashboard() {
                     Once you complete your treatment application, your progress
                     and details will appear in this section.
                   </p>
+                  <Button onClick={() => navigate("/treatments")}>
+                    Browse treatments
+                  </Button>
                 </motion.div>
               )}
             </TabsContent>

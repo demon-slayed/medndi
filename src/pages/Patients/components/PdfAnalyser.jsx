@@ -175,16 +175,25 @@ const PdfAnalyzer = () => {
         }
       );
 
-      if (response.data.success) {
+      if (response.data.success && response.data.analysis?.error) {
+        setError("We couldn't interpret this document. Please try a different PDF.");
+      } else if (response.data.success) {
         setAnalysis(response.data);
         setOpenSnackbar(true);
       } else {
         setError(response.data.message || "Error analyzing PDF");
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Error communicating with server"
-      );
+      const status = err.response?.status;
+      if (!err.response) {
+        setError("Can't reach the server. Please check your connection and try again.");
+      } else if (status === 401) {
+        setError("Your session has expired. Please sign in again.");
+      } else if (status >= 500) {
+        setError("The report analysis service is unavailable right now. Please try again later.");
+      } else {
+        setError(err.response?.data?.message || "Error analyzing PDF");
+      }
       console.error("API error:", err);
     } finally {
       setLoading(false);
@@ -209,7 +218,7 @@ const PdfAnalyzer = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white mt-2">
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white mt-24">
         <div className="container mx-auto px-4 py-12">
           <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
             <main className=" mx-auto px-4 py-8 sm:px-6 lg:px-8">

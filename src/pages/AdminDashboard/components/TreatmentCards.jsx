@@ -14,8 +14,9 @@ import {
 
 import axios from "axios";
 import LoadingSkelton from "@/components/LoadingSkelton";
+import { FALLBACK_IMAGES, withFallback } from "../utils";
 
-const TreatmentCards = ({onTreatmentSelect}) => {
+const TreatmentCards = ({ onTreatmentSelect, refreshKey }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [treatments, setTreatments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +39,7 @@ const TreatmentCards = ({onTreatmentSelect}) => {
     };
 
     fetchTreatments();
-  }, []);
+  }, [refreshKey]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -69,7 +70,7 @@ const TreatmentCards = ({onTreatmentSelect}) => {
           treatments &&
           treatments?.map((treatment, index) => (
             <motion.div
-              key={index}
+              key={treatment?._id || index}
               variants={itemVariants}
               onHoverStart={() => setHoveredIndex(index)}
               onHoverEnd={() => setHoveredIndex(null)}
@@ -78,8 +79,8 @@ const TreatmentCards = ({onTreatmentSelect}) => {
               {/* Image Container */}
               <div className="relative h-48 overflow-hidden">
                 <img
-                  // src={treatment?.image}
-                  src="https://plus.unsplash.com/premium_photo-1664456804517-f6347600b764?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src={treatment?.image || FALLBACK_IMAGES.treatment}
+                  onError={withFallback(FALLBACK_IMAGES.treatment)}
                   alt={treatment?.treatment_name}
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                 />

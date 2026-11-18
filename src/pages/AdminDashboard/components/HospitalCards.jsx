@@ -13,6 +13,7 @@ import {
   Pencil,
 } from "lucide-react";
 import axios from "axios";
+import { FALLBACK_IMAGES, withFallback } from "../utils";
 
 // const hospitals = [
 //   {
@@ -37,7 +38,7 @@ import axios from "axios";
 //   // Add more hospital objects as needed
 // ];
 
-const HospitalCards = ({onHospitalSelect}) => {
+const HospitalCards = ({ onHospitalSelect, refreshKey }) => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [hospitals, setHospitals] = useState([]);
 
@@ -55,13 +56,13 @@ const HospitalCards = ({onHospitalSelect}) => {
       }
     };
     fetchHospitals();
-  }, []);
+  }, [refreshKey]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16">
       {hospitals?.map((hospital, index) => (
         <motion.div
-          key={index}
+          key={hospital?._id || index}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
@@ -73,8 +74,8 @@ const HospitalCards = ({onHospitalSelect}) => {
           {/* Image Section */}
           <div className="relative h-48">
             <motion.img
-              //   src={hospital.hospital_image[0]}
-              src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=1773&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={hospital?.hospital_image?.[0] || FALLBACK_IMAGES.hospital}
+              onError={withFallback(FALLBACK_IMAGES.hospital)}
               alt={hospital.hospital_name}
               className="w-full h-full object-cover"
               whileHover={{ scale: 1.1 }}
@@ -82,7 +83,7 @@ const HospitalCards = ({onHospitalSelect}) => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-              {hospital.badges.map((badge, idx) => (
+              {hospital?.badges?.map((badge, idx) => (
                 <motion.span
                   key={idx}
                   initial={{ opacity: 0, x: -20 }}
@@ -129,7 +130,7 @@ const HospitalCards = ({onHospitalSelect}) => {
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-2 mb-4">
-              {Object.entries(hospital.stats).map(([key, value], idx) => (
+              {Object.entries(hospital?.stats || {}).map(([key, value], idx) => (
                 <motion.div
                   key={idx}
                   whileHover={{ y: -2 }}
@@ -156,7 +157,7 @@ const HospitalCards = ({onHospitalSelect}) => {
 
             {/* Specialties */}
             <div className="grid grid-cols-2 gap-2 mb-4">
-              {hospital.specialties.slice(0, 14).map((specialty, idx) => (
+              {hospital?.specialties?.slice(0, 14).map((specialty, idx) => (
                 <motion.div
                   key={idx}
                   whileHover={{ x: 2 }}
@@ -175,7 +176,7 @@ const HospitalCards = ({onHospitalSelect}) => {
               <div>
                 <p className="text-xs text-gray-500">Treatment starts from</p>
                 <p className="text-lg font-bold text-[#3252DF]">
-                  ₹{hospital.treatmentCost.toLocaleString()}
+                  ₹{hospital?.treatmentCost?.toLocaleString()}
                   <span className="text-xs font-normal text-gray-500">
                     /procedure
                   </span>

@@ -6,6 +6,9 @@ import { TreatmentProvider } from './context/TreatmentInfo'
 import { HospitalInfoProvider } from './context/HospitalInfo'
 import { AuthInfoProvider } from './context/AuthInfo'
 import { Toaster } from 'react-hot-toast'
+import { installSessionInterceptor } from './lib/session'
+
+installSessionInterceptor()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

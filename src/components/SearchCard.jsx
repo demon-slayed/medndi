@@ -1,46 +1,26 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Search,
-  MapPin,
-  Filter,
-  ChevronDown,
-  Stethoscope,
-  Heart,
-  ArrowRight,
-  Clock,
-  Shield,
-  Star,
-  Home,
-  ChevronRight,
-} from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { motion } from "framer-motion";
+import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const SearchCard = () => {
-  const [showFilters, setShowFilters] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState({
-    location: "",
-    specialty: "",
-    priceRange: "all",
-  });
-
-  const quickFilters = [
-    { label: "JCI Accredited", icon: Shield },
-    { label: "Insurance Accepted", icon: Star },
-    { label: "Online Consult", icon: Clock },
-  ];
-
+/**
+ * Controlled treatment search bar.
+ * - value / onChange: current input text
+ * - onSubmit(text): called on Enter / Search click (optional)
+ * - onClear(): clears the active search
+ */
+const SearchCard = ({
+  value = "",
+  onChange,
+  onSubmit,
+  onClear,
+  title = "Available Medical Treatments",
+  subtitle = "Find the best treatment options worldwide",
+  placeholder = "Search by treatment, specialty or city...",
+  resultCount,
+}) => {
   return (
-    <div className="w-full">
-      {/* Search Section */}
-      <div className="bg-gradient-to-r from-[#3252DF]/5 to-blue-50/30">
+    <div className="w-full mb-10">
+      <div className="bg-gradient-to-r from-[#3252DF]/5 to-blue-50/30 rounded-2xl">
         <div className="max-w-7xl mx-auto px-6 max-sm:px-2 max-sm:mx-auto py-6">
           {/* Title Section */}
           <motion.div
@@ -50,23 +30,28 @@ const SearchCard = () => {
           >
             <div className="w-full sm:w-auto">
               <h1 className="text-2xl max-sm:text-2xl font-bold text-gray-900">
-                Available Medical Treatments
+                {title}
               </h1>
-              <p className="text-gray-500 text-sm mt-1">
-                Find the best treatment options worldwide
-              </p>
+              <p className="text-gray-500 text-sm mt-1">{subtitle}</p>
             </div>
-            <Button className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white gap-2 mt-4 sm:mt-0">
-              <Heart className="w-4 h-4" />
-              Saved Treatments
-            </Button>
+            {typeof resultCount === "number" && (
+              <div className="bg-blue-50 px-4 py-2 rounded-lg mt-4 sm:mt-0">
+                <span className="text-[#3252DF] font-semibold">
+                  {resultCount} {resultCount === 1 ? "result" : "results"}
+                </span>
+              </div>
+            )}
           </motion.div>
 
           {/* Search Bar */}
-          <motion.div 
+          <motion.form
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-xl shadow-lg p-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              onSubmit?.(value);
+            }}
           >
             <div className="flex flex-wrap items-center gap-4">
               {/* Search Input */}
@@ -74,64 +59,31 @@ const SearchCard = () => {
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Search treatments..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3252DF]/20"
+                    value={value}
+                    onChange={(e) => onChange?.(e.target.value)}
+                    placeholder={placeholder}
+                    className="w-full pl-10 pr-9 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3252DF]/20"
                   />
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  {value && (
+                    <button
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => onClear?.()}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </div>
 
-              {/* Location Dropdown */}
-              <div className="w-48">
-                <Select>
-                  <SelectTrigger className="border-gray-200">
-                    <MapPin className="w-4 h-4 text-gray-400 mr-2" />
-                    <SelectValue placeholder="Location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {["Mumbai", "Delhi", "Bangalore", "Chennai"].map((city) => (
-                      <SelectItem key={city} value={city}>{city}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Filter Button */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50"
-              >
-                <Filter className="w-4 h-4 text-[#3252DF]" />
-                <span>Filters</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
-              </motion.button>
-
               {/* Search Button */}
-              <Button className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white px-6">
+              <Button type="submit" className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white px-6">
                 Search
               </Button>
             </div>
-
-            {/* Quick Filters */}
-            <div className="flex items-center gap-4 mt-4 pt-4 border-t">
-              <span className="text-sm max-sm:text-xs text-gray-500">Quick Filters:</span>
-              <div className="flex flex-wrap gap-3">
-                {quickFilters.map((filter, idx) => (
-                  <motion.button
-                    key={idx}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full text-sm max-sm:text-xs text-[#3252DF]"
-                  >
-                    <filter.icon className="w-4 h-4" />
-                    {filter.label}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-          </motion.div>
+          </motion.form>
         </div>
       </div>
     </div>

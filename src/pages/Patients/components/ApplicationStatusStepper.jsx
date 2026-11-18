@@ -37,28 +37,17 @@ export default function ApplicationStatusStepper({currentStatus}) {
       }
     ];
 
-    // Add status and date to each step
+    const currentStepIndex = allSteps.findIndex(s => s.key === currentStatus);
+    const isApproved = currentStatus === 'approved';
+
     const processedSteps = allSteps.map((step, index) => {
-      // Find current step index
-      const currentStepIndex = allSteps.findIndex(s => s.key === currentStatus);
-      
       let status = 'pending';
-      if (index < currentStepIndex) {
+      if (isApproved || index < currentStepIndex) {
         status = 'completed';
       } else if (index === currentStepIndex) {
         status = 'in-progress';
       }
-
-      // Generate a realistic date (for demo purposes)
-      const today = new Date();
-      const date = new Date(today);
-      date.setDate(today.getDate() - (currentStepIndex - index) + index);
-      
-      return {
-        ...step,
-        status,
-        date: index <= currentStepIndex ? date.toISOString().split('T')[0] : ''
-      };
+      return { ...step, status };
     });
 
     setSteps(processedSteps);
@@ -89,17 +78,6 @@ export default function ApplicationStatusStepper({currentStatus}) {
     }
   };
 
-  // Function to format date nicely
-  const formatDate = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
-    });
-  };
-
   return (
     <div className="w-full max-w-4xl mx-auto bg-white rounded-lg shadow p-4">
       <h2 className="text-xl font-bold mb-4 px-4 pt-2">Application Status</h2>
@@ -128,9 +106,6 @@ export default function ApplicationStatusStepper({currentStatus}) {
                   <h3 className="text-lg font-semibold">
                     {step.title}
                   </h3>
-                  <span className="text-sm text-gray-500 mt-1 md:mt-0">
-                    {formatDate(step.date)}
-                  </span>
                 </div>
                 <p className="text-gray-600 mt-1 text-sm">
                   {step.description}
@@ -144,7 +119,7 @@ export default function ApplicationStatusStepper({currentStatus}) {
                       : "bg-gray-100 text-gray-800"
                   }`}
                 >
-                  {step.status.charAt(0).toUpperCase() + step.status.slice(1)}
+                  {step.status === 'in-progress' ? 'In progress' : step.status.charAt(0).toUpperCase() + step.status.slice(1)}
                 </span>
               </div>
             </div>
@@ -169,8 +144,8 @@ export default function ApplicationStatusStepper({currentStatus}) {
         <div className="flex items-center p-4 mt-2 bg-red-50 rounded-lg border border-red-200">
           <AlertCircle className="text-red-600 mr-3" />
           <div>
-            <h4 className="font-semibold text-red-700">Application Rejected</h4>
-            <p className="text-sm text-red-600">Your application has been rejected. Please contact support for more information.</p>
+            <h4 className="font-semibold text-red-700">Application not approved</h4>
+            <p className="text-sm text-red-600">Our team couldn&apos;t approve this request. Please contact support@arogini.com for next steps.</p>
           </div>
         </div>
       )}

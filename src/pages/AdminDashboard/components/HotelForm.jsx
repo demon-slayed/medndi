@@ -6,40 +6,49 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { getErrorMessage, scrollToTop, toOptionalNumber } from "../utils";
 
-const HotelForm = ({ selectedHotel, setSelectedHotel }) => {
+const emptyHotel = {
+  hotel_id: "",
+  image: "",
+  hotel_name: "",
+  description: "",
+  location: "",
+  distance: "",
+  price_per_night: "",
+  rating: "",
+  amenities: [],
+  hospital_nearby: [],
+};
+
+const HotelForm = ({ selectedHotel, setSelectedHotel, onSaved }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [amenityInput, setAmenityInput] = useState("");
   const [hospitalInput, setHospitalInput] = useState("");
 
-  const [hotelData, setHotelData] = useState({
-    hotel_id: "",
-    image: "",
-    hotel_name: "",
-    description: "",
-    location: "",
-    distance: "",
-    price_per_night: "",
-    rating: "",
-    amenities: [],
-    hospital_nearby: [],
-  });
+  const [hotelData, setHotelData] = useState(emptyHotel);
+  const isEditing = Boolean(selectedHotel?._id);
 
   useEffect(() => {
-    if (selectedHotel) {
-      console.log("selected hotel for update is: ", selectedHotel);
-
-      setHotelData((prev) => ({
-        ...prev,
-        ...selectedHotel,
-      }));
-      // toast.success("Hotel selected for Edit")
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }
+    if (!selectedHotel?._id) return;
+    setHotelData({
+      ...emptyHotel,
+      ...selectedHotel,
+      price_per_night: selectedHotel.price_per_night ?? "",
+      rating: selectedHotel.rating ?? "",
+      amenities: selectedHotel.amenities || [],
+      hospital_nearby: selectedHotel.hospital_nearby || [],
+    });
+    scrollToTop();
   }, [selectedHotel]);
+
+  // back to "Add" mode with a blank form
+  const resetForm = () => {
+    setHotelData(emptyHotel);
+    setAmenityInput("");
+    setHospitalInput("");
+    setSelectedHotel({});
+  };
 
   const addAmenity = () => {
     if (amenityInput.trim() !== "") {
@@ -91,17 +100,23 @@ const HotelForm = ({ selectedHotel, setSelectedHotel }) => {
     setIsSubmitting(true);
 
     try {
+      // only send editable fields (not _id/__v/timestamps/populated refs)
       const processedData = {
-        ...hotelData,
-        price_per_night: Number(hotelData.price_per_night),
-        rating: Number(hotelData.rating),
+        hotel_id: hotelData.hotel_id,
+        hotel_name: hotelData.hotel_name,
+        image: hotelData.image,
+        description: hotelData.description,
+        location: hotelData.location,
+        distance: hotelData.distance,
+        price_per_night: toOptionalNumber(hotelData.price_per_night),
+        rating: toOptionalNumber(hotelData.rating),
+        amenities: hotelData.amenities,
+        hospital_nearby: hotelData.hospital_nearby,
       };
 
-      let response;
-
-      if (selectedHotel && Object.keys(selectedHotel).length > 0) {
+      if (isEditing) {
         //  Update existing hotel
-        response = await axios.put(
+        await axios.put(
           `${import.meta.env.VITE_BASE_URL}/hotels/${selectedHotel._id}`,
           processedData,
           { withCredentials: true }
@@ -109,7 +124,7 @@ const HotelForm = ({ selectedHotel, setSelectedHotel }) => {
         toast.success("Hotel updated successfully!");
       } else {
         //  Create new hotel
-        response = await axios.post(
+        await axios.post(
           `${import.meta.env.VITE_BASE_URL}/hotels/create`,
           processedData,
           { withCredentials: true }
@@ -117,38 +132,23 @@ const HotelForm = ({ selectedHotel, setSelectedHotel }) => {
         toast.success("Hotel added successfully!");
       }
 
-      console.log("Response:", response.data);
-
-      // Reset form
-      setHotelData({
-        hotel_id: "",
-        image: "",
-        hotel_name: "",
-        description: "",
-        location: "",
-        distance: "",
-        price_per_night: "",
-        rating: "",
-        amenities: [],
-        hospital_nearby: [],
-      });
+      resetForm();
+      onSaved?.();
     } catch (error) {
       console.error("Error submitting hotel:", error);
-      toast.error("Something went wrong. Please try again.");
+      toast.error(getErrorMessage(error, "Failed to save hotel"));
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleDeleteHotel = async () => {
-    if (!selectedHotel || !selectedHotel._id) return;
+    if (!isEditing) return;
 
     const confirmed = window.confirm(
       `Are you sure you want to delete hotel "${selectedHotel.hotel_name}"? This action cannot be undone.`
     );
-  
     if (!confirmed) return;
-    toast.co
 
     setIsSubmitting(true);
     try {
@@ -157,24 +157,11 @@ const HotelForm = ({ selectedHotel, setSelectedHotel }) => {
         { withCredentials: true }
       );
       toast.success("Hotel deleted successfully");
-
-      // Optional: clear state or refresh list
-      setHotelData({
-        hotel_id: "",
-        image: "",
-        hotel_name: "",
-        description: "",
-        location: "",
-        distance: "",
-        price_per_night: "",
-        rating: "",
-        amenities: [],
-        hospital_nearby: [],
-      });
-      setSelectedHotel([]);
+      resetForm();
+      onSaved?.();
     } catch (err) {
-      console.error("Error deleting treatment:", err);
-      toast.error(err?.response?.data?.message || "Failed to delete treatment");
+      console.error("Error deleting hotel:", err);
+      toast.error(getErrorMessage(err, "Failed to delete hotel"));
     } finally {
       setIsSubmitting(false);
     }
@@ -420,22 +407,21 @@ const HotelForm = ({ selectedHotel, setSelectedHotel }) => {
       >
         {isSubmitting ? (
           <span>
-            {Object.keys(selectedHotel).length > 0 ? "Updating" : "Adding"}{" "}
-            Hotel...
+            {isEditing ? "Updating" : "Adding"} Hotel...
           </span>
         ) : (
           <>
-            {Object.keys(selectedHotel).length > 0 ? (
+            {isEditing ? (
               <Pencil className="w-4 h-4 mr-2" />
             ) : (
               <Plus className="w-4 h-4 mr-2" />
             )}
-            {Object.keys(selectedHotel).length > 0 ? "Update" : "Add"} Hotel
+            {isEditing ? "Update" : "Add"} Hotel
           </>
         )}
       </Button>
 
-      { Object.keys(selectedHotel).length > 0 && (
+      {isEditing && (
         <Button
           type="button"
           onClick={handleDeleteHotel}
@@ -450,6 +436,18 @@ const HotelForm = ({ selectedHotel, setSelectedHotel }) => {
               Delete Hotel
             </>
           )}
+        </Button>
+      )}
+
+      {isEditing && (
+        <Button
+          type="button"
+          onClick={resetForm}
+          className="w-full mt-2 py-3 bg-gray-200 text-gray-800 rounded-lg shadow-md hover:bg-gray-300"
+          disabled={isSubmitting}
+        >
+          <X className="w-4 h-4 mr-2" />
+          Cancel Edit
         </Button>
       )}
     </form>

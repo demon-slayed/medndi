@@ -81,7 +81,7 @@ const AboutUs = () => {
 
   return (
     <Layout>
-      <div className=" bg-gray-50 mt-20">
+      <div className=" bg-gray-50 mt-28">
         {/* Hero Section with Gradient Background */}
         <motion.div
           initial={{ opacity: 0 }}

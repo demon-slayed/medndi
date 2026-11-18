@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
@@ -10,9 +10,12 @@ import TreatmentCards from "./TreatmentCards";
 import HospitalCards from "./HospitalCards";
 
 const Create = () => {
-  const [selectedHotel, setSelectedHotel] = useState([]);
-  const [selectedTreatment, setSelectedTreatment] = useState([]);
-  const [selectedHospital, setSelectedHospital] = useState([]);
+  const [selectedHotel, setSelectedHotel] = useState({});
+  const [selectedTreatment, setSelectedTreatment] = useState({});
+  const [selectedHospital, setSelectedHospital] = useState({});
+  // bumped after any create/update/delete so the card lists refetch
+  const [refreshKey, setRefreshKey] = useState(0);
+  const handleSaved = () => setRefreshKey((k) => k + 1);
 
   return (
     <div className="container mx-auto p-6 max-sm:p-0">
@@ -45,11 +48,15 @@ const Create = () => {
                 <TreatmentCreate
                   selectedTreatment={selectedTreatment}
                   setSelectedTreatment={setSelectedTreatment}
+                  onSaved={handleSaved}
                 />
               </CardContent>
             </Card>
             {/* treatment add or update */}
-            <TreatmentCards onTreatmentSelect={setSelectedTreatment} />
+            <TreatmentCards
+              onTreatmentSelect={setSelectedTreatment}
+              refreshKey={refreshKey}
+            />
           </TabsContent>
 
           {/* Hospital Tab */}
@@ -57,16 +64,24 @@ const Create = () => {
             <Card className="w-full max-w-3xl mx-auto rounded-2xl border border-gray-200 bg-white p-6 shadow-lg transition hover:shadow-xl">
               <CardHeader className="border-b pb-4">
                 <CardTitle className="text-2xl font-bold text-blue-900">
-                  Add New Hospital
+                  {selectedHospital?._id ? "Update Hospital" : "Add New Hospital"}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                 {/* hospital form */}
-                <HospitalForm selectedHospital={selectedHospital}/>
+                {/* hospital form */}
+                <HospitalForm
+                  selectedHospital={selectedHospital}
+                  setSelectedHospital={setSelectedHospital}
+                  onSaved={handleSaved}
+                  refreshKey={refreshKey}
+                />
               </CardContent>
             </Card>
             {/* hospital cards */}
-            <HospitalCards onHospitalSelect = {setSelectedHospital}/>
+            <HospitalCards
+              onHospitalSelect={setSelectedHospital}
+              refreshKey={refreshKey}
+            />
           </TabsContent>
 
           {/* Hotel Tab */}
@@ -82,11 +97,12 @@ const Create = () => {
                 <HotelForm
                   selectedHotel={selectedHotel}
                   setSelectedHotel={setSelectedHotel}
+                  onSaved={handleSaved}
                 />
               </CardContent>
             </Card>
             {/* Hotel cards for update */}
-            <HotelsCards onHotelSelect={setSelectedHotel} />
+            <HotelsCards onHotelSelect={setSelectedHotel} refreshKey={refreshKey} />
           </TabsContent>
         </Tabs>
       </motion.div>

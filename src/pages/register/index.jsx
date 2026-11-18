@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   ChevronDown,
-  X,
   Eye,
   EyeOff,
   CheckCircle,
@@ -14,9 +13,6 @@ import {
   Shield,
   Heart,
 } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
-import { FaApple } from "react-icons/fa";
-import { Facebook } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AroginiLogo from "@/assets/icons/Aroginilogo";
 import {
@@ -37,39 +33,59 @@ const benefits = [
   { icon: Heart, text: "Personalized Health Plans" },
 ];
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [focusedField, setFocusedField] = useState(null);
-  const [selectedGender, setSelectedGender] = useState("Gender");
+  const [selectedGender, setSelectedGender] = useState("");
   const [selectedHeight, setSelectedHeight] = useState(null);
   const [selectedWeight, setSelectedWeight] = useState(null);
-  const [age, setAge] = useState(null);
+  const [age, setAge] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const genderOptions = ["Male", "Female", "Others"];
   const heightOptions = [150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200];
   const weightOptions = [40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
 
-  const handleRegisterClick = async () => {
+  // Returns the first validation problem, or null when the form is complete
+  const validate = () => {
+    if (!fullName.trim()) return "Please enter your full name.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) return "Please enter a valid email.";
+    if (password.length < 6) return "Password must be at least 6 characters.";
+    if (!selectedHeight) return "Please select your height.";
+    if (!selectedWeight) return "Please select your weight.";
+    const ageNum = Number(age);
+    if (!Number.isInteger(ageNum) || ageNum < 1 || ageNum > 120) return "Please enter a valid age.";
+    if (!selectedGender) return "Please select your gender.";
+    return null;
+  };
+
+  const handleRegisterClick = async (e) => {
+    e?.preventDefault();
+    const problem = validate();
+    if (problem) {
+      toast.error(problem);
+      return;
+    }
     try {
+      setSubmitting(true);
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/users/register`,
         {
-          email: email,
+          email: email.trim(),
           password: password,
-          gender: selectedGender !== "Gender" ? selectedGender : null,
+          gender: selectedGender,
           height: selectedHeight,
           weight: selectedWeight,
-          age: age,
-          fullName: fullName,
+          age: Number(age),
+          fullName: fullName.trim(),
         }
       );
 
       if (response.status === 201) {
-        toast.success("Registration Successful!, please login");
+        toast.success("Registration successful! Please log in.");
         navigate("/login");
       }
     } catch (error) {
@@ -81,6 +97,8 @@ const Login = () => {
         error.response?.data?.message ||
           "Something went wrong. Please try again."
       );
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -173,13 +191,9 @@ const Login = () => {
         <div className="max-w-md mx-auto w-full">
           {/* Language & Register Buttons */}
           <div className="flex justify-between items-center mb-12">
+            <span className="text-sm text-gray-500">Already have an account?</span>
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg text-gray-600"
-            >
-              English <ChevronDown className="w-4 h-4" />
-            </motion.button>
-            <motion.button
+              type="button"
               whileHover={{ scale: 1.05 }}
               onClick={() => navigate("/login")}
               className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white px-6 py-2 rounded-xl font-medium"
@@ -188,12 +202,13 @@ const Login = () => {
             </motion.button>
           </div>
 
-          {/* Login Form */}
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
+          {/* Register Form */}
+          <form className="space-y-6" onSubmit={handleRegisterClick} noValidate>
+            <h2 className="text-3xl font-bold text-gray-900">Create your account</h2>
             <Input
               type="email"
               placeholder="Enter Email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-gray-50 border-gray-100 rounded-xl py-6"
@@ -201,17 +216,29 @@ const Login = () => {
             <Input
               type="text"
               placeholder="Enter Full Name"
+              autoComplete="name"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               className="bg-gray-50 border-gray-100 rounded-xl py-6"
             />
-            <Input
-              type={passwordVisible ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="bg-gray-50 border-gray-100 rounded-xl py-6"
-            />
+            <div className="relative">
+              <Input
+                type={passwordVisible ? "text" : "password"}
+                placeholder="Password (min 6 characters)"
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="bg-gray-50 border-gray-100 rounded-xl py-6 pr-12"
+              />
+              <button
+                type="button"
+                aria-label={passwordVisible ? "Hide password" : "Show password"}
+                onClick={() => setPasswordVisible((v) => !v)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {passwordVisible ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
 
             {/* height and weight */}
             <div className="flex flex-row w-full gap-2">
@@ -271,6 +298,8 @@ const Login = () => {
               <div className="w-[30%]">
                 <Input
                   type="number"
+                  min={1}
+                  max={120}
                   placeholder="Age"
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
@@ -304,30 +333,18 @@ const Login = () => {
               </div>
             </div>
             <motion.button
+              type="submit"
+              disabled={submitting}
               whileHover={{ scale: 1.02 }}
-              className="w-full py-4 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-xl font-medium"
-              onClick={handleRegisterClick}
+              className="w-full py-4 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-xl font-medium disabled:opacity-70"
             >
-              Register
+              {submitting ? "Creating account..." : "Register"}
             </motion.button>
-
-            {/* Social Login */}
-            <div className="flex justify-center gap-4">
-              {[FcGoogle, FaApple, Facebook].map((Icon, idx) => (
-                <motion.button
-                  key={idx}
-                  whileHover={{ scale: 1.1 }}
-                  className="p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all"
-                >
-                  <Icon className="w-6 h-6" />
-                </motion.button>
-              ))}
-            </div>
-          </div>
+          </form>
         </div>
       </motion.div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

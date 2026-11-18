@@ -3,8 +3,9 @@ import { MapPin, Star, Heart, Check, ArrowRight, Pencil } from "lucide-react";
 import { motion } from "framer-motion";
 import LoadingSkelton from "@/components/LoadingSkelton";
 import axios from "axios";
+import { FALLBACK_IMAGES, withFallback } from "../utils";
 
-const HotelsCards = ({ onHotelSelect }) => {
+const HotelsCards = ({ onHotelSelect, refreshKey }) => {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -29,7 +30,7 @@ const HotelsCards = ({ onHotelSelect }) => {
     };
 
     fetchHotels();
-  }, []);
+  }, [refreshKey]);
 
   return (
     <motion.div
@@ -43,7 +44,7 @@ const HotelsCards = ({ onHotelSelect }) => {
       ) : (
         hotels?.map((hotel, index) => (
           <motion.div
-            key={index}
+            key={hotel?._id || index}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -54,7 +55,8 @@ const HotelsCards = ({ onHotelSelect }) => {
             {/* Image Container */}
             <div className="relative h-48 overflow-hidden">
               <img
-                src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src={hotel?.image || FALLBACK_IMAGES.hotel}
+                onError={withFallback(FALLBACK_IMAGES.hotel)}
                 alt={hotel?.hotel_name}
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />

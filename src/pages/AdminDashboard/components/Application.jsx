@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { getErrorMessage } from '../utils';
 
 const Application = () => {
   const [applications, setApplications] = useState([]);
@@ -19,6 +20,19 @@ const Application = () => {
     'approved',
     'rejected'
   ];
+
+  // Display labels (enum values keep their legacy spelling in the DB)
+  const statusLabels = {
+    initilal_assessment: 'Initial assessment',
+    document_verification: 'Document verification',
+    board_meeting: 'Board meeting',
+    travel_accomodation: 'Travel accommodation',
+    insurance: 'Insurance',
+    approved: 'Approved',
+    rejected: 'Rejected'
+  };
+  const getStatusLabel = (status) =>
+    statusLabels[status] || status?.replace(/_/g, ' ') || 'Unknown';
 
   // Status badge colors
   const statusColors = {
@@ -40,10 +54,10 @@ const Application = () => {
           `${import.meta.env.VITE_BASE_URL}/application/getAll`,
           { withCredentials: true }
         );
-        setApplications(res.data);
+        setApplications(Array.isArray(res.data) ? res.data : []);
       } catch (error) {
         console.error('Failed to fetch applications:', error);
-        toast.error('Failed to load applications');
+        toast.error(getErrorMessage(error, 'Failed to load applications'));
       } finally {
         setLoading(false);
       }
@@ -71,26 +85,27 @@ const Application = () => {
     const newStatus = e.target.value;
     
     try {
-      await axios.put(
+      const res = await axios.put(
         `${import.meta.env.VITE_BASE_URL}/application/update/${selectedApplication._id}`,
         { status: newStatus },
         { withCredentials: true }
       );
-      
-      // Update local state
-      setSelectedApplication({ ...selectedApplication, status: newStatus });
-      
-      // Update in applications list
-      setApplications(applications.map(app => 
-        app._id === selectedApplication._id 
-          ? { ...app, status: newStatus } 
-          : app
-      ));
-      
-      toast.success(`Status updated to ${newStatus}`);
+
+      // keep populated refs; take status/updated_at from the server response
+      const updated = {
+        ...selectedApplication,
+        status: res.data?.status || newStatus,
+        updated_at: res.data?.updated_at || selectedApplication.updated_at,
+      };
+      setSelectedApplication(updated);
+      setApplications((apps) =>
+        apps.map((app) => (app._id === updated._id ? { ...app, ...updated } : app))
+      );
+
+      toast.success(`Status updated to ${getStatusLabel(updated.status)}`);
     } catch (error) {
       console.error('Failed to update status:', error);
-      toast.error('Failed to update application status');
+      toast.error(getErrorMessage(error, 'Failed to update application status'));
     }
   };
 
@@ -124,7 +139,7 @@ const Application = () => {
                 <option value="all">All Applications</option>
                 {statusOptions.map((status) => (
                   <option key={status} value={status}>
-                    {status.charAt(0).toUpperCase() + status.slice(1).replace(/_/g, ' ')}
+                    {getStatusLabel(status)}
                   </option>
                 ))}
               </select>
@@ -149,7 +164,7 @@ const Application = () => {
                         ID: {application.application_id}
                       </h2>
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[application.status]}`}>
-                        {application.status.replace(/_/g, ' ')}
+                        {getStatusLabel(application.status)}
                       </span>
                     </div>
                     
@@ -211,7 +226,7 @@ const Application = () => {
                 >
                   {statusOptions.map((status) => (
                     <option key={status} value={status}>
-                      {status.charAt(0).toUpperCase() + status.slice(1).replace(/_/g, ' ')}
+                      {getStatusLabel(status)}
                     </option>
                   ))}
                 </select>
@@ -228,7 +243,7 @@ const Application = () => {
               </p>
               <div className="mt-2 inline-block">
                 <span className={`px-4 py-1 rounded-full text-sm font-medium ${statusColors[selectedApplication.status]}`}>
-                  {selectedApplication.status.replace(/_/g, ' ')}
+                  {getStatusLabel(selectedApplication.status)}
                 </span>
               </div>
             </div>
@@ -574,8 +589,16 @@ const Application = () => {
               </h2>
               <div className="pl-3 border-l-2 border-blue-400">
                 <p className="text-base text-gray-600">
-                  <span className="font-medium">User ID: </span> 
-                  {selectedApplication.user_id.user_id || 'Not available'}
+                  <span className="font-medium">Name: </span>
+                  {selectedApplication.user_id?.fullName || 'Not available'}
+                </p>
+                <p className="text-base text-gray-600 mt-1">
+                  <span className="font-medium">Email: </span>
+                  {selectedApplication.user_id?.email || 'Not available'}
+                </p>
+                <p className="text-base text-gray-600 mt-1">
+                  <span className="font-medium">User ID: </span>
+                  {selectedApplication.user_id?.user_id || 'Not available (account may have been deleted)'}
                 </p>
                 <p className="text-base text-gray-600 mt-1">
                   <span className="font-medium">Created at: </span> 

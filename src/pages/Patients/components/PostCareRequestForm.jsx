@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import useAppStore from "@/store/useAppStore";
+import { formatDateTime } from "@/components/booking/formatDateTime";
 
 const PostCareRequestForm = () => {
   const [applications, setApplications] = useState([]);
@@ -44,44 +46,40 @@ const PostCareRequestForm = () => {
     prescription_url: ""
   });
 
+  const [reloadKey, setReloadKey] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        setLoading(true);
-
-        // Fetch user's applications
-        const applicationsRes = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/application/getByUserId/${
-            auth?._id
-          }`,
+      setLoading(true);
+      setError(null);
+      const [applicationsRes, postCareRes] = await Promise.allSettled([
+        axios.get(
+          `${import.meta.env.VITE_BASE_URL}/application/getByUserId/${auth?._id}`,
           { withCredentials: true }
-        );
+        ),
+        axios.get(`${import.meta.env.VITE_BASE_URL}/post-treatment/getall`, {
+          withCredentials: true,
+        }),
+      ]);
 
-        // Fetch available post-care services
-        const postCareRes = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/post-treatment/getall`,
-          { withCredentials: true }
-        );
-
-        setApplications(applicationsRes.data);
-        console.log(
-          "applications for user in postTreatments is: ",
-          applicationsRes?.data
-        );
-
-        setPostCareServices(postCareRes.data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to load necessary data. Please try again later.");
-        setLoading(false);
+      const toList = (result) =>
+        result.status === "fulfilled" && Array.isArray(result.value.data)
+          ? result.value.data
+          : [];
+      setApplications(toList(applicationsRes));
+      setPostCareServices(toList(postCareRes));
+      if (applicationsRes.status === "rejected" || postCareRes.status === "rejected") {
+        setError("Failed to load necessary data. Please try again.");
       }
+      setLoading(false);
     };
 
     if (auth?._id) {
       fetchData();
+    } else {
+      setLoading(false);
     }
-  }, [auth]);
+  }, [auth?._id, reloadKey]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -112,8 +110,6 @@ const PostCareRequestForm = () => {
       ...prev,
       [name]: files[0],
     }));
-    console.log(e.target.files[0]);
-    
   };
   
   const handleSubmit = async (e) => {
@@ -122,8 +118,9 @@ const PostCareRequestForm = () => {
     setError(null);
   
     try {
-      // Upload files to Cloudinary
+      // Files are optional; only upload what the patient picked
       const uploadFile = async (file) => {
+        if (!file) return "";
         const formData = new FormData();
         formData.append("myfile", file);
         const response = await axios.post(
@@ -131,7 +128,7 @@ const PostCareRequestForm = () => {
           formData,
           { withCredentials: true }
         );
-        return response.data.filePath; // Cloudinary URL
+        return response.data.filePath;
       };
   
       const [reportUrl, prescriptionUrl] = await Promise.all([
@@ -147,7 +144,7 @@ const PostCareRequestForm = () => {
       // );
   
       // Create post-care form entry with file URLs included
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_BASE_URL}/postcareform/create`,
         {
           application_id: formData.procedureId,
@@ -177,15 +174,17 @@ const PostCareRequestForm = () => {
         { withCredentials: true }
       );
   
-      console.log("post care form is: ", formData);
-      console.log("response of create postcare is: ", response?.data);
       
       setSuccess(true);
       // Reset form if needed
   
     } catch (err) {
       console.error("Error submitting form:", err);
-      setError("Failed to submit your post-care request. Please try again.");
+      setError(
+        err?.response?.data?.message && err.response.data.message !== "Server error"
+          ? err.response.data.message
+          : "Failed to submit your post-care request. Please try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -196,13 +195,32 @@ const PostCareRequestForm = () => {
     return <div className="text-center py-10">Loading form data...</div>;
   }
 
+  if (!error && applications.length === 0) {
+    return (
+      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
+        <h3 className="text-xl font-semibold text-blue-800">
+          Post-care support starts after your treatment booking
+        </h3>
+        <p className="mt-2 text-gray-600">
+          Once you have a booking, you can request follow-ups, physiotherapy and more here.
+        </p>
+        <Link
+          to="/treatments"
+          className="mt-6 inline-block px-6 py-2.5 rounded-lg bg-[#3252DF] text-white font-medium hover:bg-[#2341CE]"
+        >
+          Browse treatments
+        </Link>
+      </div>
+    );
+  }
+
   if (error && !success) {
     return (
       <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
         {error}
         <button
           className="ml-4 text-red-500 underline"
-          onClick={() => setError(null)}
+          onClick={() => setReloadKey((k) => k + 1)}
         >
           Try Again
         </button>
@@ -217,7 +235,7 @@ const PostCareRequestForm = () => {
           Post-Care Request Submitted Successfully!
         </h3>
         <p>
-          We've received your request and will contact you shortly to confirm
+          We&apos;ve received your request and will contact you shortly to confirm
           the details.
         </p>
         <button
@@ -376,7 +394,7 @@ const PostCareRequestForm = () => {
                 {applications.map((app) => (
                   <option key={app._id} value={app._id}>
                     {app.treatment_id?.treatment_name || "Unknown Treatment"} -{" "}
-                    {new Date(app.treatmentdateandtime).toLocaleDateString()}
+                    {formatDateTime(app.treatmentdateandtime)}
                   </option>
                 ))}
               </select>
@@ -389,9 +407,7 @@ const PostCareRequestForm = () => {
                     Procedure Date
                   </label>
                   <div className="p-2 bg-white border border-gray-300 rounded">
-                    {new Date(
-                      selectedApplication.treatmentdateandtime
-                    ).toLocaleDateString()}
+                    {formatDateTime(selectedApplication.treatmentdateandtime)}
                   </div>
                 </div>
                 <div>
@@ -453,7 +469,7 @@ const PostCareRequestForm = () => {
                 {postCareServices.map((service) => (
                   <option key={service._id} value={service._id}>
                     {service.service_name} - {service.service_type} (₹
-                    {service.cost})
+                    {service.cost?.toLocaleString()})
                   </option>
                 ))}
               </select>

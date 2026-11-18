@@ -1,12 +1,10 @@
 import React from 'react'
-import Header from '../../components/Layout/Header'
 import Hero from './components/Hero'
 import Treatment from './components/Treatment'
 import PopularHospitals from './components/PopularHospitals'
 import OurPartners from './components/OurPartners'
 import ChooseUs from './components/ChooseUs'
 import ClientsReview from './components/ClientsReview'
-import Footer from './components/Footer'
 import Layout from '@/components/Layout/Layout'
 
 const LandingPage = () => {

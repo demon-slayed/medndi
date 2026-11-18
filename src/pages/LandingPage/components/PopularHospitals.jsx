@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Star, Users, Phone, ArrowRight, Building2 } from 'lucide-react';
+import { MapPin, Star, Users, ArrowRight, Building2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingSkelton from '@/components/LoadingSkelton';
@@ -56,28 +56,37 @@ import LoadingSkelton from '@/components/LoadingSkelton';
 //   }
 // ];
 
+const FALLBACK_HOSPITAL_IMAGE =
+  "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80";
+
 const PopularHospitals = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [hospitals, setHospitals] = useState([]);
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
   const navigate = useNavigate()
 
-  const handleClickContactNow = () => {
-       navigate('/hospitals');
-       
+  const handleClickViewDetails = (hospital) => {
+       navigate(`/hospital-details/${hospital?.hospital_id}`);
+  }
+
+  // Booking needs a treatment, so send the user to this hospital's treatments first
+  const handleClickBook = (hospital) => {
+       navigate(`/hospital/${hospital?.hospital_id}/treatments`);
   }
 
     useEffect(() => {
       const fetchHospitals = async () => {
         try {
           setLoading(true);
+          setError(false);
           const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/hospitals`, {
             withCredentials: true,
           });
-          setHospitals([...res?.data]);
-          console.log("Hospitals are:", res?.data);
+          setHospitals(Array.isArray(res?.data) ? res.data : []);
         } catch (error) {
-          console.error("Error fetching treatments:", error);
+          console.error("Error fetching hospitals:", error);
+          setError(true);
         } finally {
             setLoading(false);
         }
@@ -121,10 +130,16 @@ const PopularHospitals = () => {
          {
           loading ? (
              <LoadingSkelton length={6}/>
+          ) : hospitals.length === 0 ? (
+            <div className="col-span-full text-center py-12 bg-white rounded-2xl shadow-sm text-gray-600">
+              {error
+                ? "We couldn't load hospitals right now. Please try again later."
+                : "No hospitals available yet."}
+            </div>
           ) : (
-            hospitals && hospitals?.slice(0,6).map((hospital, index) => (
+            hospitals.slice(0,6).map((hospital, index) => (
             <motion.div
-              key={index}
+              key={hospital?._id || index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -135,16 +150,18 @@ const PopularHospitals = () => {
               {/* Image Container */}
               <div className="relative h-48 overflow-hidden">
                 <img
-                  // src={hospital?.img}
-                  src="https://media.istockphoto.com/id/1312706413/photo/modern-hospital-building.jpg?s=2048x2048&w=is&k=20&c=15TsJBPquZtgf8ciMtV6wlEAccnI5RJoNcqzFY9qe80="
-                  alt={hospital?.name}
+                  src={hospital?.hospital_image?.[0] || FALLBACK_HOSPITAL_IMAGE}
+                  onError={(e) => { e.currentTarget.src = FALLBACK_HOSPITAL_IMAGE; }}
+                  alt={hospital?.hospital_name}
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                  <Star className="w-4 h-4 text-yellow-500" />
-                  <span className="text-sm font-medium">{hospital?.rating}</span>
-                </div>
+                {hospital?.rating != null && (
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                    <Star className="w-4 h-4 text-yellow-500" />
+                    <span className="text-sm font-medium">{hospital.rating}</span>
+                  </div>
+                )}
               </div>
 
               {/* Content */}
@@ -172,10 +189,10 @@ const PopularHospitals = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">{hospital?.stats?.patients}</span>
+                    <span className="text-sm text-gray-600">{hospital?.stats?.patients ? `${hospital.stats.patients} patients` : ""}</span>
                   </div>
-                  
-                  <button className="flex items-center gap-1 text-[#3252DF] text-sm font-medium group-hover:gap-2 transition-all duration-300" onClick={()=>{navigate('/hospitals')}}>
+
+                  <button className="flex items-center gap-1 text-[#3252DF] text-sm font-medium group-hover:gap-2 transition-all duration-300" onClick={() => handleClickViewDetails(hospital)}>
                     View Details
                     <ArrowRight className="w-4 h-4" />
                   </button>
@@ -189,15 +206,20 @@ const PopularHospitals = () => {
                   opacity: hoveredIndex === index ? 1 : 0,
                   y: hoveredIndex === index ? 0 : 20
                 }}
-                className="absolute inset-0 bg-gradient-to-t from-[#3252DF]/90 to-[#4466ff]/90 flex items-center justify-center opacity-0 transition-opacity duration-300 max-sm:hidden"
+                className={`absolute inset-0 bg-gradient-to-t from-[#3252DF]/90 to-[#4466ff]/90 flex items-center justify-center opacity-0 transition-opacity duration-300 max-sm:hidden ${hoveredIndex === index ? "" : "pointer-events-none"}`}
               >
                 <div className="text-white text-center p-6">
                   <Building2 className="w-12 h-12 mx-auto mb-4" />
                   <h4 className="font-semibold text-xl mb-2">Book Appointment</h4>
-                  <p className="text-sm mb-4">Schedule a consultation with our specialists</p>
-                  <button className="bg-white text-[#3252DF] px-6 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors duration-300" onClick={handleClickContactNow}>
-                    Contact Now
-                  </button>
+                  <p className="text-sm mb-4">Choose a treatment at {hospital?.hospital_name} to get started</p>
+                  <div className="flex items-center justify-center gap-3 flex-wrap">
+                    <button className="bg-white text-[#3252DF] px-6 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors duration-300" onClick={() => handleClickBook(hospital)}>
+                      View Treatments
+                    </button>
+                    <button className="border border-white text-white px-6 py-2 rounded-lg font-medium hover:bg-white/10 transition-colors duration-300" onClick={() => handleClickViewDetails(hospital)}>
+                      View Details
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             </motion.div>

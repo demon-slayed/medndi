@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Stepper from '@/components/booking/Stepper';
 import AppointmentCalendar from '@/components/booking/AppointmentCalendar';
 import TreatmentCard from '@/components/booking/TreatmentCard';
@@ -6,7 +7,6 @@ import HotelSelection from '@/components/booking/HotelSelection';
 import TravelSelection from '@/components/booking/TravelSelection';
 import InsuranceSelection from '@/components/booking/InsuranceSelection';
 import BookingReview from '@/components/booking/BookingReview';
-import SuccessModal from '@/components/booking/SuccessModal';
 
 import {
   Phone,
@@ -14,7 +14,6 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Header from '../../components/Layout/Header';
 import Layout from '@/components/Layout/Layout';
 import useAppStore from '@/store/useAppStore';
 import HospitalCard from '@/components/booking/HospitalCard';
@@ -24,53 +23,48 @@ const MedicalBooking = () => {
   // Step control
   const [currentStep, setCurrentStep] = useState(1);
 
-  // State for user selections
   const [selectedDate, setSelectedDate] = useState(null);
-  // const [selectedHotel, setSelectedHotel] = useState(null);
-  const [selectedFlight, setSelectedFlight] = useState(null);
-  const [selectedTransport, setSelectedTransport] = useState(null);
-  const [selectedInsurance, setSelectedInsurance] = useState(null);
 
-  // Modal visibility
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const {
+    treatment, hospital,
+    setSelectedHotel, setSelectedDateAndTime, setSelectedTravelManagement, setSelectedPlan,
+  } = useAppStore()
 
-  const { selectedHotel, selectedDateAndTime, selectedTravelManagement, selectedPlan, treatment, hospital, auth, setSelectedHotel } = useAppStore()
+  // Start every booking fresh so selections from an earlier booking don't leak in
+  useEffect(() => {
+    setSelectedHotel([]);
+    setSelectedDateAndTime([]);
+    setSelectedTravelManagement([]);
+    setSelectedPlan([]);
+  }, [setSelectedHotel, setSelectedDateAndTime, setSelectedTravelManagement, setSelectedPlan]);
 
+  const hospitalIds = (treatment?.available_hospitals ?? []).map((h) => h?._id ?? h);
+  const hasSelection = Boolean(treatment?._id && hospital?._id);
+  const hospitalOffersTreatment = !hasSelection || hospitalIds.length === 0 || hospitalIds.includes(hospital._id);
 
   const handleNextStep = () => {
-    if(!auth || auth?.length==0){
-      toast.error("please login to continue");
-      return;
-    }
-    console.log("selected hotel is: ", selectedHotel);
+    // Read the latest selections: child steps update the store right before calling this
+    const { selectedHotel, selectedDateAndTime, selectedTravelManagement, selectedPlan } = useAppStore.getState();
     if (currentStep === 2 && !selectedHotel?._id) {
-      console.log("selected hotel is: ", selectedHotel);      
-     toast.error("Hotel Selection Skipped");
+     toast("Hotel selection skipped");
     }
      
     if(currentStep==1){
          if(!selectedDateAndTime || selectedDateAndTime.length==0){
-           toast.error("please Confirm Date and Time");
+           toast.error("Please confirm a date and time");
            return;
-         }
-         else{
-           toast.success("Treatment Schedule selected");
          }
     }
 
     if(currentStep==3){
         if(!(selectedTravelManagement?.travelMode)){
-          toast.error("travel Management skipped");
-        } else{
-           toast.success("travel Management selected")
+          toast("Travel arrangements skipped");
         }
     }
 
     if(currentStep==4){
          if(!(selectedPlan?.insurance_id)){
-            toast.error("insurance not selected");
-         } else{
-            toast.success("insurance selected");
+            toast("Insurance skipped");
          }
     }
 
@@ -84,11 +78,31 @@ const MedicalBooking = () => {
     setCurrentStep(prev => Math.max(prev - 1, 1));
   };
 
-  const handleConfirmBooking = () => {
-    // Perform booking confirmation logic here (API calls, etc.)
-    // Then show success modal
-    setShowSuccessModal(true);
-  };
+  if (!hasSelection || !hospitalOffersTreatment) {
+    return (
+      <Layout>
+        <div className="min-h-[60vh] mt-28 flex items-center justify-center px-4">
+          <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center">
+            <AlertCircle className="w-10 h-10 text-[#3252DF] mx-auto" />
+            <h1 className="mt-4 text-2xl font-semibold text-gray-900">
+              {hasSelection ? 'Choose a hospital for this treatment' : 'Choose a treatment first'}
+            </h1>
+            <p className="mt-2 text-gray-600">
+              {hasSelection
+                ? `${hospital.hospital_name} doesn't offer ${treatment.treatment_name}. Pick one of the hospitals that does.`
+                : 'Pick a treatment and a hospital, then book from there.'}
+            </p>
+            <Link
+              to={hasSelection ? `/treatment-details/${treatment.treatment_id}` : '/treatments'}
+              className="mt-6 inline-block px-6 py-2.5 rounded-lg bg-[#3252DF] text-white font-medium hover:bg-[#2341CE]"
+            >
+              {hasSelection ? 'See hospitals' : 'Browse treatments'}
+            </Link>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -138,31 +152,17 @@ const MedicalBooking = () => {
 
             {/* Step 3: Travel Arrangements */}
             {currentStep === 3 && (
-              <TravelSelection
-                onFlightSelect={(flight) => setSelectedFlight(flight)}
-                onTransportSelect={(transport) => setSelectedTransport(transport)}
-              />
+              <TravelSelection />
             )}
 
             {/* Step 4: Insurance Coverage */}
             {currentStep === 4 && (
-              <InsuranceSelection
-                onSelect={(plan) => setSelectedInsurance(plan)}
-              />
+              <InsuranceSelection />
             )}
 
             {/* Step 5: Review & Payment */}
             {currentStep === 5 && (
-              <BookingReview
-                treatment={treatment}
-                hospital = {hospital}
-                selectedDateAndTime = {selectedDateAndTime}
-                hotel={selectedHotel}
-                flight={selectedFlight}
-                transport={selectedTransport}
-                insurance={selectedInsurance}
-                onConfirmBooking={handleConfirmBooking}
-              />
+              <BookingReview onEditBooking={() => setCurrentStep(1)} />
             )}
 
             {/* Navigation buttons */}
@@ -246,12 +246,6 @@ const MedicalBooking = () => {
         </div>
       </div>
 
-      {/* Success Modal */}
-      <SuccessModal
-        isVisible={showSuccessModal}
-        selectedDate={selectedDate}
-        onClose={() => setShowSuccessModal(false)}
-      />
     </div>
     </Layout>
   );

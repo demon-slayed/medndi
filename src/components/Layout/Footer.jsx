@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { 
   Facebook, Twitter, Instagram, Linkedin,
-  MapPin, Phone, Mail, Globe, ArrowUpRight,
+  MapPin, Phone, Mail, ArrowUpRight,
   Shield, Award, Heart
 } from 'lucide-react';
 import AroginiLogo from '@/assets/icons/Aroginilogo';
@@ -16,27 +16,19 @@ const Footer = () => {
        navigate('/contact');
   }
   const forPatients = [
-    { name: "Find Hospitals", link: "#" },
-    { name: "Book Consultation", link: "/booking" },
-    { name: "Patient Success Stories", link: "#" },
-    { name: "Treatment Cost Guide", link: "#" },
-    { name: "Insurance Coverage", link: "#" }
+    { name: "Find Hospitals", link: "/hospitals" },
+    { name: "Browse Treatments", link: "/treatments" },
+    { name: "Patient Portal", link: "/patient" },
+    { name: "About Arogini", link: "/about" },
+    { name: "Contact Support", link: "/contact" }
   ];
-  
+
   const treatments = [
-    { name: "Bariatric Surgery", link: "#" },
-    { name: "Orthopedic Care", link: "#" },
-    { name: "Cardiac Procedures", link: "#" },
-    { name: "Cancer Treatment", link: "#" },
-    { name: "View All Treatments", link: "#" }
-  ];
-  
-  const resources = [
-    { name: "Medical Tourism Guide", link: "#" },
-    { name: "Health Blog", link: "#" },
-    { name: "Hospital Comparison", link: "#" },
-    { name: "Treatment Videos", link: "#" },
-    { name: "Medical Visa Help", link: "#" }
+    { name: "Orthopedic Care", link: "/treatments?q=Orthopedics" },
+    { name: "Cardiac Procedures", link: "/treatments?q=Cardiology" },
+    { name: "Cancer Treatment", link: "/treatments?q=Oncology" },
+    { name: "Fertility (IVF)", link: "/treatments?q=Fertility" },
+    { name: "View All Treatments", link: "/treatments" }
   ];
 
   const contactInfo = [
@@ -76,18 +68,15 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Social Links */}
-            <div className="flex items-center gap-4 max-sm:text-center max-sm:justify-center">
+            {/* Social Links (decorative until real profiles exist) */}
+            <div className="flex items-center gap-4 max-sm:text-center max-sm:justify-center" aria-hidden="true">
               {[Twitter, Facebook, Instagram, Linkedin].map((Icon, idx) => (
-                <motion.a
+                <span
                   key={idx}
-                  href="#"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="p-2 rounded-full bg-blue-50 text-[#3252DF] hover:bg-[#3252DF] hover:text-white transition-colors"
+                  className="p-2 rounded-full bg-blue-50 text-[#3252DF]"
                 >
                   <Icon className="w-5 h-5" />
-                </motion.a>
+                </span>
               ))}
             </div>
           </div>
@@ -103,9 +92,9 @@ const Footer = () => {
                   className="flex items-center gap-2 group"
                 >
                   <Heart className="w-4 h-4 text-[#3252DF] opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <a href={item.link} className="text-gray-600 hover:text-[#3252DF] transition-colors">
+                  <Link to={item.link} className="text-gray-600 hover:text-[#3252DF] transition-colors">
                     {item.name}
-                  </a>
+                  </Link>
                 </motion.li>
               ))}
             </ul>
@@ -169,9 +158,8 @@ const Footer = () => {
               © {new Date().getFullYear()} Arogini. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-sm text-gray-600 hover:text-[#3252DF]">Privacy Policy</a>
-              <a href="#" className="text-sm text-gray-600 hover:text-[#3252DF]">Terms of Service</a>
-              <a href="#" className="text-sm text-gray-600 hover:text-[#3252DF]">Cookie Settings</a>
+              <Link to="/about" className="text-sm text-gray-600 hover:text-[#3252DF]">About Us</Link>
+              <Link to="/contact" className="text-sm text-gray-600 hover:text-[#3252DF]">Contact</Link>
             </div>
           </div>
         </div>

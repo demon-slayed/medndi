@@ -15,10 +15,17 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import toast from "react-hot-toast";
+import { getErrorMessage, scrollToTop } from "../utils";
 
-const HospitalForm = ({ selectedHospital }) => {
+const HospitalForm = ({
+  selectedHospital,
+  setSelectedHospital,
+  onSaved,
+  refreshKey,
+}) => {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(false);
+  const isEditing = Boolean(selectedHospital?._id);
 
   const initialHospitalData = {
     hospital_id: "",
@@ -83,8 +90,7 @@ const HospitalForm = ({ selectedHospital }) => {
         );
         console.log("hotel fetched in hospital form is: ", response?.data);
 
-        setHotels(response.data.hotels);
-        setHospitalData(initialHospitalData);
+        setHotels(response.data?.hotels || []);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching hotels:", error);
@@ -93,23 +99,28 @@ const HospitalForm = ({ selectedHospital }) => {
     };
 
     fetchHotels();
-  }, []);
+  }, [refreshKey]);
 
   useEffect(() => {
-    if (selectedHospital) {
-      const hotelIds =
-        selectedHospital?.Hotels?.map((hotel) => hotel._id) || [];
-
-      setHospitalData((prev) => ({
-        ...selectedHospital,
-        Hotels: hotelIds,
-      }));
-
-      console.log("Updated hospital data with hotel IDs:", hotelIds);
-    } else {
-      setHospitalData(initialHospitalData); // optional: reset if no selection
+    if (!selectedHospital?._id) {
+      setHospitalData(initialHospitalData);
+      return;
     }
+    // fill any missing arrays/objects so every input stays controlled
+    setHospitalData({
+      ...initialHospitalData,
+      ...selectedHospital,
+      stats: { ...initialHospitalData.stats, ...selectedHospital.stats },
+      Hotels: (selectedHospital.Hotels || []).map((hotel) => hotel?._id || hotel),
+    });
+    scrollToTop();
   }, [selectedHospital]);
+
+  // back to "Add" mode with a blank form
+  const resetForm = () => {
+    setHospitalData(initialHospitalData);
+    setSelectedHospital({});
+  };
 
   // Generic function to handle array field additions
   const handleAddArrayItem = (field, initialValue) => {
@@ -168,35 +179,59 @@ const HospitalForm = ({ selectedHospital }) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      let response;
+    // don't send server-managed fields back on update
+    // eslint-disable-next-line no-unused-vars
+    const { _id, __v, created_at, updated_at, ...payload } = hospitalData;
 
-      if (selectedHospital && selectedHospital._id) {
+    try {
+      if (isEditing) {
         // 🔄 Update hospital
-        response = await axios.put(
+        await axios.put(
           `${import.meta.env.VITE_BASE_URL}/hospitals/${selectedHospital._id}`,
-          hospitalData,
+          payload,
           { withCredentials: true }
         );
         toast.success("Hospital updated successfully");
       } else {
         // ➕ Create new hospital
-        response = await axios.post(
+        await axios.post(
           `${import.meta.env.VITE_BASE_URL}/hospitals/create`,
-          hospitalData,
+          payload,
           { withCredentials: true }
         );
         toast.success("Hospital added successfully");
       }
 
-      console.log("Hospital response:", response.data);
-      // Reset form, refresh data, or redirect as needed here
+      resetForm();
+      onSaved?.();
     } catch (error) {
       console.error("Error submitting hospital:", error);
-      toast.error(
-        error?.response?.data?.error ||
-          "Something went wrong while submitting hospital"
+      toast.error(getErrorMessage(error, "Failed to save hospital"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteHospital = async () => {
+    if (!isEditing) return;
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete hospital "${selectedHospital.hospital_name}"? This action cannot be undone.`
+    );
+    if (!confirmed) return;
+
+    setLoading(true);
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BASE_URL}/hospitals/${selectedHospital._id}`,
+        { withCredentials: true }
       );
+      toast.success("Hospital deleted successfully");
+      resetForm();
+      onSaved?.();
+    } catch (error) {
+      console.error("Error deleting hospital:", error);
+      toast.error(getErrorMessage(error, "Failed to delete hospital"));
     } finally {
       setLoading(false);
     }
@@ -1126,7 +1161,7 @@ const HospitalForm = ({ selectedHospital }) => {
             </div>
           ) : (
             <>
-              {selectedHospital?._id ? (
+              {isEditing ? (
                 <>
                   <Pencil className="w-5 h-5 mr-2" />
                   Update Hospital
@@ -1141,10 +1176,10 @@ const HospitalForm = ({ selectedHospital }) => {
           )}
         </Button>
 
-        {selectedHospital?._id && (
+        {isEditing && (
           <button
             type="button"
-            // onClick={handleDeleteHospital}
+            onClick={handleDeleteHospital}
             disabled={loading}
             className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-md transition flex items-center justify-center"
           >
@@ -1178,6 +1213,18 @@ const HospitalForm = ({ selectedHospital }) => {
                 Delete Hospital
               </>
             )}
+          </button>
+        )}
+
+        {isEditing && (
+          <button
+            type="button"
+            onClick={resetForm}
+            disabled={loading}
+            className="w-full mt-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-md transition flex items-center justify-center"
+          >
+            <X className="w-5 h-5 mr-2" />
+            Cancel Edit
           </button>
         )}
       </>

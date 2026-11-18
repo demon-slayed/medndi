@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Star, Heart, Check, ArrowRight } from "lucide-react";
+import { MapPin, Star, Check, ArrowRight } from "lucide-react";
 import useAppStore from "@/store/useAppStore";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -15,24 +15,19 @@ const HotelSelection = ({ handleNextStep }) => {
 
   const handleHotelSelect = (hotel) => {
     setSelectedHotel(hotel);
-    console.log("hotel is: ", hotel);
+    toast.success(`${hotel?.hotel_name} selected`);
     handleNextStep();
-    toast.success("hotel selected");
   };
 
   useEffect(() => {
     const fetchHotels = async () => {
       try {
         setLoading(true);
-        console.log("hospital is: ", hospital, hospital._id);
-        console.log("hii");
-
         const fetchedHotels = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/hotels/hospitalid/${hospital._id}`,
           { withCredentials: true }
         );
-        setHotels(fetchedHotels?.data);
-        console.log("hotels is: ", fetchedHotels?.data);
+        setHotels(Array.isArray(fetchedHotels?.data) ? fetchedHotels.data : []);
       } catch (error) {
         console.error("Failed to fetch hotels:", error);
         setHotels([]);
@@ -41,8 +36,12 @@ const HotelSelection = ({ handleNextStep }) => {
       }
     };
 
-    fetchHotels();
-  }, []);
+    if (hospital?._id) {
+      fetchHotels();
+    } else {
+      setLoading(false);
+    }
+  }, [hospital?._id]);
 
   return (
     <div className="relative bg-gradient-to-b from-[#ECF1FF] to-white overflow-hidden">
@@ -93,10 +92,19 @@ const HotelSelection = ({ handleNextStep }) => {
         >
           {loading ? (
             <LoadingSkelton length={6} />
+          ) : hotels.length === 0 ? (
+            <div className="col-span-full text-center bg-white rounded-2xl shadow p-10">
+              <h3 className="font-semibold text-lg text-[#152C5B]">
+                No partner hotels listed for this hospital yet
+              </h3>
+              <p className="mt-2 text-gray-600">
+                Click <span className="font-medium">Next</span> to continue. Our team can help arrange a stay.
+              </p>
+            </div>
           ) : (
             hotels.map((hotel, index) => (
               <motion.div
-                key={index}
+                key={hotel?._id ?? index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -107,17 +115,11 @@ const HotelSelection = ({ handleNextStep }) => {
                 {/* Image Container */}
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    src={hotel?.image || "https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
                     alt={hotel?.hotel_name}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <button
-                    className="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
-                    onClick={() => {}}
-                  >
-                    <Heart className="w-5 h-5 text-red-500" />
-                  </button>
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
                     <Star className="w-4 h-4 text-yellow-500" />
                     <span className="text-sm font-medium">{hotel?.rating}</span>
@@ -150,17 +152,21 @@ const HotelSelection = ({ handleNextStep }) => {
                         <span>{amenity}</span>
                       </div>
                     ))}
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <MapPin className="w-4 h-4 text-blue-500" />
-                      <span>{hotel?.distance}</span>
-                    </div>
+                    {hotel?.distance && (
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <MapPin className="w-4 h-4 text-blue-500" />
+                        <span>{hotel.distance} from hospital</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="mt-4 flex items-center justify-between">
                     <div>
                       <span className="text-sm text-gray-500">per night</span>
                       <div className="text-lg font-semibold text-gray-900">
-                        ₹{hotel?.price_per_night}
+                        {hotel?.price_per_night != null
+                          ? `₹${hotel.price_per_night.toLocaleString()}`
+                          : "On request"}
                       </div>
                     </div>
                     <button

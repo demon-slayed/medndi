@@ -359,9 +359,8 @@ export default function DashboardPage() {
             <CardContent>
               <ScrollArea className="h-[304px] pr-2">
                 {appointmentsData.map((appointment, index) => (
-                  <div>
+                  <div key={index}>
                     <div
-                      key={index}
                       className="mb-4 flex items-start justify-between"
                     >
                       <div className="flex items-center">

@@ -15,10 +15,16 @@ import AdminDashboard from './pages/AdminDashboard';
 import ScrollToTop from './components/ScrollToTop';
 import HospitalTreatments from './pages/HospitalTreatments';
 import PdfAnalyzer from './pages/Patients/components/PdfAnalyser';
+import NotFound from './pages/NotFound';
+import RequireAuth from './components/RequireAuth';
+import { useEffect } from 'react';
+import { refreshSession } from './lib/session';
 
 
 function App() {
-
+  useEffect(() => {
+    refreshSession();
+  }, []);
 
   return (
     <>
@@ -33,12 +39,13 @@ function App() {
               <Route path='/hospitals' element={<Hospitals />} />        {/*done */}
               <Route path='/hospital-details/:hospital_id' element={<HospitalDetails />} />
               <Route path='/hospital/:hospital_id/treatments' element={<HospitalTreatments />} />
-              <Route path='/admin-dashboard' element={<AdminDashboard />} />
-              <Route path='/patient' element={<PatientDashboard />} />
-              <Route path='/patient/query' element={<PdfAnalyzer />} />
-              <Route path='/booking' element={<MedicalBooking />} />
+              <Route path='/admin-dashboard' element={<RequireAuth role='Admin'><AdminDashboard /></RequireAuth>} />
+              <Route path='/patient' element={<RequireAuth><PatientDashboard /></RequireAuth>} />
+              <Route path='/patient/query' element={<RequireAuth><PdfAnalyzer /></RequireAuth>} />
+              <Route path='/booking' element={<RequireAuth><MedicalBooking /></RequireAuth>} />
               <Route path='/about' element={<AboutUs />} />
               <Route path='/contact' element={<ContactPage />} />
+              <Route path='*' element={<NotFound />} />
           </Routes>
       </Router>             
     </>

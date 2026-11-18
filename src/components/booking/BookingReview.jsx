@@ -1,91 +1,27 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Check,
-  Star,
-  Building2,
-  MapPin,
   Calendar,
   Clock,
   Shield,
-  Plane,
-  Car,
-  CreditCard,
   CheckCircle2,
   Phone,
   Mail,
   FileText,
   Download,
-  PiggyBank,
+  Loader2,
 } from "lucide-react";
 import useAppStore from "@/store/useAppStore";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { formatDateTime } from "./formatDateTime";
 
-const demoData = {
-  treatment: {
-    name: "Advanced Cardiac Surgery",
-    location: "Fortis Memorial, Gurgaon",
-    image: "/assets/hospital2.png",
-    rating: 4.9,
-    prices: {
-      checkup: 240000,
-      consultation: 5000,
-    },
-    doctor: "Dr. Rajesh Kumar",
-    department: "Cardiology",
-  },
-  hotel: {
-    name: "The Leela Palace",
-    location: "Diplomatic Enclave, New Delhi",
-    image: "/assets/hospital2.png",
-    rating: 4.8,
-    price: 12999,
-    roomType: "Deluxe Room",
-    nights: 5,
-    checkIn: "2024-02-15",
-    checkOut: "2024-02-20",
-  },
-  flight: {
-    airline: "Air India",
-    departure: "Mumbai (BOM)",
-    arrival: "Delhi (DEL)",
-    departureTime: "10:00 AM",
-    arrivalTime: "12:30 PM",
-    date: "2024-02-14",
-    price: 5999,
-    class: "Economy",
-    flightNumber: "AI-213",
-  },
-  transport: {
-    type: "Premium Medical Transport",
-    price: 2999,
-    features: [
-      "24/7 Medical Support",
-      "Wheelchair Accessible",
-      "Air Conditioned Vehicle",
-      "Professional Medical Staff",
-    ],
-    duration: "5 Days",
-  },
-  insurance: {
-    name: "Premium Medical Coverage",
-    price: "3,999",
-    features: [
-      "Medical expenses up to ₹1,00,000",
-      "24/7 support assistance",
-      "Ambulance coverage",
-      "Room rent covered",
-      "Pre & post hospitalization",
-    ],
-    provider: "Arogya Insurance Co.",
-    validity: "1 Year",
-  },
-};
-
-const BookingReview = () => {
+const BookingReview = ({ onEditBooking }) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState("card");
+  const [submitting, setSubmitting] = useState(false);
+  const [applicationId, setApplicationId] = useState("");
+  const navigate = useNavigate();
   const {
     treatment: selectedTreatment,
     hospital: selectedHospital,
@@ -93,59 +29,29 @@ const BookingReview = () => {
     selectedTravelManagement,
     selectedDateAndTime,
     selectedPlan: selectedInsurancePlan,
-    auth,
+    setSelectedHotel,
+    setSelectedPlan,
+    setSelectedTravelManagement,
+    setSelectedDateAndTime,
   } = useAppStore();
+  const appointment = formatDateTime(selectedDateAndTime);
 
 
-
-  const paymentMethods = [
-    {
-      id: "card",
-      name: "Credit/Debit Card",
-      icon: CreditCard,
-      description: "Secure payment via credit or debit card",
-    },
-    {
-      id: "netbanking",
-      name: "Net Banking",
-      icon: Building2,
-      description: "Direct bank transfer",
-    },
-    {
-      id: "upi",
-      name: "UPI",
-      icon: PiggyBank,
-      description: "Pay using UPI apps",
-    },
-  ];
-
-  // const selectedDateAndTime = "Selected: 16 Apr 2025, 9:00 am";
-
-  // const selectedTravelManagement = {
-  //   sourceCity: "Bangalore",
-  //   destinationCity: "Mumbai",
-  //   travelMode: "flight",
-  //   selectedLocalTransport: "Medical Transport",
-  // };
 
   // Calculate estimated total cost
   const estimatedTotal =
-    selectedTreatment?.estimated_cost.max +
+    (selectedTreatment?.estimated_cost?.max ?? 0) +
     (selectedAccommodation?.price_per_night ?? 0) +
     (selectedInsurancePlan?.price ?? 0);
 
 
     const handleConfirm = async () => {
-      if (!auth || auth?.length == 0) {
-        toast.error("please login for booking");
-        return;
-      }
-  
-      toast.success("Booking confirmed")
+      if (submitting) return;
+      setSubmitting(true);
+      try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/application/create`,
         {
-          user_id: auth?._id,
           treatment_id: selectedTreatment?._id,
           hospital_id: selectedHospital?._id,
           hotel_id: selectedAccommodation?._id,
@@ -158,8 +64,26 @@ const BookingReview = () => {
           withCredentials: true
         }
       );
-      
+
+      setApplicationId(res.data?.data?.application_id ?? "");
+      toast.success("Booking request submitted");
       setShowSuccessModal(true);
+      } catch (error) {
+        toast.error(
+          error?.response?.data?.message || "Could not submit your booking. Please try again."
+        );
+      } finally {
+        setSubmitting(false);
+      }
+    };
+
+    const handleViewBookings = () => {
+      setShowSuccessModal(false);
+      setSelectedHotel([]);
+      setSelectedPlan([]);
+      setSelectedTravelManagement([]);
+      setSelectedDateAndTime([]);
+      navigate("/patient");
     };
 
   return (
@@ -178,7 +102,7 @@ const BookingReview = () => {
             Appointment Details
           </h2>
           <p className="text-blue-700 font-medium text-lg">
-            {selectedDateAndTime}
+            {appointment}
           </p>
         </div>
 
@@ -204,16 +128,16 @@ const BookingReview = () => {
             </h2>
             <div className="pl-3 border-l-2 border-blue-400">
               <p className="font-medium text-gray-800 text-lg">
-                {selectedTreatment.treatment_name}
+                {selectedTreatment?.treatment_name}
               </p>
               <p className="text-base text-gray-600">
-                Duration: {selectedTreatment.duration}
+                Duration: {selectedTreatment?.duration || "—"}
               </p>
               <p className="text-base text-gray-600">
-                Success Rate: {selectedTreatment.success_rate}
+                Success Rate: {selectedTreatment?.success_rate || "—"}
               </p>
               <p className="text-base font-medium text-gray-800 mt-2">
-                Cost: ₹{selectedTreatment?.estimated_cost.min?.toLocaleString()}{" "}
+                Cost: ₹{selectedTreatment?.estimated_cost?.min?.toLocaleString()}{" "}
                 - ₹{selectedTreatment?.estimated_cost?.max?.toLocaleString()}
               </p>
             </div>
@@ -240,16 +164,16 @@ const BookingReview = () => {
             </h2>
             <div className="pl-3 border-l-2 border-blue-400">
               <p className="font-medium text-gray-800 text-lg">
-                {selectedHospital.hospital_name}
+                {selectedHospital?.hospital_name}
               </p>
               <div className="flex items-center mt-1">
                 <span className="text-yellow-500 mr-1 text-lg">★</span>
                 <span className="text-base text-gray-600">
-                  {selectedHospital.rating}/5
+                  {selectedHospital?.rating}/5
                 </span>
               </div>
               <p className="text-sm text-gray-500 mt-1">
-                {selectedHospital.address}
+                {selectedHospital?.address}
               </p>
             </div>
           </div>
@@ -313,11 +237,13 @@ const BookingReview = () => {
             </h2>
             <div className="pl-3 border-l-2 border-blue-400">
               <p className="font-medium text-gray-800 text-lg">
-                {selectedAccommodation.hotel_name}
+                {selectedAccommodation?.hotel_name}
               </p>
-              <p className="text-base text-gray-600">
-                {selectedAccommodation.distance}
-              </p>
+              {selectedAccommodation?.distance && (
+                <p className="text-base text-gray-600">
+                  {selectedAccommodation.distance} from hospital
+                </p>
+              )}
               {selectedAccommodation?.price_per_night ? (
                 <p className="text-base font-medium text-gray-800 mt-2">
                   ₹{selectedAccommodation.price_per_night?.toLocaleString()} per
@@ -397,7 +323,7 @@ const BookingReview = () => {
           <div className="grid grid-cols-2 gap-3 text-base">
             <div className="text-gray-600">Treatment (estimated):</div>
             <div className="text-right font-medium">
-              ₹{selectedTreatment?.estimated_cost.max?.toLocaleString()}
+              ₹{selectedTreatment?.estimated_cost?.max?.toLocaleString()}
             </div>
 
             <div className="text-gray-600">Accommodation:</div>
@@ -437,75 +363,34 @@ const BookingReview = () => {
           </div>
         </div>
 
-        {/* Payment method Selection */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl shadow-md p-6 sticky top-8 mb-8">
-            {/* select payment method */}
-            <div className="mt-6">
-              <h4 className="font-medium mb-4">Select Payment Method</h4>
-              <div className="space-y-3">
-                {paymentMethods.map((method) => {
-                  const Icon = method.icon;
-                  return (
-                    <div
-                      key={method.id}
-                      onClick={() => setSelectedPayment(method.id)}
-                      className={`flex items-center gap-3 p-4 rounded-lg cursor-pointer transition-all
-                            ${
-                              selectedPayment === method.id
-                                ? "border-2 border-[#3252DF] bg-blue-50"
-                                : "border border-gray-200 hover:border-[#3252DF]"
-                            }`}
-                    >
-                      <div
-                        className={`p-2 rounded-full ${
-                          selectedPayment === method.id
-                            ? "bg-[#3252DF] text-white"
-                            : "bg-gray-100"
-                        }`}
-                      >
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <div className="font-medium max-sm:text-sm">
-                          {method.name}
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          {method.description}
-                        </div>
-                      </div>
-                      {selectedPayment === method.id && (
-                        <Check className="w-5 h-5 text-[#3252DF] ml-auto" />
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* <button
-                    onClick={handleConfirm}
-                    className="w-full mt-6 py-3 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-lg hover:opacity-90 transition-opacity"
-                  >
-                    Confirm Booking
-                  </button> */}
-
-              <p className="mt-4 text-sm text-gray-600 text-center">
-                By confirming your booking, you agree to our Terms & Conditions
-              </p>
-            </div>
+        {/* Payment */}
+        <div className="mb-8 flex items-start gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <Shield className="w-5 h-5 text-[#3252DF] mt-0.5" />
+          <div>
+            <p className="font-medium text-gray-900">No payment needed now</p>
+            <p className="text-sm text-gray-600">
+              Our care team will review your request and confirm the final quote before any payment.
+              By confirming, you agree to our Terms &amp; Conditions.
+            </p>
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row justify-between gap-4">
-          <button className="py-3 px-6 bg-gray-200 text-gray-800 rounded text-lg hover:bg-gray-300 font-medium">
+          <button
+            onClick={onEditBooking}
+            disabled={submitting}
+            className="py-3 px-6 bg-gray-200 text-gray-800 rounded text-lg hover:bg-gray-300 font-medium disabled:opacity-60"
+          >
             Edit Booking
           </button>
           <button
-            className="py-3 px-8 bg-blue-600 text-white rounded text-lg hover:bg-blue-700 font-medium"
+            className="py-3 px-8 bg-blue-600 text-white rounded text-lg hover:bg-blue-700 font-medium disabled:opacity-60 flex items-center justify-center gap-2"
             onClick={handleConfirm}
+            disabled={submitting}
           >
-            Confirm Booking
+            {submitting && <Loader2 className="w-5 h-5 animate-spin" />}
+            {submitting ? "Submitting..." : "Confirm Booking"}
           </button>
         </div>
       </div>
@@ -517,24 +402,24 @@ const BookingReview = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto max-h-screen pt-[460px]"
+            className="fixed inset-0 bg-black/50 flex items-start justify-center z-[200] p-4 overflow-y-auto"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl p-8 max-w-lg w-full mx-auto"
+              className="bg-white rounded-2xl p-8 max-w-lg w-full mx-auto my-8"
             >
               <div className="text-center">
                 <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CheckCircle2 className="w-12 h-12 text-green-500" />
                 </div>
                 <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-                  Booking Confirmed!
+                  Booking Request Submitted!
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  Thank you for your booking. Your medical journey is confirmed
-                  and details have been sent to your email.
+                  Thank you. Our care team will review your request and keep you
+                  updated on every step from your dashboard.
                 </p>
 
                 {/* Booking Details Summary */}
@@ -543,7 +428,7 @@ const BookingReview = () => {
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-gray-600">Booking ID</span>
-                        <span className="font-medium">ARG-2024-1234</span>
+                        <span className="font-medium">{applicationId || "—"}</span>
                       </div>
 
                       {/* Cost Breakdown Section */}
@@ -557,7 +442,7 @@ const BookingReview = () => {
                               Treatment Cost
                             </span>
                             <span className="font-medium">
-                              ₹{selectedTreatment?.estimated_cost.max}
+                              ₹{selectedTreatment?.estimated_cost?.max?.toLocaleString()}
                             </span>
                           </div>
                           <div className="flex justify-between items-center text-sm">
@@ -567,7 +452,7 @@ const BookingReview = () => {
                             <span className="font-medium">
                               {selectedAccommodation?.price_per_night !=
                               null ? (
-                                `₹${selectedAccommodation.price_per_night}`
+                                `₹${selectedAccommodation.price_per_night.toLocaleString()}`
                               ) : (
                                 <span className="text-gray-600">
                                   Not selected
@@ -581,7 +466,7 @@ const BookingReview = () => {
                             </span>
                             <span className="font-medium">
                               {selectedInsurancePlan?.price != null ? (
-                                `₹${selectedInsurancePlan.price}`
+                                `₹${selectedInsurancePlan.price.toLocaleString()}`
                               ) : (
                                 <span className="text-gray-600">
                                   Not selected
@@ -592,7 +477,7 @@ const BookingReview = () => {
 
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-gray-600">
-                              Travel Accomodation
+                              Travel Arrangements
                             </span>
                             <span className="font-medium">
                               {selectedTravelManagement?.travelMode ? (
@@ -616,9 +501,9 @@ const BookingReview = () => {
 
                       <div className="border-t border-gray-200 pt-3 mt-3">
                         <div className="flex justify-between items-center font-semibold">
-                          <span className="text-gray-800">Amount Paid</span>
+                          <span className="text-gray-800">Estimated Total</span>
                           <span className="text-[#3252DF]">
-                            ₹{estimatedTotal}
+                            ₹{estimatedTotal.toLocaleString()}
                           </span>
                         </div>
                       </div>
@@ -628,7 +513,7 @@ const BookingReview = () => {
                           Treatment Date
                         </span>
                         <span className="font-semibold text-blue-800">
-                          {selectedDateAndTime}
+                          {appointment}
                         </span>
                       </div>
                     </div>
@@ -681,10 +566,10 @@ const BookingReview = () => {
                     className="flex-1 py-3 border border-[#3252DF] text-[#3252DF] rounded-lg hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
                   >
                     <Download className="w-5 h-5" />
-                    Download Receipt
+                    Print Summary
                   </button>
                   <button
-                    onClick={() => setShowSuccessModal(false)}
+                    onClick={handleViewBookings}
                     className="flex-1 py-3 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-lg hover:opacity-90 transition-opacity"
                   >
                     View Booking Details
