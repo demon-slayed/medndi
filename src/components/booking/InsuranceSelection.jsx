@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Shield, ChevronLeft, AlertCircle } from "lucide-react";
+import { Check, Shield } from "lucide-react";
 import axios from "axios";
 import useAppStore from "@/store/useAppStore";
 import toast from "react-hot-toast";
@@ -11,9 +11,8 @@ import LoadingSkelton from "../LoadingSkelton";
   1. Insurance plan selection (Basic/Premium/Comprehensive)
   2. A three-step form for personal/medical/emergency details
 */
-const InsuranceSelection = ({ onSelect }) => {
+const InsuranceSelection = () => {
   const [insurances, setInsurances] = useState([]);
-  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const { selectedPlan, setSelectedPlan } = useAppStore();
 
@@ -21,26 +20,17 @@ const InsuranceSelection = ({ onSelect }) => {
     "from-blue-500 to-indigo-500",
     "from-[#3252DF] to-[#4466ff]",
     "from-purple-500 to-pink-500",
+    "from-emerald-500 to-teal-500",
   ];
 
-  // Collect user form data
-  const [formData, setFormData] = useState({
-    fullName: "",
-    dateOfBirth: "",
-    phone: "",
-    email: "",
-    address: "",
-    existingConditions: "",
-    emergency: {
-      name: "",
-      relationship: "",
-      phone: "",
-    },
-  });
-
   const handleSelectPlan = (plan) => {
+    // Tapping the selected plan again removes it
+    if (selectedPlan?._id === plan._id) {
+      setSelectedPlan([]);
+      return;
+    }
     setSelectedPlan(plan);
-    toast.success(`${plan?.name} insurance selected`);
+    toast.success(`${plan?.name} added`);
   };
 
   useEffect(() => {
@@ -65,108 +55,6 @@ const InsuranceSelection = ({ onSelect }) => {
     fetchInsurances();
   }, []);
 
-  // Single handler for all input fields (including nested emergency object)
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name.includes(".")) {
-      // Nested property (e.g. emergency.name)
-      const [parent, child] = name.split(".");
-      setFormData((prev) => ({
-        ...prev,
-        [parent]: {
-          ...prev[parent],
-          [child]: value,
-        },
-      }));
-    } else {
-      // Root-level property
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-  };
-
-  // Reusable form input component
-  const FormInput = ({
-    label,
-    name,
-    type = "text",
-    placeholder,
-    required = true,
-  }) => (
-    <div className="space-y-1">
-      <label className="block text-sm font-medium text-gray-700">{label}</label>
-      <input
-        type={type}
-        name={name}
-        value={
-          name.includes(".")
-            ? formData[name.split(".")[0]][name.split(".")[1]]
-            : formData[name]
-        }
-        onChange={handleInputChange}
-        placeholder={placeholder}
-        required={required}
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                  focus:ring-2 focus:ring-[#3252DF] 
-                  focus:border-transparent outline-none
-                  text-sm"
-      />
-    </div>
-  );
-
-  // Stepper Titles
-  const stepTitles = [
-    "Personal Details",
-    "Medical Information",
-    "Emergency Contact",
-  ];
-
-  // Stepper UI with gradient lines when completed
-  const renderStepper = () => {
-    return (
-      <div className="flex justify-center mb-8">
-        {stepTitles.map((title, index) => {
-          const stepNumber = index + 1;
-          const isActive = stepNumber === step;
-          const isCompleted = stepNumber < step;
-
-          return (
-            <div key={title} className="flex items-center">
-              <div
-                className={`flex flex-col items-center transition-colors 
-                  ${isActive ? "text-[#3252DF]" : "text-gray-400"}`}
-              >
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 
-                    ${
-                      isActive
-                        ? "bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white"
-                        : isCompleted
-                        ? "bg-green-500 text-white"
-                        : "bg-gray-200"
-                    }`}
-                >
-                  {isCompleted ? <Check className="w-5 h-5" /> : stepNumber}
-                </div>
-                <span className="text-[11px] sm:text-xs text-center w-16 leading-tight">{title}</span>
-              </div>
-
-              {/* Connector line except for the last item */}
-              {index < stepTitles.length - 1 && (
-                <div
-                  className={`w-6 sm:w-24 h-0.5 mx-1 sm:mx-2 -mt-5 transition-colors 
-                    ${isCompleted ? "bg-green-500" : "bg-gray-200"}`}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   // Renders the insurance plan selection cards
   const renderPlanSelection = () => {
     return (
@@ -187,11 +75,11 @@ const InsuranceSelection = ({ onSelect }) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:p-4">
          {
           loading ? ( <LoadingSkelton length={3}/> ) : (insurances?.map((plan, index) => (
             <motion.div
-              key={plan.name}
+              key={plan._id ?? plan.name}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -210,9 +98,9 @@ const InsuranceSelection = ({ onSelect }) => {
 
               <div
                 // Height controlled here: `h-full` ensures full height of grid cell
-                className={`relative h-full p-1 rounded-2xl bg-gradient-to-br ${planGradients[index]} 
+                className={`relative h-full p-1 rounded-2xl bg-gradient-to-br ${planGradients[index % planGradients.length]} 
                         transform transition-transform group-hover:scale-[1.03] 
-                        shadow-lg border border-gray-200`}
+                        shadow-lg border ${selectedPlan?._id === plan._id ? "border-[#3252DF] ring-4 ring-blue-100" : "border-gray-200"}`}
               >
                 {/* Height also controlled here: `h-full flex flex-col` ensures consistent internal height */}
                 <div className="bg-white rounded-2xl p-6 h-full flex flex-col">
@@ -248,12 +136,23 @@ const InsuranceSelection = ({ onSelect }) => {
 
                   {/* Select Button */}
                   <button
+                    type="button"
                     onClick={() => handleSelectPlan(plan)}
-                    className="w-full py-3 bg-gradient-to-r from-[#3252DF] to-[#4466ff]
-                           text-white rounded-lg hover:opacity-90 transition-opacity
-                           font-semibold"
+                    aria-pressed={selectedPlan?._id === plan._id}
+                    className={`w-full py-3 rounded-lg font-semibold transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2 ${
+                      selectedPlan?._id === plan._id
+                        ? "bg-green-50 text-green-700 border-2 border-green-500 inline-flex items-center justify-center gap-2"
+                        : "bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white hover:opacity-90"
+                    }`}
                   >
-                    Select Plan
+                    {selectedPlan?._id === plan._id ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        Selected · tap to remove
+                      </>
+                    ) : (
+                      "Select plan"
+                    )}
                   </button>
                 </div>
               </div>
@@ -265,184 +164,10 @@ const InsuranceSelection = ({ onSelect }) => {
     );
   };
 
-  // Renders the multi-step form after selecting a plan
-  const renderPlanForm = () => {
-    return (
-      <motion.div
-        key="planForm"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        className="bg-white rounded-2xl shadow-lg p-4 sm:p-8"
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <button
-            onClick={() => setSelectedPlan(null)}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            Back to Plans
-          </button>
-          <div className="flex items-center gap-2">
-            <Shield className="w-6 h-6 text-[#3252DF]" />
-            <span className="font-medium text-gray-700">
-              {selectedPlan.name}
-            </span>
-          </div>
-        </div>
-
-        {/* Stepper */}
-        {renderStepper()}
-
-        {/* Form Steps */}
-        <div className="max-w-2xl mx-auto">
-          <AnimatePresence mode="wait">
-            {/* Step 1: Personal Details */}
-            {step === 1 && (
-              <motion.div
-                key="step1"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
-              >
-                <FormInput
-                  label="Full Name"
-                  name="fullName"
-                  placeholder="Enter your full name"
-                />
-                <FormInput
-                  label="Date of Birth"
-                  name="dateOfBirth"
-                  type="date"
-                />
-                <FormInput
-                  label="Phone Number"
-                  name="phone"
-                  placeholder="Enter your phone number"
-                />
-                <FormInput
-                  label="Email Address"
-                  name="email"
-                  type="email"
-                  placeholder="Enter your email address"
-                />
-                <FormInput
-                  label="Current Address"
-                  name="address"
-                  placeholder="Enter your current address"
-                />
-              </motion.div>
-            )}
-
-            {/* Step 2: Medical Info */}
-            {step === 2 && (
-              <motion.div
-                key="step2"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
-              >
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Existing Medical Conditions
-                  </label>
-                  <textarea
-                    name="existingConditions"
-                    value={formData.existingConditions}
-                    onChange={handleInputChange}
-                    placeholder="Please list any existing medical conditions"
-                    rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                               focus:ring-2 focus:ring-[#3252DF] focus:border-transparent 
-                               outline-none text-sm"
-                  />
-                </div>
-
-                <div className="p-4 bg-blue-50 rounded-lg">
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5" />
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900">
-                        Important Note
-                      </h4>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Please disclose all pre-existing conditions.
-                        Non-disclosure may affect your coverage.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {/* Step 3: Emergency Contact */}
-            {step === 3 && (
-              <motion.div
-                key="step3"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
-              >
-                <FormInput
-                  label="Emergency Contact Name"
-                  name="emergency.name"
-                  placeholder="Enter emergency contact name"
-                />
-                <FormInput
-                  label="Relationship"
-                  name="emergency.relationship"
-                  placeholder="Enter relationship with emergency contact"
-                />
-                <FormInput
-                  label="Emergency Contact Phone"
-                  name="emergency.phone"
-                  placeholder="Enter emergency contact phone number"
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Navigation Buttons */}
-          <div className="flex justify-between mt-8">
-            {step > 1 && (
-              <button
-                onClick={() => setStep((prev) => prev - 1)}
-                className="px-6 py-2 text-sm border border-gray-300 
-                           rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                Previous
-              </button>
-            )}
-            <button
-              onClick={() => {
-                if (step < 3) {
-                  setStep((prev) => prev + 1);
-                } else {
-                  // When the user completes Step 3
-                  onSelect({ plan: selectedPlan, formData });
-                }
-              }}
-              className="ml-auto px-6 py-2 text-sm 
-                         bg-gradient-to-r from-[#3252DF] to-[#4466ff] 
-                         text-white rounded-lg hover:opacity-90 transition-opacity"
-            >
-              {step === 3 ? "Complete Application" : "Next"}
-            </button>
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
   return (
     <div className="relative w-full">
       <AnimatePresence mode="wait">
-        {/* If no plan selected yet, show plan cards */}
-        {!selectedPlan ? renderPlanSelection() : renderPlanForm()}
+        {renderPlanSelection()}
       </AnimatePresence>
     </div>
   );

@@ -15,13 +15,16 @@ import {
 import useAppStore from '@/store/useAppStore';
 import toast from 'react-hot-toast';
 
-const TravelSelection = ({ onFlightSelect, onTransportSelect }) => {
-  const [needTravel, setNeedTravel] = useState(null);
-  const [travelMode, setTravelMode] = useState(null);
-  const [showLocalTransport, setShowLocalTransport] = useState(false);
-  const [selectedLocalTransport, setSelectedLocalTransport] = useState(null);
-  const [sourceCity, setSourceCity] = useState('');
-  const [destinationCity, setDestinationCity] = useState('');
+const TravelSelection = () => {
+  // Start from any saved choice so coming back to this step doesn't wipe it
+  const saved = useAppStore.getState().selectedTravelManagement;
+  const hasSaved = Boolean(saved?.travelMode);
+  const [needTravel, setNeedTravel] = useState(hasSaved ? true : null);
+  const [travelMode, setTravelMode] = useState(hasSaved ? saved.travelMode : null);
+  const [showLocalTransport, setShowLocalTransport] = useState(Boolean(saved?.selectedLocalTransport));
+  const [selectedLocalTransport, setSelectedLocalTransport] = useState(saved?.selectedLocalTransport ?? null);
+  const [sourceCity, setSourceCity] = useState(saved?.sourceCity ?? '');
+  const [destinationCity, setDestinationCity] = useState(saved?.destinationCity ?? '');
   const { setSelectedTravelManagement } = useAppStore()
 
   const handleTravelManagement = () => {

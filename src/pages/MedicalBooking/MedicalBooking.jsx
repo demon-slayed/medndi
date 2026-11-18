@@ -2,84 +2,109 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Stepper from '@/components/booking/Stepper';
 import AppointmentCalendar from '@/components/booking/AppointmentCalendar';
-import TreatmentCard from '@/components/booking/TreatmentCard';
 import HotelSelection from '@/components/booking/HotelSelection';
 import TravelSelection from '@/components/booking/TravelSelection';
 import InsuranceSelection from '@/components/booking/InsuranceSelection';
 import BookingReview from '@/components/booking/BookingReview';
+import BookingSummary from '@/components/booking/BookingSummary';
+import BookingConfirmation from '@/components/booking/BookingConfirmation';
 
 import {
   Phone,
   Mail,
   AlertCircle,
   ArrowLeft,
-  ArrowRight
+  ArrowRight,
+  ChevronDown
 } from 'lucide-react';
 import PageHeader from '@/components/PageHeader';
 import { motion } from 'framer-motion';
 import Layout from '@/components/Layout/Layout';
 import useAppStore from '@/store/useAppStore';
-import HospitalCard from '@/components/booking/HospitalCard';
 import toast from 'react-hot-toast';
 
 const MedicalBooking = () => {
-  // Step control
-  const [currentStep, setCurrentStep] = useState(1);
-
   const [selectedDate, setSelectedDate] = useState(null);
+  const [confirmedBooking, setConfirmedBooking] = useState(null);
 
   const {
     treatment, hospital,
+    selectedHotel, selectedTravelManagement, selectedPlan,
     setSelectedHotel, setSelectedDateAndTime, setSelectedTravelManagement, setSelectedPlan,
+    bookingKey, setBookingKey, bookingStep: currentStep, setBookingStep,
   } = useAppStore()
-
-  // Start every booking fresh so selections from an earlier booking don't leak in
-  useEffect(() => {
-    setSelectedHotel([]);
-    setSelectedDateAndTime([]);
-    setSelectedTravelManagement([]);
-    setSelectedPlan([]);
-  }, [setSelectedHotel, setSelectedDateAndTime, setSelectedTravelManagement, setSelectedPlan]);
 
   const hospitalIds = (treatment?.available_hospitals ?? []).map((h) => h?._id ?? h);
   const hasSelection = Boolean(treatment?._id && hospital?._id);
   const hospitalOffersTreatment = !hasSelection || hospitalIds.length === 0 || hospitalIds.includes(hospital._id);
+  const currentKey = hasSelection ? `${treatment._id}:${hospital._id}` : "";
+
+  const resetSelections = () => {
+    setSelectedHotel([]);
+    setSelectedDateAndTime([]);
+    setSelectedTravelManagement([]);
+    setSelectedPlan([]);
+  };
+
+  // Resume a booking in progress after a refresh; start fresh for a different treatment or hospital
+  useEffect(() => {
+    if (!currentKey) return;
+    const { selectedDateAndTime } = useAppStore.getState();
+    const appointmentInPast =
+      typeof selectedDateAndTime === "string" && new Date(selectedDateAndTime) < new Date();
+    if (bookingKey !== currentKey || appointmentInPast) {
+      resetSelections();
+      setBookingKey(currentKey);
+      setBookingStep(1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentKey]);
+
+  const goToStep = (step) => {
+    setBookingStep(Math.min(Math.max(step, 1), 5));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const handleNextStep = () => {
     // Read the latest selections: child steps update the store right before calling this
-    const { selectedHotel, selectedDateAndTime, selectedTravelManagement, selectedPlan } = useAppStore.getState();
-    if (currentStep === 2 && !selectedHotel?._id) {
-     toast("Hotel selection skipped");
+    const { selectedDateAndTime } = useAppStore.getState();
+    if (currentStep === 1 && (!selectedDateAndTime || selectedDateAndTime.length === 0)) {
+      toast.error("Please confirm a date and time");
+      return;
     }
-     
-    if(currentStep==1){
-         if(!selectedDateAndTime || selectedDateAndTime.length==0){
-           toast.error("Please confirm a date and time");
-           return;
-         }
-    }
-
-    if(currentStep==3){
-        if(!(selectedTravelManagement?.travelMode)){
-          toast("Travel arrangements skipped");
-        }
-    }
-
-    if(currentStep==4){
-         if(!(selectedPlan?.insurance_id)){
-            toast("Insurance skipped");
-         }
-    }
-
-    setCurrentStep(prev => Math.min(prev + 1, 5));
+    goToStep(currentStep + 1);
   };
 
-  const handlePrevStep = () => {
-    if(currentStep===3){
-        setSelectedHotel([]);
-    }
-    setCurrentStep(prev => Math.max(prev - 1, 1));
+  const handlePrevStep = () => goToStep(currentStep - 1);
+
+  const handleBooked = (booking) => {
+    resetSelections();
+    setBookingKey("");
+    setBookingStep(1);
+    setConfirmedBooking(booking);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  // Optional steps say "Skip" until something is chosen
+  const stepHasChoice = {
+    2: Boolean(selectedHotel?._id),
+    3: Boolean(selectedTravelManagement?.travelMode),
+    4: Boolean(selectedPlan?._id),
+  };
+  const nextLabel =
+    currentStep === 1 ? 'Continue' : stepHasChoice[currentStep] ? 'Continue' : 'Skip this step';
+
+  if (confirmedBooking) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
+            <BookingConfirmation booking={confirmedBooking} />
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!hasSelection || !hospitalOffersTreatment) {
     return (
@@ -119,7 +144,18 @@ const MedicalBooking = () => {
         />
 
         {/* Stepper */}
-        <Stepper currentStep={currentStep} />
+        <Stepper currentStep={currentStep} onStepClick={goToStep} />
+
+        {/* Compact summary on phones and tablets; the sidebar takes over on large screens */}
+        {currentStep < 5 && (
+          <details className="lg:hidden mb-6 group rounded-2xl bg-white border border-gray-100 shadow-sm">
+            <summary className="flex items-center justify-between gap-3 cursor-pointer list-none px-4 py-3 font-medium text-gray-900">
+              Booking summary
+              <ChevronDown className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180" />
+            </summary>
+            <BookingSummary currentStep={currentStep} onEditStep={goToStep} className="shadow-none border-0 rounded-t-none pt-0" />
+          </details>
+        )}
 
 
         {/* 
@@ -168,10 +204,11 @@ const MedicalBooking = () => {
 
             {/* Step 5: Review & Payment */}
             {currentStep === 5 && (
-              <BookingReview onEditBooking={() => setCurrentStep(1)} />
+              <BookingReview onEditStep={goToStep} onBooked={handleBooked} />
             )}
 
             {/* Navigation buttons */}
+            {currentStep < 5 && (
             <div className="flex justify-between gap-3 mt-8">
               {currentStep > 1 && (
                 <button
@@ -188,11 +225,12 @@ const MedicalBooking = () => {
                   onClick={handleNextStep}
                   className="ml-auto flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
                 >
-                  {currentStep === 1 ? 'Select hotel' : 'Next'}
+                  {nextLabel}
                   <ArrowRight className="w-4 h-4" />
                 </button>
               )}
             </div>
+            )}
           </div>
 
           {/* 
@@ -200,15 +238,15 @@ const MedicalBooking = () => {
             We check: currentStep !== 2
           */}
           {currentStep !== 2 && currentStep!==5 && (
-            <div className="lg:col-span-1">
-              <TreatmentCard treatment={treatment}/>
-              <HospitalCard hospital={hospital}/>
+            <div className="hidden lg:block lg:col-span-1">
+              <div className="sticky top-32 space-y-6">
+              <BookingSummary currentStep={currentStep} onEditStep={goToStep} />
 
               {/* Contact and Support */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-6 bg-white rounded-2xl shadow-lg p-6"
+                className="bg-white rounded-2xl shadow-lg p-6"
               >
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Need Help?</h3>
                 <div className="space-y-4">
@@ -249,6 +287,7 @@ const MedicalBooking = () => {
                   </div>
                 </div>
               </motion.div>
+              </div>
             </div>
           )}
         </div>

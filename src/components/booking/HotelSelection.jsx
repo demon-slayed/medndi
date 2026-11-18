@@ -14,7 +14,7 @@ const HotelSelection = ({ handleNextStep }) => {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const { setSelectedHotel, hospital, auth } = useAppStore();
+  const { selectedHotel, setSelectedHotel, hospital } = useAppStore();
 
   const handleHotelSelect = (hotel) => {
     setSelectedHotel(hotel);
@@ -113,7 +113,9 @@ const HotelSelection = ({ handleNextStep }) => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 onHoverStart={() => setHoveredIndex(index)}
                 onHoverEnd={() => setHoveredIndex(null)}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+                className={`group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 ${
+                  selectedHotel?._id === hotel?._id ? "ring-4 ring-[#3252DF]/30 border-2 border-[#3252DF]" : ""
+                }`}
               >
                 {/* Image Container */}
                 <div className="relative h-48 overflow-hidden">
@@ -177,8 +179,17 @@ const HotelSelection = ({ handleNextStep }) => {
                       className="flex items-center gap-1 text-[#3252DF] text-sm font-medium group-hover:gap-2 transition-all duration-300"
                       onClick={() => handleHotelSelect(hotel)}
                     >
-                      Select Hotel
-                      <ArrowRight className="w-4 h-4" />
+                      {selectedHotel?._id === hotel?._id ? (
+                        <>
+                          <Check className="w-4 h-4" />
+                          Selected · continue
+                        </>
+                      ) : (
+                        <>
+                          Select Hotel
+                          <ArrowRight className="w-4 h-4" />
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>

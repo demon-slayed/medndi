@@ -10,13 +10,13 @@ import {
   CircleDot,
 } from "lucide-react";
 
-const Stepper = ({ currentStep }) => {
+const Stepper = ({ currentStep, onStepClick }) => {
   const steps = [
     {
       number: 1,
-      title: "Treatment",
+      title: "Date",
       icon: ClipboardCheck,
-      description: "Select your treatment and date",
+      description: "Pick your appointment",
     },
     {
       number: 2,
@@ -80,12 +80,18 @@ const Stepper = ({ currentStep }) => {
                 />
               )}
 
-              <div
+              <button
+                type="button"
+                disabled={!isDone || !onStepClick}
+                onClick={() => onStepClick?.(step.number)}
+                aria-label={isDone ? `Go back to ${step.title}` : step.title}
                 className={`relative z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
                   isActive
                     ? "bg-gradient-to-r from-[#3252DF] to-[#4466ff] border-[#3252DF] text-white shadow-md shadow-blue-200"
                     : "bg-white border-gray-300 text-gray-400"
-                } ${isCurrentStep ? "ring-4 ring-blue-100" : ""}`}
+                } ${isCurrentStep ? "ring-4 ring-blue-100" : ""} ${
+                  isDone && onStepClick ? "cursor-pointer hover:scale-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200" : "cursor-default"
+                }`}
               >
                 {isDone ? (
                   <Check className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -94,7 +100,7 @@ const Stepper = ({ currentStep }) => {
                 ) : (
                   <StepIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 )}
-              </div>
+              </button>
 
               <span
                 className={`mt-2 text-[11px] sm:text-sm font-semibold leading-tight truncate max-w-full px-0.5 ${

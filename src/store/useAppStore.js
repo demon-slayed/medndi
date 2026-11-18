@@ -36,6 +36,13 @@ const useAppStore = create(
       selectedHotel: [],
       setSelectedHotel: (selectedHotel) => set({ selectedHotel }),
 
+      // Booking in progress: which treatment+hospital it's for and the step reached,
+      // so a refresh mid-booking resumes instead of starting over
+      bookingKey: "",
+      setBookingKey: (bookingKey) => set({ bookingKey }),
+      bookingStep: 1,
+      setBookingStep: (bookingStep) => set({ bookingStep }),
+
       //url
       redirectPath:"",
       setRedirectPath: (redirectPath) => set({ redirectPath }),
@@ -47,12 +54,26 @@ const useAppStore = create(
         const {
           treatment,
           hospital,
-          auth
+          auth,
+          selectedDateAndTime,
+          selectedHotel,
+          selectedTravelManagement,
+          selectedPlan,
+          bookingKey,
+          bookingStep,
+          redirectPath,
         } = state;
         return {
           treatment,
           hospital,
-          auth
+          auth,
+          selectedDateAndTime,
+          selectedHotel,
+          selectedTravelManagement,
+          selectedPlan,
+          bookingKey,
+          bookingStep,
+          redirectPath,
         };
       },
     }
