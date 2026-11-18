@@ -30,6 +30,10 @@ if (!fs.existsSync(uploadsDir)) {
 
 
 const app = express();
+// Behind nginx: use X-Forwarded-Proto/For so upload URLs are https and client IPs are real
+if (process.env.TRUST_PROXY) {
+  app.set('trust proxy', Number(process.env.TRUST_PROXY) || process.env.TRUST_PROXY);
+}
 app.use(cors({
     origin: [
       "http://localhost:5173", "http://localhost:4173", "https://arogini-frontend-z4pz.vercel.app", "https://arogini-frontend-7skl.vercel.app", "https://arogini-frontend-z4pz-git-viv-vivek-ranjans-projects-ece138e0.vercel.app",
