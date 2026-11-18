@@ -1,0 +1,183 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
+import { 
+  Facebook, Twitter, Instagram, Linkedin,
+  MapPin, Phone, Mail, Globe, ArrowUpRight,
+  Shield, Award, Heart
+} from 'lucide-react';
+import AroginiLogo from '@/assets/icons/Aroginilogo';
+import { useNavigate } from 'react-router-dom';
+
+const Footer = () => {
+  const navigate = useNavigate()
+  const handleClickGetFreeConsultation = ()=>{
+       navigate('/contact');
+  }
+  const forPatients = [
+    { name: "Find Hospitals", link: "#" },
+    { name: "Book Consultation", link: "/booking" },
+    { name: "Patient Success Stories", link: "#" },
+    { name: "Treatment Cost Guide", link: "#" },
+    { name: "Insurance Coverage", link: "#" }
+  ];
+  
+  const treatments = [
+    { name: "Bariatric Surgery", link: "#" },
+    { name: "Orthopedic Care", link: "#" },
+    { name: "Cardiac Procedures", link: "#" },
+    { name: "Cancer Treatment", link: "#" },
+    { name: "View All Treatments", link: "#" }
+  ];
+  
+  const resources = [
+    { name: "Medical Tourism Guide", link: "#" },
+    { name: "Health Blog", link: "#" },
+    { name: "Hospital Comparison", link: "#" },
+    { name: "Treatment Videos", link: "#" },
+    { name: "Medical Visa Help", link: "#" }
+  ];
+
+  const contactInfo = [
+    { icon: Phone, info: "+1 800 123 4567", label: "24/7 Support" },
+    { icon: Mail, info: "care@arogini.com", label: "Email Us" },
+    { icon: MapPin, info: "Mumbai, India", label: "Head Office" }
+  ];
+
+  return (
+    <div className="relative bg-gradient-to-b from-white to-blue-50">
+      {/* Top Border Accent */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3252DF] to-[#4466ff]" />
+
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 ">
+          {/* Brand Column */}
+          <div className="space-y-6 max-sm:items-center max-sm:text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <AroginiLogo/>
+              <p className="mt-6 text-gray-600 leading-relaxed">
+                Connecting patients with world-class healthcare facilities and expert medical professionals for affordable, quality treatments.
+              </p>
+            </motion.div>
+
+            {/* Accreditations */}
+            <div className="flex items-center gap-4 max-sm:text-center max-sm:justify-center">
+              <div className="flex items-center gap-2 text-[#3252DF]">
+                <Shield className="w-5 h-5" />
+                <span className="text-sm font-medium">JCI Accredited</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#3252DF]">
+                <Award className="w-5 h-5" />
+                <span className="text-sm font-medium">ISO 9001</span>
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-4 max-sm:text-center max-sm:justify-center">
+              {[Twitter, Facebook, Instagram, Linkedin].map((Icon, idx) => (
+                <motion.a
+                  key={idx}
+                  href="#"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-2 rounded-full bg-blue-50 text-[#3252DF] hover:bg-[#3252DF] hover:text-white transition-colors"
+                >
+                  <Icon className="w-5 h-5" />
+                </motion.a>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Links Columns */}
+          <div className="space-y-6 max-sm:text-center max-sm:justify-center">
+            <h3 className="text-lg font-semibold text-gray-900">For Patients</h3>
+            <ul className="space-y-4 flex flex-col max-sm:items-center">
+              {forPatients.map((item, idx) => (
+                <motion.li
+                  key={idx}
+                  whileHover={{ x: 5 }}
+                  className="flex items-center gap-2 group"
+                >
+                  <Heart className="w-4 h-4 text-[#3252DF] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <a href={item.link} className="text-gray-600 hover:text-[#3252DF] transition-colors">
+                    {item.name}
+                  </a>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-gray-900 max-sm:text-center">Treatments</h3>
+            <ul className="space-y-4 flex flex-col max-sm:items-center">
+              {treatments.map((item, idx) => (
+                <motion.li
+                  key={idx}
+                  whileHover={{ x: 5 }}
+                  className="flex items-center gap-2 group"
+                >
+                  <Heart className="w-4 h-4 text-[#3252DF] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Link key={idx} to={item.link} className="text-gray-600 hover:text-[#3252DF] transition-colors">
+                    {item.name}
+                  </Link>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Column */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-gray-900 max-sm:text-center">Contact Us</h3>
+            <div className="space-y-4 flex flex-col max-sm:items-center">
+              {contactInfo.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  whileHover={{ x: 5 }}
+                  className="flex items-start gap-3"
+                >
+                  <div className="p-2 rounded-lg bg-blue-50 text-[#3252DF]">
+                    <item.icon className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{item.info}</p>
+                    <p className="text-sm text-gray-500">{item.label}</p>
+                  </div>
+                </motion.div>
+              ))}
+
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="mt-4 w-full py-3 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:shadow-lg transition-shadow"
+                onClick={handleClickGetFreeConsultation}
+              >
+                Get Free Consultation
+                <ArrowUpRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-16 pt-8 border-t border-gray-200">
+          <div className="flex flex-wrap items-center justify-between gap-4 max-sm:justify-center">
+            <p className="text-sm text-gray-600">
+              © {new Date().getFullYear()} Arogini. All rights reserved.
+            </p>
+            <div className="flex items-center gap-6">
+              <a href="#" className="text-sm text-gray-600 hover:text-[#3252DF]">Privacy Policy</a>
+              <a href="#" className="text-sm text-gray-600 hover:text-[#3252DF]">Terms of Service</a>
+              <a href="#" className="text-sm text-gray-600 hover:text-[#3252DF]">Cookie Settings</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Footer;
