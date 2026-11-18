@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Phone, Home, Stethoscope } from 'lucide-react';
 import { BreadcrumbItem } from '@/pages/TreatmentHospital/components/TreatmentIfo';
+import PageHeader from "@/components/PageHeader";
 import SearchCard from '@/components/SearchCard';
 import axios from 'axios';
 import LoadingSkelton from '@/components/LoadingSkelton';
@@ -80,9 +81,9 @@ const TreatmentCards = () => {
     <motion.nav
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100 max-sm:mt-3"
+      className="relative z-10 bg-white/80 backdrop-blur-lg border-b border-gray-100"
     >
-      <div className="max-w-7xl mx-auto px-8 max-sm:px-5 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 max-sm:gap-0 flex-wrap text-sm">
             <BreadcrumbItem><Home className="w-4 h-4" onClick={()=>{navigate('/')}}/></BreadcrumbItem>
@@ -127,30 +128,18 @@ const TreatmentCards = () => {
         />
       </div>
 
-      <div className="relative px-6 md:px-16 lg:px-40 py-16 lg:py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-poppins font-bold text-5xl max-lg:text-4xl max-md:text-3xl max-sm:text-[26px] text-[#283841]">
-            Available{" "}
-            <span className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] bg-clip-text text-transparent">
-              Treatments at MedNdi
-            </span>
-          </h2>
-          <p className="mt-4 text-gray-600 max-w-[80%] mx-auto max-sm:text-sm">
-            Discover world-class medical treatments with cutting-edge technology and expert healthcare professionals across India
-          </p>
-        </motion.div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
+        <PageHeader
+          title="Available Treatments"
+          subtitle="Compare procedures offered by accredited hospitals in Delhi NCR, Bengaluru and Pune, with indicative costs in ₹."
+        />
 
         <SearchCard
           value={searchText}
           onChange={setSearchText}
           onSubmit={applySearch}
           onClear={clearSearch}
-          subtitle={query ? `Showing results for "${query}"` : "Find the best treatment options worldwide"}
+          subtitle={query ? `Showing results for "${query}"` : undefined}
           resultCount={loading ? undefined : visibleTreatments.length}
         />
 
@@ -158,7 +147,7 @@ const TreatmentCards = () => {
           variants={containerVariants}
           initial="visible"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
         >
         {
           loading ? (

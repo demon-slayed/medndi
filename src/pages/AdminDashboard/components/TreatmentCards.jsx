@@ -10,6 +10,7 @@ import {
   Clock,
   IndianRupee,
   CheckCircle2,
+  Pencil,
 } from "lucide-react";
 
 import axios from "axios";
@@ -58,11 +59,11 @@ const TreatmentCards = ({ onTreatmentSelect, refreshKey }) => {
 
   return (
     // <div className="relative bg-gradient-to-b from-[#ECF1FF] to-white overflow-hidden min-h-screen mt-16">
-    <div className="relative w-full lg:py-24">
+    <div className="relative w-full">
       <motion.div
         variants={containerVariants}
         whileInView="visible"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-10"
       >
         {loading ? (
           <LoadingSkelton length={12} />
@@ -74,7 +75,7 @@ const TreatmentCards = ({ onTreatmentSelect, refreshKey }) => {
               variants={itemVariants}
               onHoverStart={() => setHoveredIndex(index)}
               onHoverEnd={() => setHoveredIndex(null)}
-              className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
+              className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
             >
               {/* Image Container */}
               <div className="relative h-48 overflow-hidden">
@@ -94,7 +95,7 @@ const TreatmentCards = ({ onTreatmentSelect, refreshKey }) => {
               </div>
 
               {/* Content */}
-              <div className="p-6">
+              <div className="p-5 sm:p-6">
                 <h3 className="font-poppins font-semibold text-xl text-[#152C5B] mb-2">
                   {treatment?.treatment_name}
                 </h3>
@@ -108,8 +109,8 @@ const TreatmentCards = ({ onTreatmentSelect, refreshKey }) => {
                   <div className="flex items-center gap-2">
                     <IndianRupee className="w-4 h-4 text-gray-500" />
                     <span className="text-sm text-gray-600">
-                      {treatment?.estimated_cost?.min}-
-                      {treatment?.estimated_cost?.max}
+                      {Number(treatment?.estimated_cost?.min || 0).toLocaleString("en-IN")} –{" "}
+                      {Number(treatment?.estimated_cost?.max || 0).toLocaleString("en-IN")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -131,19 +132,21 @@ const TreatmentCards = ({ onTreatmentSelect, refreshKey }) => {
                   ))}
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-green-500" />
                     <span className="text-sm text-gray-600">
                       Success Rate: {treatment?.success_rate}
                     </span>
                   </div>
 
-                  <button className="px-5 py-2.5 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-full text-sm font-semibold flex items-center gap-2 hover:shadow-xl hover:scale-[1.03] transition-all duration-200 ease-in-out"
-                   onClick={()=>{onTreatmentSelect(treatment)}}
+                  <button
+                    type="button"
+                    className="inline-flex shrink-0 items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white text-sm font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
+                    onClick={() => onTreatmentSelect(treatment)}
                   >
+                    <Pencil className="w-4 h-4" />
                     Edit
-                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>

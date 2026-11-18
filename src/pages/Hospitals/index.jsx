@@ -13,6 +13,8 @@ import HospitalCard from "@/components/HospitalCard";
 import Layout from "@/components/Layout/Layout";
 import axios from "axios";
 import LoadingSkelton from "@/components/LoadingSkelton";
+import PageHeader from "@/components/PageHeader";
+import { useSearchParams } from "react-router-dom";
 
 const SORT_OPTIONS = [
   "Recommended",
@@ -20,6 +22,8 @@ const SORT_OPTIONS = [
   "Price: High to Low",
   "Rating",
 ];
+
+const NCR_TERMS = ["delhi", "delhi ncr", "ncr", "new delhi"];
 
 const sortHospitals = (list, sortBy) => {
   const sorted = [...list];
@@ -40,7 +44,14 @@ const Hospitals = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [search, setSearch] = useState("");
+  const [searchParams] = useSearchParams();
+  const queryParam = searchParams.get("q") ?? "";
+  const [search, setSearch] = useState(queryParam);
+
+  // Keep the search box in sync with ?q= (e.g. the landing page city links)
+  useEffect(() => {
+    setSearch(queryParam);
+  }, [queryParam]);
   const [sortBy, setSortBy] = useState("Recommended");
   const [showSortMenu, setShowSortMenu] = useState(false);
 
@@ -66,11 +77,13 @@ const Hospitals = () => {
 
   const visibleHospitals = useMemo(() => {
     const q = search.trim().toLowerCase();
+    // "Delhi" / "Delhi NCR" should also cover Gurugram and Noida addresses
+    const terms = NCR_TERMS.includes(q) ? ["delhi", "gurugram", "noida"] : [q];
     const filtered = q
       ? hospitals.filter((h) =>
           [h?.hospital_name, h?.address, h?.accreditation, ...(h?.specialties ?? [])]
             .filter(Boolean)
-            .some((field) => String(field).toLowerCase().includes(q))
+            .some((field) => terms.some((t) => String(field).toLowerCase().includes(t)))
         )
       : hospitals;
     return sortHospitals(filtered, sortBy);
@@ -78,43 +91,22 @@ const Hospitals = () => {
 
   return (
     <Layout>
-      <div className="px-6 md:px-16 p-10 lg:px-24 bg-gradient-to-b from-white to-blue-50 mt-24">
+      <div className="min-h-screen bg-gradient-to-b from-white to-blue-50 px-4 sm:px-6 py-8 md:py-10">
         {/* Header Section */}
-        <div className="max-w-7xl mx-auto mb-12">
-          {/* Title and Description */}
-          <div className="flex items-start justify-between mb-8 flex-wrap gap-3">
-            <div className="space-y-4">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-3"
-              >
-                <div className="h-10 w-1.5 rounded-full bg-gradient-to-b from-[#3252DF] to-[#4466ff]" />
-                <h2 className="text-3xl font-bold text-gray-900">
-                  Available Hospitals
-                </h2>
-              </motion.div>
-              <p className="text-gray-600 max-w-2xl">
-                Explore our network of accredited hospitals offering
-                world-class medical treatments with experienced healthcare
-                professionals.
-              </p>
-            </div>
-
-            {!loading && hospitals.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-3"
-              >
+        <div className="max-w-7xl mx-auto mb-8">
+          <PageHeader
+            title="Available Hospitals"
+            subtitle="Explore accredited hospitals in Delhi NCR, Bengaluru and Pune, with experienced specialists and indicative treatment costs."
+            actions={
+              !loading && hospitals.length > 0 && (
                 <div className="bg-blue-50 px-4 py-2 rounded-lg">
                   <span className="text-[#3252DF] font-semibold">
                     {hospitals.length} {hospitals.length === 1 ? "Hospital" : "Hospitals"}
                   </span>
                 </div>
-              </motion.div>
-            )}
-          </div>
+              )
+            }
+          />
 
           {/* Search and Sort Bar */}
           <motion.div
@@ -124,7 +116,7 @@ const Hospitals = () => {
           >
             <div className="flex flex-wrap items-center justify-between gap-4">
               {/* Quick Stats */}
-              <div className="flex flex-wrap items-center gap-6">
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-[#3252DF]" />
                   <span className="text-gray-700">Accredited</span>
@@ -140,15 +132,16 @@ const Hospitals = () => {
               </div>
 
               {/* Controls */}
-              <div className="flex items-center flex-wrap gap-4">
+              <div className="flex items-center flex-wrap gap-3 w-full lg:w-auto">
                 {/* Search */}
-                <div className="relative">
+                <div className="relative flex-1 min-w-0 sm:flex-none">
                   <input
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search hospitals, cities, specialties..."
-                    className="w-64 pl-10 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3252DF]/20"
+                    aria-label="Search hospitals"
+                    className="w-full sm:w-64 pl-10 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3252DF]/20"
                   />
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   {search && (
@@ -172,7 +165,7 @@ const Hospitals = () => {
                     className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100"
                   >
                     <SlidersHorizontal className="w-4 h-4 text-[#3252DF]" />
-                    <span>Sort by: </span>
+                    <span className="max-sm:hidden">Sort by: </span>
                     <span className="font-medium">{sortBy}</span>
                     <ChevronDown className="w-4 h-4" />
                   </motion.button>
@@ -213,7 +206,7 @@ const Hospitals = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto"
         >
           {loading ? (
             <LoadingSkelton length={6} />

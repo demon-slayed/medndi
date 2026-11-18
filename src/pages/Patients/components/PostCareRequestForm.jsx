@@ -3,6 +3,18 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import useAppStore from "@/store/useAppStore";
 import { formatDateTime } from "@/components/booking/formatDateTime";
+import {
+  AlertCircle,
+  CheckCircle2,
+  FileText,
+  HeartPulse,
+  Loader2,
+  MessageSquare,
+  Plane,
+  Send,
+  Stethoscope,
+  User,
+} from "lucide-react";
 
 const PostCareRequestForm = () => {
   const [applications, setApplications] = useState([]);
@@ -169,7 +181,7 @@ const PostCareRequestForm = () => {
           needs_accommodation_help: formData.needsAccommodationHelp === 'Yes',
           additional_notes: formData.additionalNotes,
           report_url: reportUrl,                // Attach file URLs here
-          prescription_url: prescriptionUrl     // 👈 make sure backend handles these fields
+          prescription_url: prescriptionUrl
         },
         { withCredentials: true }
       );
@@ -192,21 +204,34 @@ const PostCareRequestForm = () => {
   
 
   if (loading) {
-    return <div className="text-center py-10">Loading form data...</div>;
+    return (
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8 animate-pulse space-y-4">
+        <div className="h-6 bg-gray-200 rounded w-1/3" />
+        <div className="h-4 bg-gray-200 rounded w-2/3" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="h-10 bg-gray-100 rounded-lg" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (!error && applications.length === 0) {
     return (
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
-        <h3 className="text-xl font-semibold text-blue-800">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 text-center">
+        <div className="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center mx-auto">
+          <HeartPulse className="w-7 h-7 text-[#3252DF]" />
+        </div>
+        <h3 className="mt-4 text-xl font-semibold text-gray-900">
           Post-care support starts after your treatment booking
         </h3>
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-gray-600 max-w-md mx-auto">
           Once you have a booking, you can request follow-ups, physiotherapy and more here.
         </p>
         <Link
           to="/treatments"
-          className="mt-6 inline-block px-6 py-2.5 rounded-lg bg-[#3252DF] text-white font-medium hover:bg-[#2341CE]"
+          className="mt-6 inline-flex items-center justify-center px-6 py-2.5 rounded-lg bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
         >
           Browse treatments
         </Link>
@@ -216,13 +241,15 @@ const PostCareRequestForm = () => {
 
   if (error && !success) {
     return (
-      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-        {error}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-4 rounded-xl">
+        <AlertCircle className="w-5 h-5 shrink-0" />
+        <p className="flex-1">{error}</p>
         <button
-          className="ml-4 text-red-500 underline"
+          type="button"
+          className="self-start sm:self-auto px-4 py-2 rounded-lg border border-red-300 text-red-700 font-medium hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
           onClick={() => setReloadKey((k) => k + 1)}
         >
-          Try Again
+          Try again
         </button>
       </div>
     );
@@ -230,544 +257,204 @@ const PostCareRequestForm = () => {
 
   if (success) {
     return (
-      <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-8 rounded text-center">
-        <h3 className="text-xl font-bold mb-2">
-          Post-Care Request Submitted Successfully!
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-10 text-center">
+        <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto">
+          <CheckCircle2 className="w-8 h-8 text-green-600" />
+        </div>
+        <h3 className="mt-4 text-xl font-semibold text-gray-900">
+          Post-care request submitted
         </h3>
-        <p>
+        <p className="mt-2 text-gray-600 max-w-md mx-auto">
           We&apos;ve received your request and will contact you shortly to confirm
           the details.
         </p>
         <button
-          className="mt-4 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
+          type="button"
+          className="mt-6 px-6 py-2.5 rounded-lg border-2 border-[#3252DF] text-[#3252DF] font-medium hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
           onClick={() => window.location.reload()}
         >
-          Submit Another Request
+          Submit another request
         </button>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center text-blue-800 mb-6">
-        🧾 Post-Care Request Form
-      </h2>
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-8">
+      <div className="mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+          Request post-care support
+        </h2>
+        <p className="mt-1 text-sm text-gray-600">
+          Tell us what you need after your treatment and our care team will arrange it. Fields marked * are required.
+        </p>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Patient Information Section */}
-        <div className="bg-blue-50 p-4 rounded-md">
-          <h3 className="text-xl font-semibold text-blue-800 mb-4">
-            👤 Patient Information
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name*
-              </label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Date of Birth*
-              </label>
-              <input
-                type="date"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Gender*
-              </label>
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="">Select gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-                <option value="Prefer not to say">Prefer not to say</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email*
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number*
-              </label>
-              <input
-                type="tel"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Preferred Language*
-              </label>
-              <input
-                type="text"
-                name="preferredLanguage"
-                value={formData.preferredLanguage}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Home Country / City*
-              </label>
-              <input
-                type="text"
-                name="homeCountryCity"
-                value={formData.homeCountryCity}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Emergency Contact Name & Number*
-              </label>
-              <input
-                type="text"
-                name="emergencyContact"
-                value={formData.emergencyContact}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-          </div>
-        </div>
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <FormSection icon={User} title="Patient information">
+          <Field label="Full name" htmlFor="pc-fullName" required>
+            <input id="pc-fullName" type="text" name="fullName" value={formData.fullName} onChange={handleChange} required autoComplete="name" className={inputCls} />
+          </Field>
+          <Field label="Date of birth" htmlFor="pc-dob" required>
+            <input id="pc-dob" type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} required className={inputCls} />
+          </Field>
+          <Field label="Gender" htmlFor="pc-gender" required>
+            <select id="pc-gender" name="gender" value={formData.gender} onChange={handleChange} required className={inputCls}>
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+          </Field>
+          <Field label="Email" htmlFor="pc-email" required>
+            <input id="pc-email" type="email" name="email" value={formData.email} onChange={handleChange} required autoComplete="email" className={inputCls} />
+          </Field>
+          <Field label="Phone number" htmlFor="pc-phone" required>
+            <input id="pc-phone" type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required autoComplete="tel" placeholder="+91 98765 43210" className={inputCls} />
+          </Field>
+          <Field label="Preferred language" htmlFor="pc-lang" required>
+            <input id="pc-lang" type="text" name="preferredLanguage" value={formData.preferredLanguage} onChange={handleChange} required placeholder="e.g. English" className={inputCls} />
+          </Field>
+          <Field label="Home country / city" htmlFor="pc-home" required>
+            <input id="pc-home" type="text" name="homeCountryCity" value={formData.homeCountryCity} onChange={handleChange} required placeholder="e.g. Nairobi, Kenya" className={inputCls} />
+          </Field>
+          <Field label="Emergency contact name & number" htmlFor="pc-emergency" required>
+            <input id="pc-emergency" type="text" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} required className={inputCls} />
+          </Field>
+        </FormSection>
 
-        {/* Treatment Information Section */}
-        <div className="bg-green-50 p-4 rounded-md">
-          <h3 className="text-xl font-semibold text-green-800 mb-4">
-            🏥 Treatment Information
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Select Your Procedure*
-              </label>
-              <select
-                name="procedureId"
-                value={formData.procedureId}
-                onChange={handleApplicationSelect}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="">Select your procedure</option>
-                {applications.map((app) => (
-                  <option key={app._id} value={app._id}>
-                    {app.treatment_id?.treatment_name || "Unknown Treatment"} -{" "}
-                    {formatDateTime(app.treatmentdateandtime)}
-                  </option>
-                ))}
-              </select>
-            </div>
+        <FormSection icon={Stethoscope} title="Treatment information">
+          <Field label="Select your procedure" htmlFor="pc-procedure" required className="md:col-span-2">
+            <select id="pc-procedure" name="procedureId" value={formData.procedureId} onChange={handleApplicationSelect} required className={inputCls}>
+              <option value="">Select your procedure</option>
+              {applications.map((app) => (
+                <option key={app._id} value={app._id}>
+                  {app.treatment_id?.treatment_name || "Unknown Treatment"} -{" "}
+                  {formatDateTime(app.treatmentdateandtime)}
+                </option>
+              ))}
+            </select>
+          </Field>
 
-            {selectedApplication && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Procedure Date
-                  </label>
-                  <div className="p-2 bg-white border border-gray-300 rounded">
-                    {formatDateTime(selectedApplication.treatmentdateandtime)}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Treating Hospital / Clinic
-                  </label>
-                  <div className="p-2 bg-white border border-gray-300 rounded">
-                    {selectedApplication.hospital_id?.hospital_name ||
-                      "Not specified"}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Was this part of medical tourism?*
-                  </label>
-                  <select
-                    name="wasMedicalTourism"
-                    value={formData.wasMedicalTourism}
-                    onChange={handleChange}
-                    required
-                    className="w-full p-2 border border-gray-300 rounded"
-                  >
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Treatment Location
-                  </label>
-                  <div className="p-2 bg-white border border-gray-300 rounded">
-                    {selectedApplication.hospital_id?.address ||
-                      "Not specified"}
-                  </div>
-                </div>
-              </>
+          {selectedApplication && (
+            <>
+              <Field label="Procedure date">
+                <div className={readOnlyCls}>{formatDateTime(selectedApplication.treatmentdateandtime)}</div>
+              </Field>
+              <Field label="Treating hospital">
+                <div className={readOnlyCls}>{selectedApplication.hospital_id?.hospital_name || "Not specified"}</div>
+              </Field>
+              <Field label="Was this part of medical tourism?" htmlFor="pc-tourism" required>
+                <select id="pc-tourism" name="wasMedicalTourism" value={formData.wasMedicalTourism} onChange={handleChange} required className={inputCls}>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </Field>
+              <Field label="Treatment location">
+                <div className={readOnlyCls}>{selectedApplication.hospital_id?.address || "Not specified"}</div>
+              </Field>
+            </>
+          )}
+        </FormSection>
+
+        <FormSection icon={HeartPulse} title="Post-care needs">
+          <Field label="Type of post-care required" htmlFor="pc-type" required className="md:col-span-2">
+            <select id="pc-type" name="postCareTypeId" value={formData.postCareTypeId} onChange={handleChange} required className={inputCls}>
+              <option value="">Select post-care service</option>
+              {postCareServices.map((service) => (
+                <option key={service._id} value={service._id}>
+                  {service.service_name} - {service.service_type} (₹
+                  {service.cost?.toLocaleString("en-IN")})
+                </option>
+              ))}
+            </select>
+            {formData.postCareTypeId && (
+              <p className="mt-2 text-sm text-gray-600">
+                {postCareServices.find((s) => s._id === formData.postCareTypeId)?.description}
+              </p>
             )}
+          </Field>
+
+          <Field label="Preferred follow-up date(s)" htmlFor="pc-dates" required>
+            <input id="pc-dates" type="text" name="preferredFollowUpDates" value={formData.preferredFollowUpDates} onChange={handleChange} placeholder="e.g. 5–10 May" required className={inputCls} />
+          </Field>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Time zone" htmlFor="pc-tz" required>
+              <input id="pc-tz" type="text" name="preferredTimeZone" value={formData.preferredTimeZone} onChange={handleChange} placeholder="e.g. IST, GMT+3" required className={inputCls} />
+            </Field>
+            <Field label="Time range" htmlFor="pc-range" required>
+              <input id="pc-range" type="text" name="preferredTimeRange" value={formData.preferredTimeRange} onChange={handleChange} placeholder="e.g. 9 AM – 5 PM" required className={inputCls} />
+            </Field>
           </div>
-        </div>
 
-        {/* Post-Care Needs Section */}
-        <div className="bg-purple-50 p-4 rounded-md">
-          <h3 className="text-xl font-semibold text-purple-800 mb-4">
-            💊 Post-Care Needs
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Type of Post-Care Required*
-              </label>
-              <select
-                name="postCareTypeId"
-                value={formData.postCareTypeId}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="">Select post-care service</option>
-                {postCareServices.map((service) => (
-                  <option key={service._id} value={service._id}>
-                    {service.service_name} - {service.service_type} (₹
-                    {service.cost?.toLocaleString()})
-                  </option>
-                ))}
-              </select>
-              {formData.postCareTypeId && (
-                <div className="mt-2 text-sm text-gray-600">
-                  {
-                    postCareServices.find(
-                      (s) => s._id === formData.postCareTypeId
-                    )?.description
-                  }
-                </div>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Preferred Follow-Up Date(s)*
-              </label>
-              <input
-                type="text"
-                name="preferredFollowUpDates"
-                value={formData.preferredFollowUpDates}
-                onChange={handleChange}
-                placeholder="e.g., May 5-10, 2025"
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-
-            <div className="flex space-x-2">
-              <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Preferred Time Zone*
-                </label>
-                <input
-                  type="text"
-                  name="preferredTimeZone"
-                  value={formData.preferredTimeZone}
-                  onChange={handleChange}
-                  placeholder="e.g., GMT+1, EST"
-                  required
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
+          <Field label="Do you need language support for post-care?" required className="md:col-span-2">
+            <YesNo name="needsLanguageSupport" value={formData.needsLanguageSupport} onChange={handleChange} />
+            {formData.needsLanguageSupport === "Yes" && (
+              <div className="mt-3">
+                <label htmlFor="pc-lang-specify" className={labelCls}>Which language?</label>
+                <input id="pc-lang-specify" type="text" name="languageSupportSpecify" value={formData.languageSupportSpecify} onChange={handleChange} required={formData.needsLanguageSupport === "Yes"} className={inputCls} />
               </div>
-              <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Time Range*
-                </label>
-                <input
-                  type="text"
-                  name="preferredTimeRange"
-                  value={formData.preferredTimeRange}
-                  onChange={handleChange}
-                  placeholder="e.g., 9AM-5PM"
-                  required
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </div>
-            </div>
+            )}
+          </Field>
+        </FormSection>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Do you need language support for post-care?*
-              </label>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="langSupportYes"
-                    name="needsLanguageSupport"
-                    value="Yes"
-                    checked={formData.needsLanguageSupport === "Yes"}
-                    onChange={handleChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor="langSupportYes">Yes</label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="langSupportNo"
-                    name="needsLanguageSupport"
-                    value="No"
-                    checked={formData.needsLanguageSupport === "No"}
-                    onChange={handleChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor="langSupportNo">No</label>
-                </div>
-              </div>
+        <FormSection icon={FileText} title="Medical info & attachments">
+          <Field label="Discharge summary" htmlFor="pc-report">
+            <input id="pc-report" type="file" name="report" onChange={handleFileChange} className={fileCls} />
+          </Field>
+          <Field label="Prescription / care plan" htmlFor="pc-prescription">
+            <input id="pc-prescription" type="file" name="prescription" onChange={handleFileChange} className={fileCls} />
+          </Field>
+          <Field label="Current medications" htmlFor="pc-meds">
+            <textarea id="pc-meds" name="currentMedications" value={formData.currentMedications} onChange={handleChange} rows="3" className={inputCls} />
+          </Field>
+          <Field label="Known allergies or conditions" htmlFor="pc-allergies">
+            <textarea id="pc-allergies" name="knownAllergies" value={formData.knownAllergies} onChange={handleChange} rows="3" className={inputCls} />
+          </Field>
+        </FormSection>
 
-              {formData.needsLanguageSupport === "Yes" && (
-                <div className="mt-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Specify language:
-                  </label>
-                  <input
-                    type="text"
-                    name="languageSupportSpecify"
-                    value={formData.languageSupportSpecify}
-                    onChange={handleChange}
-                    required={formData.needsLanguageSupport === "Yes"}
-                    className="w-full p-2 border border-gray-300 rounded"
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <FormSection icon={Plane} title="Travel & accommodation" description="Optional">
+          <Field label="Are you still in India after your treatment?" required>
+            <YesNo name="stillAbroad" value={formData.stillAbroad} onChange={handleChange} />
+          </Field>
+          <Field label="Expected date of return home" htmlFor="pc-return">
+            <input id="pc-return" type="date" name="expectedReturnDate" value={formData.expectedReturnDate} onChange={handleChange} className={inputCls} />
+          </Field>
+          <Field label="Do you need help arranging recovery accommodation or travel?" className="md:col-span-2">
+            <YesNo name="needsAccommodationHelp" value={formData.needsAccommodationHelp} onChange={handleChange} />
+          </Field>
+        </FormSection>
 
-        {/* Medical Info & Attachments Section */}
-        <div className="bg-yellow-50 p-4 rounded-md">
-          <h3 className="text-xl font-semibold text-yellow-800 mb-4">
-            📄 Medical Info & Attachments
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Upload Discharge Summary
-              </label>
-              <input
-                type="file"
-                name="report"
-                onChange={handleFileChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Upload Prescription / Care Plan
-              </label>
-              <input
-                type="file"
-                name="prescription"
-                onChange={handleFileChange }
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                List of Current Medications
-              </label>
-              <textarea
-                name="currentMedications"
-                value={formData.currentMedications}
-                onChange={handleChange}
-                rows="3"
-                className="w-full p-2 border border-gray-300 rounded"
-              ></textarea>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Known Allergies or Conditions
-              </label>
-              <textarea
-                name="knownAllergies"
-                value={formData.knownAllergies}
-                onChange={handleChange}
-                rows="3"
-                className="w-full p-2 border border-gray-300 rounded"
-              ></textarea>
-            </div>
-          </div>
-        </div>
-
-        {/* Travel & Accommodation Section */}
-        <div className="bg-red-50 p-4 rounded-md">
-          <h3 className="text-xl font-semibold text-red-800 mb-4">
-            🧳 Travel & Accommodation (Optional)
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Are you still abroad after your treatment?*
-              </label>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="abroadYes"
-                    name="stillAbroad"
-                    value="Yes"
-                    checked={formData.stillAbroad === "Yes"}
-                    onChange={handleChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor="abroadYes">Yes</label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="abroadNo"
-                    name="stillAbroad"
-                    value="No"
-                    checked={formData.stillAbroad === "No"}
-                    onChange={handleChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor="abroadNo">No</label>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Expected Date of Return Home
-              </label>
-              <input
-                type="date"
-                name="expectedReturnDate"
-                value={formData.expectedReturnDate}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Do you need help arranging recovery accommodation or travel?
-              </label>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="accommodationYes"
-                    name="needsAccommodationHelp"
-                    value="Yes"
-                    checked={formData.needsAccommodationHelp === "Yes"}
-                    onChange={handleChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor="accommodationYes">Yes</label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="accommodationNo"
-                    name="needsAccommodationHelp"
-                    value="No"
-                    checked={formData.needsAccommodationHelp === "No"}
-                    onChange={handleChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor="accommodationNo">No</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Additional Notes Section */}
-        <div className="bg-gray-50 p-4 rounded-md">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
-            🗨 Additional Notes / Special Requests
-          </h3>
+        <FormSection icon={MessageSquare} title="Additional notes" single>
           <textarea
+            aria-label="Additional notes or special requests"
             name="additionalNotes"
             value={formData.additionalNotes}
             onChange={handleChange}
             rows="4"
-            className="w-full p-2 border border-gray-300 rounded"
-            placeholder="Please provide any additional information that may be helpful for your post-care coordination."
-          ></textarea>
-        </div>
+            className={inputCls}
+            placeholder="Anything else that would help us coordinate your post-care."
+          />
+        </FormSection>
 
-        {/* Submit Button */}
-        <div className="flex justify-center">
+        <div className="flex justify-end pt-2">
           <button
             type="submit"
             disabled={submitting}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg flex items-center transition duration-300"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
           >
             {submitting ? (
               <>
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Processing...
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Submitting...
               </>
             ) : (
-              <>✅ Submit Post-Care Request</>
+              <>
+                <Send className="w-4 h-4" />
+                Submit post-care request
+              </>
             )}
           </button>
         </div>
@@ -775,5 +462,60 @@ const PostCareRequestForm = () => {
     </div>
   );
 };
+
+const labelCls = "block text-sm font-medium text-gray-700 mb-1.5";
+const inputCls =
+  "w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3252DF]/20 focus:border-[#3252DF]";
+const readOnlyCls = "w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 text-sm";
+const fileCls =
+  "w-full text-sm text-gray-600 border border-gray-200 rounded-lg bg-white file:mr-3 file:border-0 file:bg-blue-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-[#3252DF] hover:file:bg-blue-100";
+
+const FormSection = ({ icon: Icon, title, description, single = false, children }) => (
+  <section>
+    <div className="flex items-center gap-3 pb-3 mb-4 border-b border-gray-100">
+      <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+        <Icon className="w-5 h-5 text-[#3252DF]" />
+      </div>
+      <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+      {description && <span className="text-sm text-gray-500">({description})</span>}
+    </div>
+    {single ? children : <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{children}</div>}
+  </section>
+);
+
+const Field = ({ label, htmlFor, required = false, className = "", children }) => (
+  <div className={className}>
+    <label htmlFor={htmlFor} className={labelCls}>
+      {label}
+      {required && <span className="text-red-500"> *</span>}
+    </label>
+    {children}
+  </div>
+);
+
+const YesNo = ({ name, value, onChange }) => (
+  <div className="flex gap-2" role="radiogroup">
+    {["Yes", "No"].map((option) => (
+      <label
+        key={option}
+        className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border cursor-pointer text-sm font-medium transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[#3252DF]/40 ${
+          value === option
+            ? "border-[#3252DF] bg-blue-50 text-[#3252DF]"
+            : "border-gray-200 text-gray-700 hover:bg-gray-50"
+        }`}
+      >
+        <input
+          type="radio"
+          name={name}
+          value={option}
+          checked={value === option}
+          onChange={onChange}
+          className="sr-only"
+        />
+        {option}
+      </label>
+    ))}
+  </div>
+);
 
 export default PostCareRequestForm;

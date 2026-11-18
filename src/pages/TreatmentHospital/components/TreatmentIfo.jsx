@@ -69,9 +69,9 @@ const TreatmentInfo = ({ treatment, loading, error }) => {
     <motion.nav
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100"
+      className="relative z-10 bg-white/80 backdrop-blur-lg border-b border-gray-100"
     >
-      <div className="max-w-7xl mx-auto px-8 py-4 ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 ">
         <div className="flex items-center justify-between max-sm:mt-4">
           <div className="flex items-center flex-wrap gap-2 text-sm max-sm:text-xs">
             <BreadcrumbItem>
@@ -397,7 +397,7 @@ const TreatmentInfo = ({ treatment, loading, error }) => {
       <div className="relative">
         <PageBreadcrumb />
 
-        <div className="max-w-7xl mx-auto px-8 py-12 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12 items-center">
           {renderBody()}
         </div>
       </div>

@@ -13,6 +13,9 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+const FALLBACK_TREATMENT_IMAGE =
+  "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&auto=format&fit=crop";
+
 const TreatmentCard = ({ treatment }) => {
   const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
@@ -27,8 +30,9 @@ const TreatmentCard = ({ treatment }) => {
       {/* Image */}
       {/* <div className="relative h-48 overflow-hidden">
         <img
-          src={treatment?.image}
-          alt={treatment?.treatment_name}
+          src={treatment?.image || FALLBACK_TREATMENT_IMAGE}
+          onError={(e) => { e.currentTarget.src = FALLBACK_TREATMENT_IMAGE; }}
+          alt={treatment?.treatment_name || "Treatment"}
           className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />

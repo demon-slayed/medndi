@@ -18,13 +18,15 @@ import toast from "react-hot-toast";
 import useAppStore from "@/store/useAppStore";
 
 const benefits = [
-  { icon: CheckCircle, text: "Access to 500+ Hospitals" },
-  { icon: MapPin, text: "Coverage across 50+ cities" },
-  { icon: Users, text: "2000+ Expert Doctors" },
-  { icon: Calendar, text: "Easy Appointment Booking" },
-  { icon: Shield, text: "Secure Medical Records" },
-  { icon: Heart, text: "Personalized Health Plans" },
+  { icon: CheckCircle, text: "Accredited partner hospitals" },
+  { icon: MapPin, text: "Delhi NCR, Bengaluru & Pune" },
+  { icon: Users, text: "A dedicated care coordinator" },
+  { icon: Calendar, text: "Book treatment dates online" },
+  { icon: Shield, text: "Your reports kept private" },
+  { icon: Heart, text: "Post-treatment follow-up" },
 ];
+
+const accreditations = ["JCI accredited", "NABH accredited", "Prices in ₹", "24/7 support"];
 
 const Login = () => {
   const navigate = useNavigate();
@@ -104,16 +106,16 @@ const Login = () => {
             transition={{ delay: 0.3 }}
             className="mt-8 space-y-6"
           >
-            <h1 className="text-5xl font-bold leading-tight">
+            <h1 className="text-4xl xl:text-5xl font-bold leading-tight">
               <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                Premium Healthcare
+                Quality treatment
               </span>
               <br />
-              Without Borders
+              in India, planned for you
             </h1>
             <p className="text-lg text-white/80 leading-relaxed max-w-md">
-              Experience world-class medical care with personalized assistance
-              at every step.
+              Compare accredited hospitals, see costs upfront and get one
+              coordinator for your whole trip.
             </p>
           </motion.div>
         </div>
@@ -149,11 +151,16 @@ const Login = () => {
           className="relative z-10 bg-white/10 rounded-2xl p-6 backdrop-blur-sm"
         >
           <div className="text-white/90 text-sm mb-4">
-            Trusted by Healthcare Providers
+            Every hospital on MedNdi is JCI and/or NABH accredited
           </div>
-          <div className="flex justify-between items-center">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="w-16 h-8 bg-white/20 rounded-lg" />
+          <div className="flex flex-wrap gap-2">
+            {accreditations.map((item) => (
+              <span
+                key={item}
+                className="px-3 py-1.5 rounded-full bg-white/15 border border-white/20 text-sm font-medium text-white"
+              >
+                {item}
+              </span>
             ))}
           </div>
         </motion.div>
@@ -163,16 +170,24 @@ const Login = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="w-full lg:w-1/2 bg-white p-12 flex flex-col justify-center"
+        className="w-full lg:w-1/2 bg-white px-6 py-10 sm:p-12 flex flex-col justify-center"
       >
         <div className="max-w-md mx-auto w-full">
           {/* Register Button */}
-          <div className="flex justify-between items-center mb-12">
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            aria-label="MedNdi home"
+            className="lg:hidden mb-8 inline-flex rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
+          >
+            <MedNdiLogo textColor="#152C5B" tagColor="#3252DF" accentColor="#fff" />
+          </button>
+          <div className="flex justify-between items-center gap-4 mb-10 sm:mb-12">
             <span className="text-gray-500">New to MedNdi?</span>
             <motion.button
               whileHover={{ scale: 1.05 }}
               onClick={() => navigate("/register")}
-              className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white px-6 py-2 rounded-xl font-medium"
+              className="shrink-0 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white px-6 py-2 rounded-xl font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
             >
               Register
             </motion.button>
@@ -180,10 +195,12 @@ const Login = () => {
 
           {/* Login Form */}
           <form className="space-y-6" onSubmit={handleLoginClick}>
-            <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Welcome Back</h2>
             <Input
               type="email"
-              placeholder="Enter Email"
+              placeholder="Email"
+              aria-label="Email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-gray-50 border-gray-100 rounded-xl py-6"
@@ -192,6 +209,8 @@ const Login = () => {
               <Input
                 type={passwordVisible ? "text" : "password"}
                 placeholder="Password"
+                aria-label="Password"
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="bg-gray-50 border-gray-100 rounded-xl py-6 pr-12"
@@ -209,7 +228,7 @@ const Login = () => {
               type="submit"
               whileHover={{ scale: submitting ? 1 : 1.02 }}
               disabled={submitting}
-              className="w-full py-4 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-xl font-medium disabled:opacity-60"
+              className="w-full py-4 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-xl font-medium hover:shadow-lg hover:shadow-blue-500/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2 disabled:opacity-60"
             >
               {submitting ? "Signing in..." : "Sign in"}
             </motion.button>

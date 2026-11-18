@@ -9,7 +9,7 @@ const TabsList = React.forwardRef(({ className, ...props }, ref) => (
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "flex w-full items-center justify-center gap-2 rounded-lg bg-blue-50 p-2 shadow-md",
+      "flex w-full items-center gap-1 overflow-x-auto rounded-xl border border-gray-100 bg-white p-1.5 shadow-sm [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
       className
     )}
     {...props}
@@ -21,7 +21,7 @@ const TabsTrigger = React.forwardRef(({ className, ...props }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex-1 rounded-md px-4 py-2 text-sm md:text-base font-semibold text-blue-900 transition-all duration-300 hover:bg-blue-100 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-md",
+      "inline-flex flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-blue-50 hover:text-[#3252DF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3252DF] data-[state=active]:to-[#4466ff] data-[state=active]:text-white data-[state=active]:shadow-sm [&_svg]:size-4 [&_svg]:shrink-0",
       className
     )}
     {...props}
@@ -33,7 +33,7 @@ const TabsContent = React.forwardRef(({ className, ...props }, ref) => (
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      "mt-4 p-4 rounded-lg bg-white shadow-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2",
+      "mt-6 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2",
       className
     )}
     {...props}

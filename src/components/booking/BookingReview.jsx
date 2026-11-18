@@ -88,10 +88,10 @@ const BookingReview = ({ onEditBooking }) => {
 
   return (
     <>
-      <div className=" mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <div className="mx-auto p-4 sm:p-6 bg-white rounded-2xl shadow-lg">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-blue-800">Booking Review</h1>
-          <p className="text-gray-600 text-lg mt-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Review your booking</h2>
+          <p className="text-gray-600 mt-2">
             Please review your medical tourism package
           </p>
         </div>
@@ -380,12 +380,12 @@ const BookingReview = ({ onEditBooking }) => {
           <button
             onClick={onEditBooking}
             disabled={submitting}
-            className="py-3 px-6 bg-gray-200 text-gray-800 rounded text-lg hover:bg-gray-300 font-medium disabled:opacity-60"
+            className="py-3 px-6 border-2 border-gray-200 bg-white text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 disabled:opacity-60"
           >
             Edit Booking
           </button>
           <button
-            className="py-3 px-8 bg-blue-600 text-white rounded text-lg hover:bg-blue-700 font-medium disabled:opacity-60 flex items-center justify-center gap-2"
+            className="py-3 px-8 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2 disabled:opacity-60 flex items-center justify-center gap-2"
             onClick={handleConfirm}
             disabled={submitting}
           >
@@ -408,7 +408,7 @@ const BookingReview = ({ onEditBooking }) => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl p-8 max-w-lg w-full mx-auto my-8"
+              className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full mx-auto my-8"
             >
               <div className="text-center">
                 <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -552,7 +552,7 @@ const BookingReview = ({ onEditBooking }) => {
                         </div>
                         <div className="flex items-center gap-2">
                           <Mail className="w-4 h-4 text-[#3252DF]" />
-                          <span>support@medndi.com</span>
+                          <span>care@medndi.com</span>
                         </div>
                       </div>
                     </div>

@@ -66,7 +66,7 @@ const MedicalCardCenter = ({ treatment }) => {
   };
 
   return (
-    <div id="treatment-hospitals" className="px-6 md:px-16 p-10 lg:px-24 bg-gradient-to-b from-white to-blue-50 scroll-mt-32">
+    <div id="treatment-hospitals" className="px-4 sm:px-6 py-10 bg-gradient-to-b from-white to-blue-50 scroll-mt-32">
       {/* Header Section */}
       <div className="max-w-7xl mx-auto mb-12">
         {/* Title and Description */}

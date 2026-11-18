@@ -28,12 +28,13 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
   return (
     <>
       {/* Sidebar for Large Screens */}
-      <div className="w-64 bg-white h-[calc(100vh-88px)] p-6 flex flex-col border-r fixed top-0 left-0 lg:flex max-lg:hidden mt-24">
+      <div className="w-64 bg-white h-[calc(100vh-112px)] p-6 flex flex-col border-r fixed top-28 left-0 lg:flex max-lg:hidden">
         {/* Logo */}
         <div className="mb-8">
-          <h1 className="text-3xl ml-4  font-bold">
-            Arog<span className="text-blue-600">ini</span>
+          <h1 className="text-3xl ml-4 font-bold text-[#152C5B]">
+            Med<span className="text-[#3252DF]">Ndi</span>
           </h1>
+          <p className="ml-4 mt-1 text-xs font-medium uppercase tracking-wider text-gray-400">Admin</p>
         </div>
 
         {/* Navigation */}
@@ -43,7 +44,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
               <motion.li key={item.label} whileHover={{ x: 5 }}>
                 <button
                   onClick={() => setActiveTab(item.label.toLowerCase())}
-                  className={`flex items-center w-full p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
+                  className={`flex items-center w-full p-3 rounded-lg text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
                     selectedTab === item.label.toLowerCase()
                       ? "bg-blue-50 text-blue-600"
                       : ""
@@ -88,11 +89,13 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
           <button
             key={item.label}
             onClick={() => setActiveTab(item.label.toLowerCase())}
-            className={`flex flex-col items-center text-gray-600 hover:text-blue-600 transition-colors ${
+            aria-label={item.label}
+            className={`flex flex-col items-center gap-0.5 px-4 py-1 rounded-lg text-gray-600 hover:text-blue-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 ${
               selectedTab === item.label.toLowerCase() ? "text-blue-600" : ""
             }`}
           >
             <item.icon className="h-6 w-6" />
+            <span className="text-xs font-medium">{item.label}</span>
           </button>
         ))}
       </div>

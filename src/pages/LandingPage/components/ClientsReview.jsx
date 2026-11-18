@@ -1,217 +1,143 @@
 import React from 'react'
 import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-  } from "@/components/ui/carousel";
-  import { ChevronLeft, ChevronRight } from 'lucide-react';
-  import { FaStar } from "react-icons/fa";
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Quote } from 'lucide-react';
+import { FaStar } from "react-icons/fa";
+
+const testimonials = [
+  {
+    id: 1,
+    name: "Amina",
+    country: "Kenya",
+    treatment: "Knee replacement",
+    city: "Delhi NCR",
+    stars: 5,
+    quote:
+      "My coordinator sorted the visa letter, airport pickup and a hotel ten minutes from the hospital. I was walking with support on day two.",
+  },
+  {
+    id: 2,
+    name: "Tahmid",
+    country: "Bangladesh",
+    treatment: "Cardiac bypass (CABG)",
+    city: "Bengaluru",
+    stars: 5,
+    quote:
+      "We compared three hospitals side by side before deciding. The quote we were given at the start is what we paid at discharge.",
+  },
+  {
+    id: 3,
+    name: "Grace",
+    country: "Nigeria",
+    treatment: "IVF",
+    city: "Pune",
+    stars: 4,
+    quote:
+      "Clear explanations at every step and a doctor who answered my WhatsApp messages. The long stay was easier with a serviced apartment nearby.",
+  },
+  {
+    id: 4,
+    name: "Bekzod",
+    country: "Uzbekistan",
+    treatment: "Spine surgery",
+    city: "Delhi NCR",
+    stars: 5,
+    quote:
+      "A Russian-speaking interpreter was with us for every consultation. That alone made the trip possible for my father.",
+  },
+  {
+    id: 5,
+    name: "Nimali",
+    country: "Sri Lanka",
+    treatment: "Cataract surgery",
+    city: "Bengaluru",
+    stars: 5,
+    quote:
+      "Surgery in the morning, back at the hotel by evening. Follow-up was done over video once I was home.",
+  },
+  {
+    id: 6,
+    name: "Hassan",
+    country: "Oman",
+    treatment: "Hip replacement",
+    city: "Pune",
+    stars: 4,
+    quote:
+      "Physiotherapy started the day after surgery and the team shared a home exercise plan before I flew back.",
+  },
+];
 
 const ClientsReview = () => {
-
-    
-
-    const userData = [
-        {
-          id: 1,
-          avatarURL: "https://randomuser.me/api/portraits/men/1.jpg",
-          name: "John Miller",
-          desc: "Coordinated comprehensive dental treatment packages including implants and cosmetic procedures. Expert in arranging accommodation and local transportation for international patients.",
-          stars: 5,
-          place: "United States"
-        },
-        {
-          id: 2,
-          avatarURL: "https://randomuser.me/api/portraits/women/2.jpg",
-          name: "Emma Thompson",
-          desc: "Specialized in organizing orthopedic surgeries and rehabilitation programs. Successfully managed post-operative care and recovery arrangements for patients from multiple countries.",
-          stars: 4,
-          place: "United Kingdom"
-        },
-        {
-          id: 3,
-          avatarURL: "https://randomuser.me/api/portraits/men/3.jpg",
-          name: "Raj Patel",
-          desc: "Expert in cardiac treatment packages with top hospitals in India. Provides end-to-end service including visa assistance and interpreter services for international patients.",
-          stars: 5,
-          place: "India"
-        },
-        {
-          id: 4,
-          avatarURL: "https://randomuser.me/api/portraits/men/4.jpg",
-          name: "Carlos Santos",
-          desc: "Facilitates plastic surgery and cosmetic treatment programs. Ensures seamless coordination between hospitals, hotels, and travel arrangements for medical tourists.",
-          stars: 4,
-          place: "Brazil"
-        },
-        {
-          id: 5,
-          avatarURL: "https://randomuser.me/api/portraits/women/5.jpg",
-          name: "Sophie Chen",
-          desc: "Specializes in organizing advanced cancer treatment and stem cell therapy packages. Provides comprehensive support for long-term medical stay arrangements.",
-          stars: 5,
-          place: "Singapore"
-        },
-        {
-          id: 6,
-          avatarURL: "https://randomuser.me/api/portraits/men/6.jpg",
-          name: "Marcus Anderson",
-          desc: "Manages fertility treatment and IVF programs for international patients. Coordinates with top specialists and arranges extended stay accommodations for treatment cycles.",
-          stars: 4,
-          place: "Canada"
-        },
-        {
-          id: 7,
-          avatarURL: "https://randomuser.me/api/portraits/women/7.jpg",
-          name: "Lisa Kim",
-          desc: "Expert in organizing comprehensive health screening packages and preventive care programs. Provides personalized medical tourism plans with luxury recovery accommodations.",
-          stars: 4,
-          place: "South Korea"
-        },
-        {
-          id: 8,
-          avatarURL: "https://randomuser.me/api/portraits/men/8.jpg",
-          name: "Ahmed Hassan",
-          desc: "Specializes in weight loss surgery and bariatric treatment programs. Offers complete support from initial consultation to post-surgery recovery care.",
-          stars: 5,
-          place: "UAE"
-        },
-        {
-          id: 9,
-          avatarURL: "https://randomuser.me/api/portraits/women/9.jpg",
-          name: "Isabella Ferrari",
-          desc: "Coordinates organ transplant procedures and follow-up care arrangements. Manages medical documentation and legal requirements for international patients.",
-          stars: 4,
-          place: "Italy"
-        },
-        {
-          id: 10,
-          avatarURL: "https://randomuser.me/api/portraits/men/10.jpg",
-          name: "David Wilson",
-          desc: "Expert in arranging joint replacement surgeries and rehabilitation programs. Provides comprehensive medical tourism packages with luxury recovery facilities.",
-          stars: 5,
-          place: "Australia"
-        }
-      ];
-      
-      
-
-
-
   return (
-     <div className="flex flex-col px-6 md:px-16 lg:pl-40 lg:pr-32 py-8 lg:py-16 max-md:items-center max-md:justify-center gap-10 lg:gap-24 bg-[#ECF1FF] mt-8">
-      {/* Content Section */}
-      <div className="flex flex-row justify-between items-center w-full">
-        <div className="flex flex-col">
-          <h2 className="font-poppins font-bold max-sm:text-3xl max-md:text-4xl text-[54px] text-[#283841] max-lg:self-center">
-            What <span className="text-[#3252DF]">Client </span>Say
+    <section className="bg-[#ECF1FF] py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="font-poppins font-bold text-3xl md:text-4xl lg:text-5xl text-[#283841]">
+            What Our{" "}
+            <span className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] bg-clip-text text-transparent">
+              Patients Say
+            </span>
           </h2>
-          <p className="font-dmsans font-medium text-base text-[#283841] text-opacity-60 tracking-[0.96px] mt-1 max-lg:self-center max-md:mt-3">
-            Hear From Them. Tempora Facere Doloribus Id Aut. Ea Maiore.
+          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+            Experiences shared by patients who travelled to India for treatment with MedNdi.
           </p>
         </div>
-        {/* carousel buttons */}
-        <div className=' flex flex-row'>
-             {/* prev button */}
-             <div></div>
-             {/* next button */}
-             <div></div>
-        </div>
-      </div>
 
-      {/* Carousel Container */}
-      <div className="w-full relative">
-      <Carousel
-        opts={{
-          align: "start",
-          loop: true
-        }}
-        className="w-full"
-      >
-        <CarouselContent className="flex -ml-16">
-          {userData.map((user) => (
-            <CarouselItem key={user.id} className="pl-16 basis-full sm:basis-1/2 lg:basis-1/3">
-              <div className="relative bg-white shadow-[3.55px_3.55px_30.21px_0px_rgba(0,0,0,0.16)] rounded-xl pt-14 pb-6 px-2 flex flex-col items-center text-center mt-10 gap-6 lg:gap-10 ">
-                <div className="absolute -top-10 w-20 h-20 z-10">
-                  <img
-                    src={user.avatarURL}
-                    alt={user.name}
-                    className="w-full h-full rounded-full shadow-lg  border-white"
-                  />
-                </div>
-
-                <p className="text-xs text-[#283841] font-medium font-dmsans line-clamp-3">{user.desc}</p>
-
-                <div className="w-full flex justify-between items-center mt-4 max-lg:flex-col max-lg:gap-3">
-                <div className="flex justify-start items-center gap-1 ">
-                    {Array.from({ length: 5 }).map((_, index) => (
+        <Carousel opts={{ align: "start", loop: true }} className="w-full">
+          <CarouselContent className="-ml-4 md:-ml-6 py-4">
+            {testimonials.map((t) => (
+              <CarouselItem key={t.id} className="pl-4 md:pl-6 basis-full sm:basis-1/2 lg:basis-1/3">
+                <figure className="h-full bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <Quote className="w-8 h-8 text-[#3252DF]/20" aria-hidden="true" />
+                    <div className="flex items-center gap-0.5" aria-label={`${t.stars} out of 5 stars`}>
+                      {Array.from({ length: 5 }).map((_, index) => (
                         <FaStar
-                        key={index}
-                        className={`text-xl ${index < user.stars ? "text-[#DABE29]" : "text-gray-300"}`}
+                          key={index}
+                          className={`w-4 h-4 ${index < t.stars ? "text-[#DABE29]" : "text-gray-300"}`}
                         />
-                    ))}
+                      ))}
                     </div>
-                  <div className="text-right flex flex-col">
-                    <h3 className="text-lg font-bold text-gray-900 font-dmsans !leading-none">{user.name}</h3>
-                    <p className="text-xs font-normal text-[rgba(40,56,65,0.6)] self-start max-lg:self-center">{user.place}</p>
                   </div>
-                </div>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        {/* <CarouselPrevious className=' bg-[#1E91B6] text-white'/>
-        <CarouselNext className='bg-[#1E91B6] text-white' /> */}
-      </Carousel>
-    </div>
-    </div>
+                  <blockquote className="flex-1 text-gray-700 leading-relaxed">
+                    &ldquo;{t.quote}&rdquo;
+                  </blockquote>
+                  <figcaption className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                    <div
+                      className="w-11 h-11 rounded-full bg-gradient-to-br from-[#3252DF] to-[#4466ff] text-white font-semibold flex items-center justify-center shrink-0"
+                      aria-hidden="true"
+                    >
+                      {t.name.charAt(0)}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-gray-900">
+                        {t.name}, <span className="font-normal text-gray-600">{t.country}</span>
+                      </p>
+                      <p className="text-sm text-gray-500 truncate">
+                        {t.treatment} · {t.city}
+                      </p>
+                    </div>
+                  </figcaption>
+                </figure>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="mt-8 flex justify-center gap-3">
+            <CarouselPrevious className="static translate-y-0 h-10 w-10 border-[#3252DF]/30 text-[#3252DF] hover:bg-white" />
+            <CarouselNext className="static translate-y-0 h-10 w-10 border-[#3252DF]/30 text-[#3252DF] hover:bg-white" />
+          </div>
+        </Carousel>
+        <p className="mt-6 text-center text-xs text-gray-500">
+          Names shortened to protect patient privacy.
+        </p>
+      </div>
+    </section>
   )
 }
 
 export default ClientsReview
-
-
-
-
-
-
-
-// {/* <Carousel className="w-[90%] mt-16">
-// <CarouselContent className=" flex">
-//   {userData.map((item, idx) => (
-//     <CarouselItem
-//       key={idx}
-//       className=" sm:basis-full md:basis-1/2 lg:basis-1/3"
-//     >
-//       <div className="flex flex-col bg-white shadow-md py-7 px-10 gap-y-4 rounded-2xl min-w-[249px] text-left">
-//         {/* Quote Icon */}
-//         {/* <h2 className="text-2xl text-gray-500 mb-3">
-//           <Colon />
-//         </h2> */}
-
-//         {/* Feedback Description */}
-//         <p className="text-gray-700 text-sm mb-4">{item.desc}</p>
-
-//         {/* User Info */}
-//         <div className="flex items-center">
-//           <img
-//             src={item.avatarURL}
-//             alt={item.name}
-//             className="rounded-full w-10 h-10 mr-3"
-//           />
-//           <div>
-//             <h2 className="font-semibold">{item.name}</h2>
-//             <p className="text-xs text-gray-500 max-md:self-start">
-//               {item.role}
-//             </p>
-//           </div>
-//         </div>
-//       </div>
-//     </CarouselItem>
-//   ))}
-// </CarouselContent>
-{/* <CarouselPrevious className=' bg-[#1E91B6] text-white'/>
-<CarouselNext className='bg-[#1E91B6] text-white' /> */}
-// </Carousel> */}

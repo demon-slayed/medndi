@@ -6,7 +6,6 @@ const SearchResults = () => {
   return (
     <div>
         <Layout>
-        <div className='mt-28'></div>
         
         <TreatmentCards />
         

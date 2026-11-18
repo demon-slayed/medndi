@@ -6,11 +6,22 @@ import {
   Upload,
   X,
   AlertTriangle,
+  AlertCircle,
   FileCheck,
   ArrowRight,
+  ArrowLeft,
+  Activity,
+  Info,
+  ClipboardList,
+  Loader2,
+  RotateCcw,
+  ShieldCheck,
+  CheckCircle2,
 } from "lucide-react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout/Layout";
+import PageHeader from "@/components/PageHeader";
 
 // Create a theme with medical-appropriate colors
 // const theme = createTheme({
@@ -216,498 +227,242 @@ const PdfAnalyzer = () => {
     setOpenSnackbar(false);
   };
 
+  const resultSections = analysis
+    ? [
+        {
+          title: "Potential conditions",
+          icon: AlertTriangle,
+          tone: "bg-red-50 text-red-700",
+          dot: "bg-red-400",
+          items: analysis.analysis?.potentialConditions,
+          empty: "No conditions identified",
+        },
+        {
+          title: "Key symptoms",
+          icon: Activity,
+          tone: "bg-blue-50 text-[#3252DF]",
+          dot: "bg-[#3252DF]",
+          items: analysis.analysis?.keySymptoms,
+          empty: "No key symptoms identified",
+        },
+        {
+          title: "Concerning factors",
+          icon: AlertCircle,
+          tone: "bg-amber-50 text-amber-700",
+          dot: "bg-amber-400",
+          items: analysis.analysis?.concerningFactors,
+          empty: "No concerning factors identified",
+        },
+        {
+          title: "Related information",
+          icon: Info,
+          tone: "bg-indigo-50 text-indigo-700",
+          dot: "bg-indigo-400",
+          items: analysis.analysis?.relatedInfo,
+          empty: "No related information available",
+        },
+      ]
+    : [];
+
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white mt-24">
-        <div className="container mx-auto px-4 py-12">
-          <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-            <main className=" mx-auto px-4 py-8 sm:px-6 lg:px-8">
-              <div className="bg-gradient-to-br from-violet-50 via-indigo-50 to-slate-50 rounded-3xl shadow-xl border border-slate-100 overflow-hidden mb-8">
-                <div className="p-8 sm:p-10">
-                  <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-r from-violet-500 to-indigo-600 text-white mb-4 shadow-lg shadow-indigo-200">
-                      <FileText className="h-8 w-8" />
-                    </div>
-                    <h2 className="text-3xl font-bold bg-gradient-to-r from-violet-700 to-indigo-700 bg-clip-text text-transparent mb-3">
-                      Medical Document Analyzer
-                    </h2>
-                    <p className="text-slate-600 max-w-lg mx-auto leading-relaxed">
-                      Upload patient PDF documents for our AI-powered analysis
-                      engine to extract key insights and clinical data
-                    </p>
+      <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-10">
+          <PageHeader
+            eyebrow="Patient tools"
+            title="Medical report analyser"
+            subtitle="Upload a medical report (PDF) and get a plain-language summary of the key findings to discuss with your doctor."
+            actions={
+              <Link
+                to="/patient"
+                className="inline-flex items-center gap-2 text-sm font-medium text-[#3252DF] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 rounded"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to dashboard
+              </Link>
+            }
+          />
+
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-8 mb-8">
+            <form onSubmit={handleSubmit}>
+              <div
+                className={`p-6 sm:p-10 border-2 border-dashed rounded-2xl text-center transition-colors duration-200 ${
+                  file
+                    ? "border-[#3252DF]/50 bg-blue-50/60"
+                    : "border-gray-200 bg-gray-50/60 hover:border-[#3252DF]/50 hover:bg-blue-50/40"
+                }`}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+              >
+                <input
+                  id="pdf-upload"
+                  ref={fileInputRef}
+                  type="file"
+                  accept="application/pdf"
+                  onChange={handleFileChange}
+                  className="sr-only peer"
+                />
+
+                <div className="flex flex-col items-center justify-center gap-4">
+                  <div
+                    className={`h-16 w-16 sm:h-20 sm:w-20 rounded-full flex items-center justify-center ${
+                      file ? "bg-blue-100 text-[#3252DF]" : "bg-white text-gray-400 shadow-sm"
+                    }`}
+                  >
+                    {file ? <FileCheck className="h-8 w-8 sm:h-10 sm:w-10" /> : <Upload className="h-8 w-8 sm:h-10 sm:w-10" />}
                   </div>
 
-                  <div className="border-t border-slate-200 my-6 opacity-50"></div>
-
-                  <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-                    <div
-                      className={`p-10 border-2 border-dashed rounded-2xl text-center transition-all duration-300 ease-in-out
-              ${
-                file
-                  ? "border-indigo-400 bg-indigo-50/60"
-                  : "border-slate-200 hover:border-indigo-400 bg-slate-50/60 hover:bg-indigo-50/60"
-              }`}
-                      onDrop={handleDrop}
-                      onDragOver={handleDragOver}
-                    >
-                      <input
-                        id="pdf-upload"
-                        ref={fileInputRef}
-                        type="file"
-                        accept="application/pdf"
-                        onChange={handleFileChange}
-                        className="hidden"
-                      />
-
-                      <div className="flex flex-col items-center justify-center space-y-5">
-                        <div
-                          className={`h-24 w-24 rounded-full flex items-center justify-center transition-all duration-300
-                  ${
-                    file
-                      ? "bg-indigo-100 text-indigo-600"
-                      : "bg-slate-100 text-slate-400"
-                  }`}
-                        >
-                          {file ? (
-                            <FileCheck className="h-12 w-12" />
-                          ) : (
-                            <Upload className="h-12 w-12" />
-                          )}
-                        </div>
-
-                        {!file ? (
-                          <>
-                            <label
-                              htmlFor="pdf-upload"
-                              className="px-6 py-3 text-sm font-medium bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-xl cursor-pointer hover:from-violet-700 hover:to-indigo-700 focus:ring-4 focus:ring-indigo-300 transition-all shadow-md hover:shadow-lg"
-                            >
-                              Select PDF File
-                            </label>
-                            <div className="flex items-center gap-3 text-sm text-slate-500">
-                              <span className="h-px w-12 bg-slate-300"></span>
-                              <span>or drag and drop your file here</span>
-                              <span className="h-px w-12 bg-slate-300"></span>
-                            </div>
-                            <p className="text-xs text-slate-500 mt-2">
-                              Supported format: PDF up to 10MB
-                            </p>
-                          </>
-                        ) : (
-                          <div className="w-full max-w-md">
-                            <div className="flex items-center justify-center p-4 bg-white border border-slate-100 rounded-xl shadow-sm backdrop-blur-sm bg-white/80">
-                              <div className="h-12 w-12 flex-shrink-0 rounded-lg bg-indigo-50 flex items-center justify-center mr-3">
-                                <FileText className="h-6 w-6 text-indigo-500" />
-                              </div>
-                              <div className="flex-1 truncate">
-                                <p className="font-medium text-slate-700 truncate">
-                                  {file.name}
-                                </p>
-                                <p className="text-xs text-slate-500">
-                                  ({(file.size / 1024 / 1024).toFixed(2)} MB)
-                                </p>
-                              </div>
-                              <button
-                                type="button"
-                                onClick={clearResults}
-                                className="ml-3 text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-full"
-                              >
-                                <X className="h-5 w-5" />
-                              </button>
-                            </div>
-
-                            <label
-                              htmlFor="pdf-upload"
-                              className="mt-4 inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800 cursor-pointer transition-colors"
-                            >
-                              <Upload className="h-4 w-4 mr-1" />
-                              Choose a different file
-                            </label>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {error && (
-                      <div className="mt-5 bg-red-50 text-red-700 p-4 rounded-xl text-sm flex items-start border border-red-100 animate-fadeIn">
-                        <AlertTriangle className="h-5 w-5 mr-2 flex-shrink-0 text-red-500" />
-                        <p>{error}</p>
-                      </div>
-                    )}
-
-                    <div className="mt-8 text-center">
-                      <button
-                        type="submit"
-                        disabled={loading || !file}
-                        className={`px-10 py-3 rounded-xl text-white font-medium transition-all transform 
-                ${
-                  loading || !file
-                    ? "bg-slate-300 cursor-not-allowed"
-                    : "bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 active:scale-98 shadow-md hover:shadow-lg"
-                }`}
+                  {!file ? (
+                    <>
+                      <label
+                        htmlFor="pdf-upload"
+                        className="px-6 py-2.5 text-sm font-medium bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-lg cursor-pointer shadow-sm hover:shadow-lg hover:shadow-blue-500/25 transition-all peer-focus-visible:ring-2 peer-focus-visible:ring-[#3252DF]/40 peer-focus-visible:ring-offset-2"
                       >
-                        {loading ? (
-                          <span className="flex items-center justify-center">
-                            <svg
-                              className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <circle
-                                className="opacity-25"
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                              ></circle>
-                              <path
-                                className="opacity-75"
-                                fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                              ></path>
-                            </svg>
-                            Processing...
-                          </span>
-                        ) : (
-                          <span className="flex items-center justify-center">
-                            <FileText className="mr-2 h-5 w-5" />
-                            Analyze Document
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </span>
-                        )}
-                      </button>
+                        Select PDF file
+                      </label>
+                      <p className="text-sm text-gray-500 hidden sm:block">or drag and drop it here</p>
+                      <p className="text-xs text-gray-500">PDF only, up to 10 MB</p>
+                    </>
+                  ) : (
+                    <div className="w-full max-w-md">
+                      <div className="flex items-center gap-3 p-3 sm:p-4 bg-white border border-gray-100 rounded-xl shadow-sm text-left">
+                        <div className="h-10 w-10 shrink-0 rounded-lg bg-blue-50 flex items-center justify-center">
+                          <FileText className="h-5 w-5 text-[#3252DF]" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-gray-900 truncate">{file.name}</p>
+                          <p className="text-xs text-gray-500">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={clearResults}
+                          aria-label="Remove file"
+                          className="shrink-0 text-gray-400 hover:text-red-500 p-2 hover:bg-red-50 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
+                        >
+                          <X className="h-5 w-5" />
+                        </button>
+                      </div>
+
+                      <label
+                        htmlFor="pdf-upload"
+                        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[#3252DF] hover:underline cursor-pointer"
+                      >
+                        <Upload className="h-4 w-4" />
+                        Choose a different file
+                      </label>
                     </div>
-                  </form>
+                  )}
                 </div>
               </div>
 
-              {analysis && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8"
+              {error && (
+                <div role="alert" className="mt-5 bg-red-50 text-red-700 p-4 rounded-xl text-sm flex items-start gap-2 border border-red-200">
+                  <AlertTriangle className="h-5 w-5 shrink-0 text-red-500" />
+                  <p>{error}</p>
+                </div>
+              )}
+
+              <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <p className="text-xs text-gray-500 flex items-start gap-2 sm:max-w-md">
+                  <ShieldCheck className="h-4 w-4 shrink-0 text-gray-400" />
+                  This summary is for information only and is not a medical diagnosis.
+                </p>
+                <button
+                  type="submit"
+                  disabled={loading || !file}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-white font-medium transition-all bg-gradient-to-r from-[#3252DF] to-[#4466ff] shadow-sm hover:shadow-lg hover:shadow-blue-500/25 disabled:from-gray-300 disabled:to-gray-300 disabled:shadow-none disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
                 >
-                  <div className="p-6 sm:p-8">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                      <h3 className="text-xl font-bold text-slate-800 flex items-center">
-                        <svg
-                          className="h-6 w-6 text-blue-600 mr-2"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                          />
-                        </svg>
-                        Analysis Results
-                      </h3>
-                      <div className="text-right">
-                        <p className="text-sm font-medium text-slate-700">
-                          {analysis.fileName}
-                        </p>
-                        <p className="text-xs text-slate-500">
-                          {analysis.fileStored
-                            ? "Stored on server"
-                            : "Deleted after processing"}
-                        </p>
-                      </div>
+                  {loading ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      Analysing...
+                    </>
+                  ) : (
+                    <>
+                      <FileText className="h-5 w-5" />
+                      Analyse report
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {analysis && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-8 mb-8"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-5 mb-6 border-b border-gray-100">
+                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <ClipboardList className="h-6 w-6 text-[#3252DF]" />
+                  Analysis results
+                </h2>
+                <div className="sm:text-right min-w-0">
+                  <p className="text-sm font-medium text-gray-700 truncate">{analysis.fileName}</p>
+                  <p className="text-xs text-gray-500">
+                    {analysis.fileStored ? "Stored on server" : "Deleted after processing"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                {resultSections.map((section) => (
+                  <div key={section.title} className="rounded-xl border border-gray-100 overflow-hidden">
+                    <div className={`px-4 py-3 flex items-center gap-2 font-medium ${section.tone}`}>
+                      <section.icon className="h-5 w-5" />
+                      {section.title}
                     </div>
-
-                    <div className="border-t border-slate-200 my-6"></div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      {/* Potential Conditions */}
-                      <div className="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                        <div className="bg-red-50 px-4 py-3 border-b border-slate-200">
-                          <h3 className="font-medium text-red-800 flex items-center">
-                            <svg
-                              className="h-5 w-5 mr-2"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                              />
-                            </svg>
-                            Potential Conditions
-                          </h3>
-                        </div>
-                        <div className="p-4">
-                          {analysis.analysis.potentialConditions?.length > 0 ? (
-                            <ul className="space-y-2">
-                              {analysis.analysis.potentialConditions.map(
-                                (condition, index) => (
-                                  <li key={index} className="flex items-start">
-                                    <span className="flex-shrink-0 h-5 w-5 rounded-full bg-red-100 text-red-600 flex items-center justify-center mr-2 mt-0.5">
-                                      <svg
-                                        className="h-3 w-3"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                          clipRule="evenodd"
-                                        />
-                                      </svg>
-                                    </span>
-                                    <span className="text-slate-700">
-                                      {condition}
-                                    </span>
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          ) : (
-                            <p className="text-slate-500 text-sm italic">
-                              No conditions identified
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Key Symptoms */}
-                      <div className="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                        <div className="bg-blue-50 px-4 py-3 border-b border-slate-200">
-                          <h3 className="font-medium text-blue-800 flex items-center">
-                            <svg
-                              className="h-5 w-5 mr-2"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                              />
-                            </svg>
-                            Key Symptoms
-                          </h3>
-                        </div>
-                        <div className="p-4">
-                          {analysis.analysis.keySymptoms?.length > 0 ? (
-                            <ul className="space-y-2">
-                              {analysis.analysis.keySymptoms.map(
-                                (symptom, index) => (
-                                  <li key={index} className="flex items-start">
-                                    <span className="flex-shrink-0 h-5 w-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-2 mt-0.5">
-                                      <svg
-                                        className="h-3 w-3"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                          clipRule="evenodd"
-                                        />
-                                      </svg>
-                                    </span>
-                                    <span className="text-slate-700">
-                                      {symptom}
-                                    </span>
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          ) : (
-                            <p className="text-slate-500 text-sm italic">
-                              No key symptoms identified
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Concerning Factors */}
-                      <div className="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                        <div className="bg-amber-50 px-4 py-3 border-b border-slate-200">
-                          <h3 className="font-medium text-amber-800 flex items-center">
-                            <svg
-                              className="h-5 w-5 mr-2"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                              />
-                            </svg>
-                            Concerning Factors
-                          </h3>
-                        </div>
-                        <div className="p-4">
-                          {analysis.analysis.concerningFactors?.length > 0 ? (
-                            <ul className="space-y-2">
-                              {analysis.analysis.concerningFactors.map(
-                                (factor, index) => (
-                                  <li key={index} className="flex items-start">
-                                    <span className="flex-shrink-0 h-5 w-5 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mr-2 mt-0.5">
-                                      <svg
-                                        className="h-3 w-3"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                          clipRule="evenodd"
-                                        />
-                                      </svg>
-                                    </span>
-                                    <span className="text-slate-700">
-                                      {factor}
-                                    </span>
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          ) : (
-                            <p className="text-slate-500 text-sm italic">
-                              No concerning factors identified
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Related Information */}
-                      <div className="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                        <div className="bg-indigo-50 px-4 py-3 border-b border-slate-200">
-                          <h3 className="font-medium text-indigo-800 flex items-center">
-                            <svg
-                              className="h-5 w-5 mr-2"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                            Related Information
-                          </h3>
-                        </div>
-                        <div className="p-4">
-                          {analysis.analysis.relatedInfo?.length > 0 ? (
-                            <ul className="space-y-2">
-                              {analysis.analysis.relatedInfo.map(
-                                (info, index) => (
-                                  <li key={index} className="flex items-start">
-                                    <span className="flex-shrink-0 h-5 w-5 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mr-2 mt-0.5">
-                                      <svg
-                                        className="h-3 w-3"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                          clipRule="evenodd"
-                                        />
-                                      </svg>
-                                    </span>
-                                    <span className="text-slate-700">
-                                      {info}
-                                    </span>
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          ) : (
-                            <p className="text-slate-500 text-sm italic">
-                              No related information available
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-8 text-center">
-                      <button
-                        type="button"
-                        onClick={clearResults}
-                        className="px-6 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-700 font-medium hover:bg-slate-50 hover:text-slate-900 transition-colors"
-                      >
-                        <span className="flex items-center">
-                          <svg
-                            className="h-4 w-4 mr-2"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                          </svg>
-                          Clear Results
-                        </span>
-                      </button>
+                    <div className="p-4">
+                      {section.items?.length > 0 ? (
+                        <ul className="space-y-2">
+                          {section.items.map((item, index) => (
+                            <li key={index} className="flex items-start gap-2 text-gray-700">
+                              <span className={`h-1.5 w-1.5 mt-2 rounded-full shrink-0 ${section.dot}`} />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-gray-500 text-sm">{section.empty}</p>
+                      )}
                     </div>
                   </div>
-                </motion.div>
-              )}
-            </main>
-
-            {/* Notification/Toast */}
-            {notification.show && (
-              <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  className={`px-4 py-3 rounded-lg shadow-lg flex items-center ${
-                    notification.type === "success"
-                      ? "bg-green-600 text-white"
-                      : "bg-red-600 text-white"
-                  }`}
-                >
-                  <svg
-                    className="h-5 w-5 mr-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    {notification.type === "success" ? (
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 13l4 4L19 7"
-                      />
-                    ) : (
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    )}
-                  </svg>
-                  <span>{notification.message}</span>
-                </motion.div>
+                ))}
               </div>
-            )}
-          </div>
+
+              <div className="mt-8 flex justify-center">
+                <button
+                  type="button"
+                  onClick={clearResults}
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg border-2 border-[#3252DF] text-[#3252DF] font-medium hover:bg-blue-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  Analyse another report
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Notification/Toast */}
+          {notification.show && (
+            <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-4 w-full max-w-sm">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                className={`px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 text-white ${
+                  notification.type === "success" ? "bg-green-600" : "bg-red-600"
+                }`}
+              >
+                {notification.type === "success" ? <CheckCircle2 className="h-5 w-5" /> : <X className="h-5 w-5" />}
+                <span>{notification.message}</span>
+              </motion.div>
+            </div>
+          )}
         </div>
       </div>
     </Layout>

@@ -1,127 +1,81 @@
 import { motion } from "framer-motion";
 import {
-  Bell,
-  Calendar,
-  FileText,
-  Globe,
-  Heart,
-  MapPin,
-  Phone,
-  Stethoscope,
-  User,
-  CheckCircle2,
-  Clock,
-  Circle,
-  Utensils,
-  Smile,
-  Loader2,
   CalendarPlus,
+  CheckCircle2,
+  ClipboardList,
+  Clock,
+  FileText,
+  HeartPulse,
+  Mail,
+  Phone,
+  Search,
+  ArrowRight,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Layout from "@/components/Layout/Layout";
+import PageHeader from "@/components/PageHeader";
 import { useNavigate } from "react-router-dom";
 import BookedApplications from "./components/BookedApplications";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useAppStore from "@/store/useAppStore";
-import { Outlet } from "react-router-dom";
-import ApplicationStatusStepper from "./components/ApplicationStatusStepper";
 import PostCareRequestForm from "./components/PostCareRequestForm";
+import { statusLabel } from "@/lib/applicationStatus";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 },
+  transition: { duration: 0.4 },
 };
 
-const hoverScale = {
-  whileHover: { scale: 1.05 },
-  transition: { type: "spring", stiffness: 300 },
-};
-
-const postCareServices = [
+const guidelines = [
   {
-    title: "Virtual Consultations",
-    description: "Connect with your doctors remotely for follow-up care.",
-    icon: <Stethoscope className="w-6 h-6 text-blue-500" />,
+    title: "Before you travel",
+    dot: "bg-[#3252DF]",
+    items: [
+      "Document verification takes 24–48 hours",
+      "Keep your medical records and reports ready",
+      "Stay reachable for follow-up calls from your coordinator",
+    ],
   },
   {
-    title: "Medication Reminders",
-    description: "Stay on track with your prescribed medication schedule.",
-    icon: <Bell className="w-6 h-6 text-blue-500" />,
+    title: "Payments & billing",
+    dot: "bg-green-500",
+    items: [
+      "No payment is taken until your final quote is confirmed",
+      "Hospital bills are settled directly before discharge",
+      "Extended stays may add to the estimate",
+    ],
   },
   {
-    title: "Recovery Tracking",
-    description: "Monitor your progress and share updates with your care team.",
-    icon: <Heart className="w-6 h-6 text-blue-500" />,
-  },
-  {
-    title: "Home Nursing Support",
-    description:
-      "Access professional nursing care at home for a smooth recovery.",
-    icon: <User className="w-6 h-6 text-blue-500" />,
-  },
-  {
-    title: "Diet & Nutrition Guidance",
-    description:
-      "Receive personalized diet plans for better healing and strength.",
-    icon: <Utensils className="w-6 h-6 text-blue-500" />,
-  },
-  {
-    title: "Mental Health Support",
-    description:
-      "Get psychological counseling to ensure emotional well-being post-surgery.",
-    icon: <Smile className="w-6 h-6 text-blue-500" />,
+    title: "Travel & stay",
+    dot: "bg-amber-500",
+    items: [
+      "Plan travel within 3–5 days of approval",
+      "Stay close to the hospital for follow-ups",
+      "Check your passport and medical visa validity",
+    ],
   },
 ];
 
-const destinations = [
-  {
-    name: "Bangkok, Thailand",
-    image:
-      "https://media.istockphoto.com/id/2047816268/photo/healthcare-workers-going-to-work.webp?a=1&b=1&s=612x612&w=0&k=20&c=c2DCC5qn5seZjHfwKBgOPDI4kAMsk5Wwd0qd3EsSwyY=",
-  },
-  {
-    name: "Istanbul, Turkey",
-    image:
-      "https://plus.unsplash.com/premium_photo-1661745745478-bb3542627ebc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aXN0YW5idWwlMjBtZWRpY2FsfGVufDB8fDB8fHww",
-  },
-  {
-    name: "Mumbai, India",
-    image:
-      "https://images.unsplash.com/photo-1504813184591-01572f98c85f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bXVtYmFpJTIwbWVkaWNhbHxlbnwwfHwwfHx8MA%3D%3D",
-  },
-  {
-    name: "Seoul, South Korea",
-    image:
-      "https://images.unsplash.com/photo-1548115184-bc6544d06a58?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8c291dGglMjBrb3JlYSUyMG1lZGljYWx8ZW58MHx8MHx8fDA%3D",
-  },
-  {
-    name: "Dubai, UAE",
-    image:
-      "https://images.unsplash.com/photo-1511174511562-5f7f18b874f8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHNvdXRoJTIwa29yZWElMjBtZWRpY2FsfGVufDB8fDB8fHww",
-  },
-  {
-    name: "Kuala Lumpur, Malaysia",
-    image:
-      "https://images.unsplash.com/photo-1524499982521-1ffd58dd89ea?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHNvdXRoJTIwa29yZWElMjBtZWRpY2FsfGVufDB8fDB8fHww",
-  },
-];
+const StatCard = ({ icon: Icon, label, value, tone }) => (
+  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 min-w-0">
+    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 ${tone}`}>
+      <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+    </div>
+    <div className="min-w-0">
+      <p className="text-xl sm:text-2xl font-bold text-gray-900 leading-tight">{value}</p>
+      <p className="text-xs sm:text-sm text-gray-600">{label}</p>
+    </div>
+  </div>
+);
 
 export default function PatientDashboard() {
   const [application, setApplication] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
+  const [activeTab, setActiveTab] = useState("application");
   const { auth } = useAppStore();
 
   useEffect(() => {
@@ -152,226 +106,136 @@ export default function PatientDashboard() {
 
   const navigate = useNavigate();
 
+  const firstName =
+    auth?.fullName?.trim()?.split(/\s+/)[0] || auth?.email?.split("@")[0] || "there";
+  const approvedCount = application.filter((a) => a?.status === "approved").length;
+  const inProgressCount = application.filter(
+    (a) => a?.status && !["approved", "rejected"].includes(a.status)
+  ).length;
+  // The API returns bookings newest first
+  const latest = application[0];
+
+  const summary = loading
+    ? "Loading your bookings…"
+    : loadError
+    ? "Here's your MedNdi dashboard."
+    : application.length === 0
+    ? "You don't have any bookings yet. Find a treatment to get started."
+    : `You have ${application.length} ${application.length === 1 ? "booking" : "bookings"}. Latest: ${
+        latest?.treatment_id?.treatment_name || "Treatment"
+      } — ${statusLabel(latest?.status)}.`;
+
+  const goToPostCare = () => {
+    setActiveTab("postcare");
+    document.getElementById("dashboard-tabs")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const quickActions = [
+    { label: "Book a treatment", icon: Search, onClick: () => navigate("/treatments"), primary: true },
+    { label: "Analyse a report", icon: FileText, onClick: () => navigate("/patient/query") },
+    { label: "Request post-care", icon: HeartPulse, onClick: goToPostCare },
+  ];
+
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white mt-24">
-        <div className="container mx-auto px-4 py-12">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-8 text-center"
-          >
-            <h1 className="text-4xl font-bold mb-2 text-blue-800">
-              MedNdi Medical Tourism
-            </h1>
-            <p className="text-xl text-gray-600">
-              Your Journey to Health and Wellness
-            </p>
+      <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
+          <motion.div {...fadeIn}>
+            <PageHeader
+              eyebrow="My dashboard"
+              title={`Welcome back, ${firstName}`}
+              subtitle={summary}
+            />
           </motion.div>
 
-          <Tabs defaultValue="application" className="w-full">
-            <TabsList className="mb-8 justify-center">
-              <TabsTrigger value="postcare">Post-Care Support</TabsTrigger>
-              <TabsTrigger value="application">Application Status</TabsTrigger>
-              <TabsTrigger value="destinations">
-                Popular Destinations
+          {/* Quick actions */}
+          <motion.div {...fadeIn} className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+            {quickActions.map((action) => (
+              <button
+                key={action.label}
+                type="button"
+                onClick={action.onClick}
+                className={`group flex items-center justify-between gap-3 rounded-xl px-4 py-3.5 font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2 ${
+                  action.primary
+                    ? "bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white shadow-sm hover:shadow-lg hover:shadow-blue-500/25"
+                    : "bg-white text-gray-900 border border-gray-100 shadow-sm hover:border-[#3252DF]/30 hover:shadow-md"
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  <action.icon className={`w-5 h-5 ${action.primary ? "text-white" : "text-[#3252DF]"}`} />
+                  {action.label}
+                </span>
+                <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${action.primary ? "text-white" : "text-gray-400"}`} />
+              </button>
+            ))}
+          </motion.div>
+
+          {/* Summary stats */}
+          {!loading && !loadError && application.length > 0 && (
+            <motion.div {...fadeIn} className="grid grid-cols-3 gap-3 sm:gap-4 mb-8">
+              <StatCard icon={ClipboardList} label="Bookings" value={application.length} tone="bg-blue-50 text-[#3252DF]" />
+              <StatCard icon={Clock} label="In progress" value={inProgressCount} tone="bg-amber-50 text-amber-600" />
+              <StatCard icon={CheckCircle2} label="Approved" value={approvedCount} tone="bg-green-50 text-green-600" />
+            </motion.div>
+          )}
+
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full scroll-mt-32" id="dashboard-tabs">
+            <TabsList className="sm:w-auto sm:inline-flex">
+              <TabsTrigger value="application">
+                <ClipboardList />
+                My bookings
+              </TabsTrigger>
+              <TabsTrigger value="postcare">
+                <HeartPulse />
+                Post-care support
               </TabsTrigger>
             </TabsList>
 
-            {/* Tab 1 content */}
-            <TabsContent value="postcare">
-              {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {postCareServices.map((service, index) => (
-                  <motion.div key={index} {...fadeIn} {...hoverScale}>
-                    <Card className="h-full">
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          {service.icon}
-                          {service.title}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600">{service.description}</p>
-                      </CardContent>
-                      <CardFooter>
-                        <Button
-                          variant="outline"
-                          className="text-[#3252DF] hover:text-[#3252DF]"
-                          onClick={() => {
-                            navigate("/contact");
-                          }}
-                        >
-                          Learn More
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-
-              <motion.div {...fadeIn} className="mt-12">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Bell className="w-5 h-5 text-blue-500" />
-                      Quick Actions
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-4">
-                      <Badge
-                        variant="secondary"
-                        className="cursor-pointer hover:bg-blue-100 transition-colors"
-                      >
-                        Book Nurse Visit
-                      </Badge>
-                      <Badge
-                        variant="secondary"
-                        className="cursor-pointer hover:bg-blue-100 transition-colors"
-                      >
-                        Schedule Consultation
-                      </Badge>
-                      <Badge
-                        variant="secondary"
-                        className="cursor-pointer hover:bg-blue-100 transition-colors"
-                      >
-                        View Recovery Plan
-                      </Badge>
-                      <Badge
-                        variant="secondary"
-                        className="cursor-pointer hover:bg-blue-100 transition-colors"
-                      >
-                        Request Medication Refill
-                      </Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div> */}
-              <PostCareRequestForm />
-            </TabsContent>
-
-            {/* tab 2 content */}
             <TabsContent value="application">
               {loading ? (
-                <div className="flex justify-center py-20">
-                  <Loader2 className="w-8 h-8 animate-spin text-[#3252DF]" />
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="animate-pulse bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+                      <div className="flex justify-between gap-4">
+                        <div className="h-5 bg-gray-200 rounded w-2/3" />
+                        <div className="h-5 bg-gray-200 rounded-full w-20" />
+                      </div>
+                      <div className="h-4 bg-gray-200 rounded w-1/2" />
+                      <div className="h-4 bg-gray-200 rounded w-3/4" />
+                      <div className="h-8 bg-gray-100 rounded w-1/3 mt-6" />
+                    </div>
+                  ))}
                 </div>
               ) : loadError ? (
-                <div className="text-center py-16 bg-white rounded-lg shadow-sm">
-                  <h2 className="text-xl font-semibold text-gray-700">
+                <div className="text-center py-16 px-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                  <h2 className="text-xl font-semibold text-gray-900">
                     We couldn&apos;t load your bookings
                   </h2>
-                  <p className="text-gray-500 mt-2">Please check your connection and try again.</p>
-                  <Button className="mt-6" onClick={() => window.location.reload()}>
+                  <p className="text-gray-600 mt-2">Please check your connection and try again.</p>
+                  <Button variant="brand" className="mt-6" onClick={() => window.location.reload()}>
                     Try again
                   </Button>
                 </div>
               ) : application.length > 0 ? (
                 <>
-                  {/* booked application confirmation page */}
                   <BookedApplications applications={application} />
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-                    {/* Card 1 */}
-                    <motion.div {...fadeIn} className="w-full">
-                      <Card className="h-full">
-                        <CardHeader>
-                          <CardTitle>Important Guidelines</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <ul className="space-y-4">
-                            <li className="flex items-start gap-2">
-                              <span className="w-2 h-2 mt-2 rounded-full bg-blue-500" />
-                              <span>
-                                Document verification takes 24-48 hours
-                              </span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="w-2 h-2 mt-2 rounded-full bg-blue-500" />
-                              <span>
-                                Stay available for follow-up communications
-                              </span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="w-2 h-2 mt-2 rounded-full bg-blue-500" />
-                              <span>
-                                Arrange travel within 3-5 days of approval
-                              </span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="w-2 h-2 mt-2 rounded-full bg-blue-500" />
-                              <span>Prepare all necessary medical records</span>
-                            </li>
+                  <div className="mt-10">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Good to know</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                      {guidelines.map((group) => (
+                        <div key={group.title} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sm:p-6">
+                          <h3 className="font-semibold text-gray-900 mb-3">{group.title}</h3>
+                          <ul className="space-y-3 text-sm text-gray-600">
+                            {group.items.map((item) => (
+                              <li key={item} className="flex items-start gap-2">
+                                <span className={`w-1.5 h-1.5 mt-2 rounded-full shrink-0 ${group.dot}`} />
+                                <span>{item}</span>
+                              </li>
+                            ))}
                           </ul>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-
-                    {/* Card 2 */}
-                    <motion.div {...fadeIn} className="w-full">
-                      <Card className="h-full">
-                        <CardHeader>
-                          <CardTitle>Payment & Billing Information</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <ul className="space-y-4">
-                            <li className="flex items-start gap-2">
-                              <span className="w-2 h-2 mt-2 rounded-full bg-green-500" />
-                              <span>
-                                Ensure advance payment confirmation to avoid
-                                delays
-                              </span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="w-2 h-2 mt-2 rounded-full bg-green-500" />
-                              <span>
-                                All medical bills should be settled before
-                                discharge
-                              </span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="w-2 h-2 mt-2 rounded-full bg-green-500" />
-                              <span>
-                                Additional costs may apply for extended stays
-                              </span>
-                            </li>
-                          </ul>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-
-                    {/* Card 3 */}
-                    <motion.div {...fadeIn} className="w-full">
-                      <Card className="h-full">
-                        <CardHeader>
-                          <CardTitle>Travel & Accommodation</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <ul className="space-y-4">
-                            <li className="flex items-start gap-2">
-                              <span className="w-2 h-2 mt-2 rounded-full bg-orange-500" />
-                              <span>
-                                Book accommodation near the hospital for
-                                convenience
-                              </span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="w-2 h-2 mt-2 rounded-full bg-orange-500" />
-                              <span>
-                                Confirm airport pickup service if needed
-                              </span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="w-2 h-2 mt-2 rounded-full bg-orange-500" />
-                              <span>
-                                Ensure travel documents are valid throughout
-                                your stay
-                              </span>
-                            </li>
-                          </ul>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </>
               ) : (
@@ -379,145 +243,60 @@ export default function PatientDashboard() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="flex flex-col items-center justify-center py-20 text-center space-y-4"
+                  className="flex flex-col items-center justify-center py-16 px-6 text-center bg-white rounded-2xl border border-gray-100 shadow-sm"
                 >
-                  <div className="w-20 h-20 rounded-full bg-blue-50 flex items-center justify-center">
-                    <CalendarPlus className="w-10 h-10 text-[#3252DF]" />
+                  <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
+                    <CalendarPlus className="w-8 h-8 text-[#3252DF]" />
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-700">
+                  <h2 className="mt-4 text-xl font-semibold text-gray-900">
                     Your bookings will show here
                   </h2>
-                  <p className="text-gray-500 max-w-md">
-                    Once you complete your treatment application, your progress
-                    and details will appear in this section.
+                  <p className="mt-2 text-gray-600 max-w-md">
+                    Once you complete a treatment booking, its progress and
+                    details will appear in this section.
                   </p>
-                  <Button onClick={() => navigate("/treatments")}>
+                  <Button variant="brand" className="mt-6" onClick={() => navigate("/treatments")}>
                     Browse treatments
                   </Button>
                 </motion.div>
               )}
             </TabsContent>
 
-            {/* Tab 3 content */}
-            <TabsContent value="destinations">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {destinations.map((destination, index) => (
-                  <motion.div key={index} {...fadeIn} {...hoverScale}>
-                    <Card className="overflow-hidden">
-                      <img
-                        src={destination.image || "/placeholder.svg"}
-                        alt={destination.name}
-                        width={300}
-                        height={200}
-                        className="w-full h-48 object-cover"
-                      />
-                      <CardHeader>
-                        <CardTitle>{destination.name}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600">
-                          Discover world-class medical facilities and beautiful
-                          attractions.
-                        </p>
-                      </CardContent>
-                      <CardFooter>
-                        <Button
-                          variant="outline"
-                          className=" text-[#3252DF] hover:text-[#3252DF]"
-                          onClick={() => {
-                            navigate("/treatments");
-                          }}
-                        >
-                          Explore Treatments
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
+            <TabsContent value="postcare">
+              <PostCareRequestForm />
             </TabsContent>
           </Tabs>
 
-          <motion.div {...fadeIn} className="mt-16">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl">
-                  Why Choose MedNdi Medical Tourism?
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  <div className="flex flex-col items-center text-center">
-                    <Globe className="w-12 h-12 text-blue-500 mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">
-                      Global Network
-                    </h3>
-                    <p className="text-gray-600">
-                      Access to top-tier hospitals and specialists worldwide
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center text-center">
-                    <Heart className="w-12 h-12 text-blue-500 mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">
-                      Personalized Care
-                    </h3>
-                    <p className="text-gray-600">
-                      Tailored treatment plans and dedicated support throughout
-                      your journey
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center text-center">
-                    <MapPin className="w-12 h-12 text-blue-500 mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">
-                      Travel Assistance
-                    </h3>
-                    <p className="text-gray-600">
-                      Comprehensive travel planning and local guidance
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center text-center">
-                    <Phone className="w-12 h-12 text-blue-500 mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">24/7 Support</h3>
-                    <p className="text-gray-600">
-                      Round-the-clock assistance for peace of mind
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div {...fadeIn} className="mt-16 text-center">
-            <h2 className="text-3xl font-bold mb-4 text-blue-800">
-              Ready to Start Your Health Journey?
-            </h2>
-            <p className="text-xl text-gray-600 mb-8">
-              Our team of experts is here to guide you every step of the way.
-            </p>
-            <Button
-              size="lg"
-              className="text-lg px-8 bg-[#4466ff] hover:bg-[#4466ff]"
-              onClick={() => {
-                navigate("/treatments");
-              }}
-            >
-              <Calendar className="w-5 h-5 mr-2" />
-              Schedule a Consultation
-            </Button>
-          </motion.div>
-          <button
-            className="fixed bottom-6 right-6 flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full py-3 px-5 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-50 z-50"
-            onClick={() => navigate("query")}
+          {/* Support */}
+          <motion.div
+            {...fadeIn}
+            className="mt-10 bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sm:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
           >
-            <FileText size={18} />
-            <div className="flex flex-col items-start">
-              <span className="text-sm font-semibold">Upload PDF</span>
-              <span className="text-xs">for disease details</span>
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900">Need help with your booking?</h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Your MedNdi care coordinator is available 24/7.
+              </p>
             </div>
-          </button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a
+                href="tel:+9118001234567"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 border-[#3252DF] text-[#3252DF] font-medium hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
+              >
+                <Phone className="w-4 h-4" />
+                +91 1800 123 4567
+              </a>
+              <a
+                href="mailto:care@medndi.com"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
+              >
+                <Mail className="w-4 h-4" />
+                care@medndi.com
+              </a>
+            </div>
+          </motion.div>
         </div>
       </div>
-      {/* <Outlet /> */}
     </Layout>
   );
 }

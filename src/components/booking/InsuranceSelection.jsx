@@ -126,7 +126,7 @@ const InsuranceSelection = ({ onSelect }) => {
   // Stepper UI with gradient lines when completed
   const renderStepper = () => {
     return (
-      <div className="flex justify-between mb-8">
+      <div className="flex justify-center mb-8">
         {stepTitles.map((title, index) => {
           const stepNumber = index + 1;
           const isActive = stepNumber === step;
@@ -150,13 +150,13 @@ const InsuranceSelection = ({ onSelect }) => {
                 >
                   {isCompleted ? <Check className="w-5 h-5" /> : stepNumber}
                 </div>
-                <span className="text-xs text-center w-16">{title}</span>
+                <span className="text-[11px] sm:text-xs text-center w-16 leading-tight">{title}</span>
               </div>
 
               {/* Connector line except for the last item */}
               {index < stepTitles.length - 1 && (
                 <div
-                  className={`w-24 h-0.5 mx-2 transition-colors 
+                  className={`w-6 sm:w-24 h-0.5 mx-1 sm:mx-2 -mt-5 transition-colors 
                     ${isCompleted ? "bg-green-500" : "bg-gray-200"}`}
                 />
               )}
@@ -175,7 +175,7 @@ const InsuranceSelection = ({ onSelect }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className=" rounded-lg shadow-lg p-8"
+        className="bg-white rounded-2xl shadow-lg p-4 sm:p-8"
       >
         <div className="text-center mb-10">
           <Shield className="w-12 h-12 text-[#3252DF] mx-auto " />
@@ -187,7 +187,7 @@ const InsuranceSelection = ({ onSelect }) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:p-4">
          {
           loading ? ( <LoadingSkelton length={3}/> ) : (insurances?.map((plan, index) => (
             <motion.div
@@ -273,7 +273,7 @@ const InsuranceSelection = ({ onSelect }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className="bg-white rounded-lg shadow-lg p-8"
+        className="bg-white rounded-2xl shadow-lg p-4 sm:p-8"
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

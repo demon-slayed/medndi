@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MapPin, Star, Heart, Check, ArrowRight, Pencil } from "lucide-react";
+import { MapPin, Star, Check, ArrowRight, Pencil } from "lucide-react";
 import { motion } from "framer-motion";
 import LoadingSkelton from "@/components/LoadingSkelton";
 import axios from "axios";
@@ -14,13 +14,11 @@ const HotelsCards = ({ onHotelSelect, refreshKey }) => {
     const fetchHotels = async () => {
       try {
         setLoading(true);
-        console.log("hii");
         const fetchedHotels = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/hotels`,
           { withCredentials: true }
         );
         setHotels(fetchedHotels?.data?.hotels);
-        console.log("hotels is: ", fetchedHotels?.data?.hotels);
       } catch (error) {
         console.error("Failed to fetch hotels:", error);
         setHotels([]);
@@ -37,7 +35,7 @@ const HotelsCards = ({ onHotelSelect, refreshKey }) => {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16"
+      className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-10"
     >
       {loading ? (
         <LoadingSkelton length={6} />
@@ -61,12 +59,6 @@ const HotelsCards = ({ onHotelSelect, refreshKey }) => {
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-              <button
-                className="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
-                onClick={() => {}}
-              >
-                <Heart className="w-5 h-5 text-red-500" />
-              </button>
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
                 <Star className="w-4 h-4 text-yellow-500" />
                 <span className="text-sm font-medium">{hotel?.rating}</span>
@@ -74,7 +66,7 @@ const HotelsCards = ({ onHotelSelect, refreshKey }) => {
             </div>
 
             {/* Content */}
-            <div className="p-6">
+            <div className="p-5 sm:p-6">
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="font-poppins font-semibold text-xl text-[#152C5B]">
@@ -103,16 +95,17 @@ const HotelsCards = ({ onHotelSelect, refreshKey }) => {
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-between">
+              <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
                 <div>
                   <span className="text-sm text-gray-500">per night</span>
                   <div className="text-lg font-semibold text-gray-900">
-                    ₹{hotel?.price_per_night}
+                    ₹{Number(hotel?.price_per_night || 0).toLocaleString("en-IN")}
                   </div>
                 </div>
                 <button
+                  type="button"
                   onClick={() => onHotelSelect(hotel)}
-                  className="flex items-center gap-2 px-4 py-2 bg-white text-[#3252DF] border border-[#3252DF] rounded-full shadow-sm hover:bg-[#3252DF] hover:text-white transition-all duration-300"
+                  className="inline-flex shrink-0 items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white text-sm font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
                 >
                   <Pencil className="w-4 h-4" />
                   Edit

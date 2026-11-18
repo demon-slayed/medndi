@@ -6,6 +6,9 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import LoadingSkelton from "../LoadingSkelton";
 
+const FALLBACK_HOTEL_IMAGE =
+  "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop";
+
 const HotelSelection = ({ handleNextStep }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [hotels, setHotels] = useState([]);
@@ -115,8 +118,9 @@ const HotelSelection = ({ handleNextStep }) => {
                 {/* Image Container */}
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src={hotel?.image || "https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
-                    alt={hotel?.hotel_name}
+                    src={hotel?.image || FALLBACK_HOTEL_IMAGE}
+                    onError={(e) => { e.currentTarget.src = FALLBACK_HOTEL_IMAGE; }}
+                    alt={hotel?.hotel_name || "Hotel"}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />

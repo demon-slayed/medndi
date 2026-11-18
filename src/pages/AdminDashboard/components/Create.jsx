@@ -24,20 +24,20 @@ const Create = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-500 mb-12">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
           Dashboard Management
         </h1>
 
         <Tabs defaultValue="treatment" className="w-full mt-2">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="treatment">Treatment Management</TabsTrigger>
-            <TabsTrigger value="hospital">Hospital Management</TabsTrigger>
-            <TabsTrigger value="hotel">Hotel Management</TabsTrigger>
+          <TabsList className="mb-8">
+            <TabsTrigger value="treatment">Treatment<span className="hidden sm:inline">&nbsp;Management</span></TabsTrigger>
+            <TabsTrigger value="hospital">Hospital<span className="hidden sm:inline">&nbsp;Management</span></TabsTrigger>
+            <TabsTrigger value="hotel">Hotel<span className="hidden sm:inline">&nbsp;Management</span></TabsTrigger>
           </TabsList>
 
           {/* Treatment Tab */}
           <TabsContent value="treatment">
-            <Card className="w-full max-w-3xl mx-auto rounded-2xl border border-gray-200 bg-white p-6 shadow-lg transition hover:shadow-xl">
+            <Card className="w-full max-w-3xl mx-auto rounded-2xl border border-gray-200 bg-white p-6 max-sm:p-2 shadow-lg transition hover:shadow-xl">
               <CardHeader className="border-b pb-4">
                 <CardTitle className="text-2xl font-bold text-blue-900">
                   Add / Update New Treatment
@@ -61,7 +61,7 @@ const Create = () => {
 
           {/* Hospital Tab */}
           <TabsContent value="hospital">
-            <Card className="w-full max-w-3xl mx-auto rounded-2xl border border-gray-200 bg-white p-6 shadow-lg transition hover:shadow-xl">
+            <Card className="w-full max-w-3xl mx-auto rounded-2xl border border-gray-200 bg-white p-6 max-sm:p-2 shadow-lg transition hover:shadow-xl">
               <CardHeader className="border-b pb-4">
                 <CardTitle className="text-2xl font-bold text-blue-900">
                   {selectedHospital?._id ? "Update Hospital" : "Add New Hospital"}
@@ -86,7 +86,7 @@ const Create = () => {
 
           {/* Hotel Tab */}
           <TabsContent value="hotel">
-            <Card className="w-full max-w-3xl mx-auto rounded-2xl border border-gray-200 bg-white p-6 shadow-lg transition hover:shadow-xl">
+            <Card className="w-full max-w-3xl mx-auto rounded-2xl border border-gray-200 bg-white p-6 max-sm:p-2 shadow-lg transition hover:shadow-xl">
               <CardHeader className="border-b pb-4">
                 <CardTitle className="text-2xl font-bold text-blue-900">
                   Add or Update Hotel

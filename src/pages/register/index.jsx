@@ -25,13 +25,15 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const benefits = [
-  { icon: CheckCircle, text: "Access to 500+ Hospitals" },
-  { icon: MapPin, text: "Coverage across 50+ cities" },
-  { icon: Users, text: "2000+ Expert Doctors" },
-  { icon: Calendar, text: "Easy Appointment Booking" },
-  { icon: Shield, text: "Secure Medical Records" },
-  { icon: Heart, text: "Personalized Health Plans" },
+  { icon: CheckCircle, text: "Accredited partner hospitals" },
+  { icon: MapPin, text: "Delhi NCR, Bengaluru & Pune" },
+  { icon: Users, text: "A dedicated care coordinator" },
+  { icon: Calendar, text: "Book treatment dates online" },
+  { icon: Shield, text: "Your reports kept private" },
+  { icon: Heart, text: "Post-treatment follow-up" },
 ];
+
+const accreditations = ["JCI accredited", "NABH accredited", "Prices in ₹", "24/7 support"];
 
 const Register = () => {
   const navigate = useNavigate();
@@ -127,16 +129,16 @@ const Register = () => {
             transition={{ delay: 0.3 }}
             className="mt-8 space-y-6"
           >
-            <h1 className="text-5xl font-bold leading-tight">
+            <h1 className="text-4xl xl:text-5xl font-bold leading-tight">
               <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                Premium Healthcare
+                Quality treatment
               </span>
               <br />
-              Without Borders
+              in India, planned for you
             </h1>
             <p className="text-lg text-white/80 leading-relaxed max-w-md">
-              Experience world-class medical care with personalized assistance
-              at every step.
+              Compare accredited hospitals, see costs upfront and get one
+              coordinator for your whole trip.
             </p>
           </motion.div>
         </div>
@@ -172,11 +174,16 @@ const Register = () => {
           className="relative z-10 bg-white/10 rounded-2xl p-6 backdrop-blur-sm"
         >
           <div className="text-white/90 text-sm mb-4">
-            Trusted by Healthcare Providers
+            Every hospital on MedNdi is JCI and/or NABH accredited
           </div>
-          <div className="flex justify-between items-center">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="w-16 h-8 bg-white/20 rounded-lg" />
+          <div className="flex flex-wrap gap-2">
+            {accreditations.map((item) => (
+              <span
+                key={item}
+                className="px-3 py-1.5 rounded-full bg-white/15 border border-white/20 text-sm font-medium text-white"
+              >
+                {item}
+              </span>
             ))}
           </div>
         </motion.div>
@@ -186,17 +193,25 @@ const Register = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="w-full lg:w-1/2 bg-white p-12 flex flex-col justify-center"
+        className="w-full lg:w-1/2 bg-white px-6 py-10 sm:p-12 flex flex-col justify-center"
       >
         <div className="max-w-md mx-auto w-full">
           {/* Language & Register Buttons */}
-          <div className="flex justify-between items-center mb-12">
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            aria-label="MedNdi home"
+            className="lg:hidden mb-8 inline-flex rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
+          >
+            <MedNdiLogo textColor="#152C5B" tagColor="#3252DF" accentColor="#fff" />
+          </button>
+          <div className="flex justify-between items-center gap-4 mb-10 sm:mb-12">
             <span className="text-sm text-gray-500">Already have an account?</span>
             <motion.button
               type="button"
               whileHover={{ scale: 1.05 }}
               onClick={() => navigate("/login")}
-              className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white px-6 py-2 rounded-xl font-medium"
+              className="shrink-0 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white px-6 py-2 rounded-xl font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
             >
               Login
             </motion.button>
@@ -204,10 +219,11 @@ const Register = () => {
 
           {/* Register Form */}
           <form className="space-y-6" onSubmit={handleRegisterClick} noValidate>
-            <h2 className="text-3xl font-bold text-gray-900">Create your account</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Create your account</h2>
             <Input
               type="email"
-              placeholder="Enter Email"
+              placeholder="Email"
+              aria-label="Email"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -215,7 +231,8 @@ const Register = () => {
             />
             <Input
               type="text"
-              placeholder="Enter Full Name"
+              placeholder="Full name"
+              aria-label="Full name"
               autoComplete="name"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
@@ -225,6 +242,7 @@ const Register = () => {
               <Input
                 type={passwordVisible ? "text" : "password"}
                 placeholder="Password (min 6 characters)"
+                aria-label="Password"
                 autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -248,13 +266,13 @@ const Register = () => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full flex items-center justify-between bg-[#EAF0F7] py-5 text-[#4F555A] border-none   focus-visible:ring-0"
+                      className="w-full h-12 flex items-center justify-between bg-gray-50 border border-gray-100 rounded-xl text-gray-600 font-normal shadow-none hover:bg-gray-100"
                     >
                       {selectedHeight ? `${selectedHeight} cm` : "Height"}
                       <ChevronDown className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full">
+                  <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-64 overflow-y-auto">
                     {heightOptions.map((height) => (
                       <DropdownMenuItem
                         key={height}
@@ -273,13 +291,13 @@ const Register = () => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full flex items-center justify-between bg-[#EAF0F7] py-5 text-[#4F555A]"
+                      className="w-full h-12 flex items-center justify-between bg-gray-50 border border-gray-100 rounded-xl text-gray-600 font-normal shadow-none hover:bg-gray-100"
                     >
                       {selectedWeight ? `${selectedWeight} kg` : "Weight"}
                       <ChevronDown className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full">
+                  <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-64 overflow-y-auto">
                     {weightOptions.map((weight) => (
                       <DropdownMenuItem
                         key={weight}
@@ -295,31 +313,32 @@ const Register = () => {
 
             <div className="flex flex-row gap-2 w-full">
               {/* Age */}
-              <div className="w-[30%]">
+              <div className="w-[35%]">
                 <Input
                   type="number"
                   min={1}
                   max={120}
                   placeholder="Age"
+                  aria-label="Age"
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
-                  className="w-full bg-[#EAF0F7] py-5 border-none   focus-visible:ring-0 text-[#4F555A]"
+                  className="w-full h-12 bg-gray-50 border-gray-100 rounded-xl text-gray-600"
                 />
               </div>
 
               {/* Gender */}
-              <div className="w-[70%]">
+              <div className="w-[65%]">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full flex items-center justify-between bg-[#EAF0F7] py-5 text-[#4F555A] border-none   focus-visible:ring-0"
+                      className="w-full h-12 flex items-center justify-between bg-gray-50 border border-gray-100 rounded-xl text-gray-600 font-normal shadow-none hover:bg-gray-100"
                     >
                       {selectedGender || "Gender"}
                       <ChevronDown className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full">
+                  <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-64 overflow-y-auto">
                     {genderOptions.map((gender) => (
                       <DropdownMenuItem
                         key={gender}
@@ -336,7 +355,7 @@ const Register = () => {
               type="submit"
               disabled={submitting}
               whileHover={{ scale: 1.02 }}
-              className="w-full py-4 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-xl font-medium disabled:opacity-70"
+              className="w-full py-4 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-xl font-medium hover:shadow-lg hover:shadow-blue-500/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2 disabled:opacity-70"
             >
               {submitting ? "Creating account..." : "Register"}
             </motion.button>

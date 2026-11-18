@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { Search, ArrowRight, Star, Clock, Users, Building2, BadgeCheck } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, ArrowRight, Star, Clock, Building2, BadgeCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import LoadingSkelton from '@/components/LoadingSkelton';
@@ -39,10 +39,10 @@ const QuickSearch = ({ suggestions = [] }) => {
     .slice(0, 6);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-2xl mx-auto mb-12">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-2xl mx-auto">
       <div className="bg-white rounded-2xl shadow-xl p-4">
         <form
-          className="flex items-center gap-4"
+          className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4"
           onSubmit={(e) => {
             e.preventDefault();
             goToResults(searchQuery);
@@ -58,7 +58,8 @@ const QuickSearch = ({ suggestions = [] }) => {
               }}
               onFocus={() => setShowSuggestions(true)}
               onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-              placeholder="Search for treatments..."
+              placeholder="Search treatments, e.g. knee replacement"
+              aria-label="Search treatments"
               className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3252DF]/20"
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -93,7 +94,8 @@ const QuickSearch = ({ suggestions = [] }) => {
           </div>
           <Button
             type="submit"
-            className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all duration-300 flex items-center gap-2"
+            variant="brand"
+            size="xl"
           >
             Search <ArrowRight className="w-4 h-4" />
           </Button>
@@ -101,7 +103,7 @@ const QuickSearch = ({ suggestions = [] }) => {
 
         {/* Quick Tags */}
         {suggestions.length > 0 && (
-          <div className="flex items-center gap-3 mt-4 pt-4 border-t max-sm:flex-wrap">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-4 pt-4 border-t">
             <span className="text-sm text-gray-500">Popular:</span>
             {suggestions.slice(0, 3).map((tag, idx) => (
               <motion.button
@@ -135,7 +137,7 @@ const TreatmentCard = ({ treatment }) => {
     <motion.div
     variants={itemVariants}
     whileHover={{ y: -10 }}
-    className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+    className="group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
   >
     {/* Image */}
     <div className="relative h-48 overflow-hidden">
@@ -155,7 +157,10 @@ const TreatmentCard = ({ treatment }) => {
     </div>
 
     {/* Content */}
-    <div className="p-6">
+    <div className="p-5 sm:p-6 flex flex-col flex-1">
+      {treatment?.category && (
+        <span className="self-start mb-2 text-xs px-3 py-1 rounded-full bg-blue-50 text-[#3252DF] font-medium">{treatment.category}</span>
+      )}
       <h3 className="font-poppins font-semibold text-xl text-[#152C5B] mb-2">{treatment?.treatment_name}</h3>
 
       {treatment?.location && (
@@ -165,7 +170,7 @@ const TreatmentCard = ({ treatment }) => {
         </div>
       )}
 
-      <p className="text-gray-600 text-sm mb-4">{treatment?.description}</p>
+      <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">{treatment?.description}</p>
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 mb-4">
@@ -179,15 +184,23 @@ const TreatmentCard = ({ treatment }) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1">
-          <Users className="w-4 h-4 text-[#3252DF]" />
-          <span className="text-sm text-gray-600">
-            {treatment?.patients ? `${treatment.patients} patients` : "Trusted by patients"}
-          </span>
+      <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100">
+        <div>
+          {treatment?.estimated_cost?.min ? (
+            <>
+              <p className="text-xs text-gray-500">From</p>
+              <p className="font-bold text-[#3252DF]">₹{Number(treatment.estimated_cost.min).toLocaleString("en-IN")}</p>
+            </>
+          ) : (
+            <p className="text-sm text-gray-500">Cost on request</p>
+          )}
         </div>
-        <button className="flex items-center gap-2 text-[#3252DF] font-medium group-hover:gap-3 transition-all duration-300" onClick={handleClickLearnMore}>
-          Learn more <ArrowRight className="w-4 h-4" />
+        <button
+          type="button"
+          className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white text-sm font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
+          onClick={handleClickLearnMore}
+        >
+          View details <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </div>
@@ -226,9 +239,9 @@ const Treatment = () => {
   const featuredTreatments = treatments.slice(0, 3);
 
   return (
-    <div className="relative bg-gradient-to-b from-white to-[#ECF1FF] overflow-hidden px-6 md:px-16 lg:px-40 py-20 max-sm:py-14">
+    <section className="relative bg-gradient-to-b from-white to-[#ECF1FF] overflow-hidden py-16 lg:py-24">
       {/* Background Elements */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <motion.div
           animate={{
             scale: [1, 1.2, 1],
@@ -250,15 +263,15 @@ const Treatment = () => {
       <motion.div
         whileInView="visible"
         viewport={{ once: true }}
-        className="relative flex flex-col gap-16"
+        className="relative max-w-7xl mx-auto px-6 flex flex-col gap-12"
       >
         {/* Header */}
         <motion.div variants={itemVariants} className="text-center">
-          <h2 className="font-poppins font-bold text-5xl max-lg:text-4xl max-md:text-3xl">
-            Available <span className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] bg-clip-text text-transparent">Treatments</span>
+          <h2 className="font-poppins font-bold text-3xl md:text-4xl lg:text-5xl text-[#283841]">
+            Popular <span className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] bg-clip-text text-transparent">Treatments</span>
           </h2>
           <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-            Discover advanced treatments performed by leading specialists at accredited hospitals
+            Search a procedure or browse popular treatments, with indicative costs from partner hospitals
           </p>
         </motion.div>
 
@@ -268,7 +281,7 @@ const Treatment = () => {
         <AnimatePresence mode="wait">
           <motion.div
             variants={itemVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
           >
           {
             loading ? (
@@ -287,8 +300,20 @@ const Treatment = () => {
           }
           </motion.div>
         </AnimatePresence>
+
+        {!loading && treatments.length > featuredTreatments.length && (
+          <div className="text-center -mt-6">
+            <Link
+              to="/treatments"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg border-2 border-[#3252DF] text-[#3252DF] font-medium hover:bg-blue-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
+            >
+              View all {treatments.length} treatments
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        )}
       </motion.div>
-    </div>
+    </section>
   );
 };
 

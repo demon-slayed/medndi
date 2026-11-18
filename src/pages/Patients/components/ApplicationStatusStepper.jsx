@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Check, Clock, AlertCircle } from 'lucide-react';
+import { STATUS_LABELS, statusBadgeClass } from '@/lib/applicationStatus';
 
 export default function ApplicationStatusStepper({currentStatus}) {
   const [steps, setSteps] = useState([]);
@@ -7,27 +8,27 @@ export default function ApplicationStatusStepper({currentStatus}) {
     const allSteps = [
       {
         key: 'initilal_assessment',
-        title: 'Initial Assessment',
+        title: STATUS_LABELS.initilal_assessment,
         description: 'Review of basic eligibility criteria and preliminary application documents',
       },
       {
         key: 'document_verification',
-        title: 'Document Verification',
+        title: STATUS_LABELS.document_verification,
         description: 'Verification of submitted documents including identification, certifications, and references',
       },
       {
         key: 'board_meeting',
-        title: 'Medical Board Meeting',
+        title: STATUS_LABELS.board_meeting,
         description: 'Review of medical history and current health status by qualified medical professionals',
       },
       {
         key: 'travel_accomodation',
-        title: 'Travel & Accommodation',
+        title: STATUS_LABELS.travel_accomodation,
         description: 'Planning and arrangement of travel logistics and accommodation details',
       },
       {
         key: 'insurance',
-        title: 'Insurance',
+        title: STATUS_LABELS.insurance,
         description: 'Processing of required insurance coverage and policy documentation',
       },
       {
@@ -53,99 +54,69 @@ export default function ApplicationStatusStepper({currentStatus}) {
     setSteps(processedSteps);
   }, [currentStatus]);
 
-  // Helper function to get the appropriate icon for the step status
   const getStatusIcon = (status) => {
     switch (status) {
       case 'completed':
-        return <Check className="w-5 h-5 text-green-600" />;
+        return <Check className="w-4 h-4 text-white" />;
       case 'in-progress':
-        return <Clock className="w-5 h-5 text-blue-600" />;
+        return <Clock className="w-4 h-4 text-white" />;
       default:
-        return <div className="w-5 h-5 rounded-full border-2 border-gray-300" />;
+        return <span className="w-2 h-2 rounded-full bg-gray-300" />;
     }
   };
 
-  // Helper function to get the appropriate color for the connecting line
-  const getStepperLineColor = (currentStatus, nextStatus) => {
-    if (currentStatus === 'completed' && nextStatus === 'completed') {
-      return 'bg-green-500';
-    } else if (currentStatus === 'completed' && nextStatus === 'in-progress') {
-      return 'bg-gradient-to-b from-green-500 to-blue-500';
-    } else if (currentStatus === 'in-progress') {
-      return 'bg-gradient-to-b from-blue-500 to-gray-300';
-    } else {
-      return 'bg-gray-300';
-    }
-  };
+  const circleClass = (status) =>
+    status === 'completed'
+      ? 'bg-green-500'
+      : status === 'in-progress'
+      ? 'bg-gradient-to-r from-[#3252DF] to-[#4466ff] ring-4 ring-blue-100'
+      : 'bg-white border-2 border-gray-200';
+
+  const lineClass = (status) => (status === 'completed' ? 'bg-green-500' : 'bg-gray-200');
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white rounded-lg shadow p-4">
-      <h2 className="text-xl font-bold mb-4 px-4 pt-2">Application Status</h2>
-      <div className="relative pt-4">
+    <div className="w-full">
+      <ol className="relative">
         {steps.map((step, index) => (
-          <div key={index} className="relative">
-            <div className="flex items-start mb-8 px-4">
-              {/* Step number circle with icon */}
-              <div className="relative flex items-center justify-center z-10 bg-white">
-                <div
-                  className={`rounded-full p-1 ${
-                    step.status === "completed"
-                      ? "bg-green-100"
-                      : step.status === "in-progress"
-                      ? "bg-blue-100"
-                      : "bg-gray-100"
-                  }`}
-                >
-                  {getStatusIcon(step.status)}
-                </div>
-              </div>
-
-              {/* Step Content */}
-              <div className="ml-4 flex-grow">
-                <div className="flex flex-col md:flex-row md:items-center justify-between">
-                  <h3 className="text-lg font-semibold">
-                    {step.title}
-                  </h3>
-                </div>
-                <p className="text-gray-600 mt-1 text-sm">
-                  {step.description}
-                </p>
-                <span
-                  className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium ${
-                    step.status === "completed"
-                      ? "bg-green-100 text-green-800"
-                      : step.status === "in-progress"
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
-                >
-                  {step.status === 'in-progress' ? 'In progress' : step.status.charAt(0).toUpperCase() + step.status.slice(1)}
-                </span>
-              </div>
-            </div>
-
+          <li key={step.key} className="relative flex gap-4 pb-6 last:pb-0">
             {/* Connecting line */}
             {index < steps.length - 1 && (
-              <div className="absolute left-5 top-0 -ml-px h-full w-0.5">
-                <div
-                  className={`h-full ${getStepperLineColor(
-                    step.status,
-                    steps[index + 1].status
-                  )}`}
-                />
-              </div>
+              <span
+                aria-hidden="true"
+                className={`absolute left-4 top-8 -ml-px h-[calc(100%-2rem)] w-0.5 ${lineClass(step.status)}`}
+              />
             )}
-          </div>
+            <div className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${circleClass(step.status)}`}>
+              {getStatusIcon(step.status)}
+            </div>
+            <div className="min-w-0 flex-1 pt-0.5">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className={`font-semibold ${step.status === 'pending' ? 'text-gray-500' : 'text-gray-900'}`}>
+                  {step.title}
+                </h3>
+                {step.status !== 'pending' && (
+                  <span
+                    className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      step.status === 'in-progress' ? statusBadgeClass(step.key) : 'bg-green-100 text-green-800'
+                    }`}
+                  >
+                    {step.status === 'in-progress' ? 'In progress' : 'Completed'}
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-sm text-gray-600">{step.description}</p>
+            </div>
+          </li>
         ))}
-      </div>
-      
+      </ol>
+
       {/* Rejected state notification (only show if status is rejected) */}
       {currentStatus === 'rejected' && (
-        <div className="flex items-center p-4 mt-2 bg-red-50 rounded-lg border border-red-200">
-          <AlertCircle className="text-red-600 mr-3" />
+        <div className="flex items-start gap-3 p-4 mt-4 bg-red-50 rounded-xl border border-red-200">
+          <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <h4 className="font-semibold text-red-700">Application not approved</h4>
-            <p className="text-sm text-red-600">Our team couldn&apos;t approve this request. Please contact support@medndi.com for next steps.</p>
+            <p className="text-sm text-red-600">Our team couldn&apos;t approve this request. Please contact care@medndi.com for next steps.</p>
           </div>
         </div>
       )}

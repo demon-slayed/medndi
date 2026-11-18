@@ -19,11 +19,16 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        brand:
+          "bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white shadow-sm hover:shadow-lg hover:shadow-blue-500/25 focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2",
+        brandOutline:
+          "border-2 border-[#3252DF] bg-white text-[#3252DF] hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2",
       },
       size: {
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
+        xl: "h-12 rounded-xl px-6 text-base",
         icon: "h-9 w-9",
       },
     },

@@ -140,18 +140,18 @@ const Header = () => {
     >
       {/* Top Bar */}
       <div className="bg-[#242d90] text-white py-1">
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center text-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center gap-3 text-xs sm:text-sm whitespace-nowrap">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1">
-              <Phone className="w-4 h-4 max-sm:text-xs" /> +1 (800) 123-4567
-            </span>
+            <a href="tel:+9118001234567" className="flex items-center gap-1 hover:text-blue-200 transition-colors">
+              <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> +91 1800 123 4567
+            </a>
             <span className="hidden md:flex items-center gap-1">
               <Activity className="w-4 h-4" /> 24/7 Support
             </span>
           </div>
-          <div className="flex items-center gap-4">
-            <button className="hover:text-blue-200 transition-colors max-sm:text-xs" onClick={()=>{navigate('/patient')}}>Patient Portal</button>
-            <button className="hover:text-blue-200 transition-colors max-sm:text-xs" onClick={()=>{handleDoctorLogin()}}>Doctor Login</button>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <button className="hover:text-blue-200 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300" onClick={()=>{navigate('/patient')}}>Patient Portal</button>
+            <button className="hover:text-blue-200 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300" onClick={()=>{handleDoctorLogin()}}>Doctor Login</button>
           </div>
         </div>
       </div>
@@ -165,7 +165,7 @@ const Header = () => {
               whileHover={{ scale: 1.05 }}
               className="flex-shrink-0 flex items-center gap-0"
             >
-              <img src={logo} alt="logo.png" className="h-16 w-16 max-sm:w-16 max-sm:h-16" />
+              <img src={logo} alt="" aria-hidden="true" className="h-16 w-16 cursor-pointer" onClick={handleClickLogo} />
               <MedNdiLogo className="cursor-pointer p-0 -ml-3" onClick={handleClickLogo}/>
             </motion.div>
 
@@ -222,7 +222,8 @@ const Header = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                    className="p-2 rounded-full bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white flex items-center justify-center"
+                    aria-label="Account menu"
+                    className="p-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white flex items-center justify-center"
                   >
                     <User className="w-5 h-5" />
                   </motion.button>
@@ -296,12 +297,13 @@ const Header = () => {
                 <SheetTrigger asChild>
                   <motion.button
                     whileTap={{ scale: 0.95 }}
-                    className="p-2 text-blue-300 hover:text-blue-200"
+                    aria-label="Open menu"
+                    className="p-2 text-blue-300 hover:text-blue-200 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
                   >
                     <Menu size={28} />
                   </motion.button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-80 bg-[#0c1445] border-r border-blue-900">
+                <SheetContent side="left" className="w-[85vw] max-w-xs bg-[#0c1445] border-r border-blue-900 overflow-y-auto">
                   <div className="py-6">
                     <div className="mb-8">
                       <MedNdiLogo />

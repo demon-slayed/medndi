@@ -9,13 +9,13 @@ const QuickBookCTA = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed bottom-8 right-8 z-50">
+    <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50">
       <Button
         onClick={() => {
           navigate('/treatments');
           window.scrollTo(0, 0);
         }}
-        className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-full px-6 py-6 font-medium text-lg shadow-lg hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 flex items-center gap-2"
+        className="bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-full h-12 px-5 sm:h-14 sm:px-6 font-medium text-sm sm:text-base shadow-lg hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
       >
         <Calendar className="w-5 h-5" />
         Book Appointment

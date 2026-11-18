@@ -27,9 +27,9 @@ const DashboardPage = () => {
   return (
     <>
     <Header />
-    <div className="flex mt-24">
+    <div className="flex pt-28">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="flex-1 p-6 ml-64 max-lg:ml-0">{renderPage()}</div>
+      <div className="flex-1 min-w-0 p-4 sm:p-6 pb-24 lg:pb-6 ml-64 max-lg:ml-0">{renderPage()}</div>
     </div>
     </>
   );

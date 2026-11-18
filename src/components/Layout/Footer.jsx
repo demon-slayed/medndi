@@ -32,9 +32,9 @@ const Footer = () => {
   ];
 
   const contactInfo = [
-    { icon: Phone, info: "+1 800 123 4567", label: "24/7 Support" },
+    { icon: Phone, info: "+91 1800 123 4567", label: "24/7 Support" },
     { icon: Mail, info: "care@medndi.com", label: "Email Us" },
-    { icon: MapPin, info: "Mumbai, India", label: "Head Office" }
+    { icon: MapPin, info: "New Delhi, India", label: "Head Office" }
   ];
 
   return (
@@ -42,29 +42,29 @@ const Footer = () => {
       {/* Top Border Accent */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3252DF] to-[#4466ff]" />
 
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 ">
           {/* Brand Column */}
-          <div className="space-y-6 max-sm:items-center max-sm:text-center">
+          <div className="space-y-6 max-sm:flex max-sm:flex-col max-sm:items-center max-sm:text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
               <MedNdiLogo textColor="#152C5B" tagColor="#3252DF" accentColor="#fff" />
               <p className="mt-6 text-gray-600 leading-relaxed">
-                Connecting patients with world-class healthcare facilities and expert medical professionals for affordable, quality treatments.
+                Helping international patients find and plan quality treatment at accredited hospitals in Delhi NCR, Bengaluru and Pune.
               </p>
             </motion.div>
 
             {/* Accreditations */}
-            <div className="flex items-center gap-4 max-sm:text-center max-sm:justify-center">
+            <div className="flex flex-wrap items-center gap-4 max-sm:text-center max-sm:justify-center">
               <div className="flex items-center gap-2 text-[#3252DF]">
                 <Shield className="w-5 h-5" />
-                <span className="text-sm font-medium">JCI Accredited</span>
+                <span className="text-sm font-medium">JCI / NABH hospitals</span>
               </div>
               <div className="flex items-center gap-2 text-[#3252DF]">
                 <Award className="w-5 h-5" />
-                <span className="text-sm font-medium">ISO 9001</span>
+                <span className="text-sm font-medium">Upfront ₹ estimates</span>
               </div>
             </div>
 

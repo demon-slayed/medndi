@@ -91,22 +91,22 @@ const TravelSelection = ({ onFlightSelect, onTransportSelect }) => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-lg shadow-lg p-8 text-center"
+          className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 text-center"
         >
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Do you need travel arrangements?</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">Do you need travel arrangements?</h2>
           <p className="text-gray-600 mb-8">We can help arrange your journey to and from the medical facility</p>
-          <div className="flex justify-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
             <button
               onClick={() => setNeedTravel(true)}
-              className="px-6 py-3 max-sm:px-4 max-sm:py-2 max-sm:text-sm bg-[#3252DF] text-white rounded-lg hover:bg-[#2341CE] transition-colors"
+              className="px-6 py-3 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
             >
               Yes, I need travel arrangements
             </button>
             <button
               onClick={() => setNeedTravel(false)}
-              className="px-6 py-3 max-sm:px-4 max-sm:py-2 max-sm:text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-6 py-3 border-2 border-gray-200 bg-white text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
             >
-              No, I'll manage on my own
+              No, I&apos;ll manage on my own
             </button>
           </div>
         </motion.div>
@@ -119,14 +119,14 @@ const TravelSelection = ({ onFlightSelect, onTransportSelect }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-white rounded-lg shadow-lg p-6 space-y-6"
+            className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 space-y-6"
           >
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold text-gray-900">Travel Arrangements</h2>
-              {/* <h1>{`${needTravel}, ${travelMode}, ${selectedLocalTransport}, ${sourceCity}, ${destinationCity}`}</h1> */}
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">Travel arrangements</h2>
 
               <button
                 onClick={() => setNeedTravel(null)}
+                aria-label="Close travel arrangements"
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
                 <X className="w-5 h-5 text-gray-500" />

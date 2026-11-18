@@ -170,9 +170,9 @@ const HospitalDetails = () => {
     <motion.nav
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100"
+      className="relative z-10 bg-white/80 backdrop-blur-lg border-b border-gray-100"
     >
-      <div className="max-w-7xl mx-auto px-8 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm max-md:flex-wrap">
             <BreadcrumbItem>
@@ -203,9 +203,8 @@ const HospitalDetails = () => {
     return (
       <Layout>
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30">
-          <div className="mt-28"></div>
           <PageBreadcrumb />
-          <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
             {loading ? (
               <div className="animate-pulse space-y-6">
                 <div className="bg-white rounded-2xl shadow-lg p-6 space-y-4">
@@ -244,19 +243,17 @@ const HospitalDetails = () => {
   return (
      <Layout>
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30">
-          {/* Spacing after a fixed header */}
-          <div className="mt-28"></div>
 
           {/* Breadcrumb */}
           <PageBreadcrumb />
 
           {/* Main Wrapper */}
-          <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
             {/* Hospital Title & Stats Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-2xl shadow-lg p-6 mb-8"
+              className="bg-white rounded-2xl shadow-lg p-5 sm:p-6 mb-8"
             >
               <div className="flex flex-col md:flex-row justify-between gap-6">
                 <div>
@@ -684,7 +681,7 @@ const HospitalDetails = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-12 bg-gradient-to-r from-[#3252DF] to-[#4466ff] rounded-2xl p-8 text-white"
+              className="mt-12 bg-gradient-to-r from-[#3252DF] to-[#4466ff] rounded-2xl p-6 sm:p-8 text-white text-center md:text-left"
             >
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>

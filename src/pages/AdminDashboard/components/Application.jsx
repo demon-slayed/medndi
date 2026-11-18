@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from '../utils';
+import { formatDateTime } from '@/components/booking/formatDateTime';
+import { STATUS_BADGE_CLASSES } from '@/lib/applicationStatus';
 
 const Application = () => {
   const [applications, setApplications] = useState([]);
@@ -35,15 +37,8 @@ const Application = () => {
     statusLabels[status] || status?.replace(/_/g, ' ') || 'Unknown';
 
   // Status badge colors
-  const statusColors = {
-    initilal_assessment: 'bg-yellow-100 text-yellow-800',
-    document_verification: 'bg-blue-100 text-blue-800',
-    board_meeting: 'bg-purple-100 text-purple-800',
-    travel_accomodation: 'bg-indigo-100 text-indigo-800',
-    insurance: 'bg-emerald-100 text-emerald-800',
-    approved: 'bg-green-100 text-green-800',
-    rejected: 'bg-red-100 text-red-800'
-  };
+  // Shared with the patient dashboard so a status looks the same everywhere
+  const statusColors = STATUS_BADGE_CLASSES;
 
   // Fetch all applications
   useEffect(() => {
@@ -123,13 +118,13 @@ const Application = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-0 sm:px-4 py-4 sm:py-8">
       {!isDetailView ? (
         <>
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-800">Applications Management</h1>
-            <div className="flex items-center">
-              <label htmlFor="statusFilter" className="mr-2 text-gray-700">Filter by status:</label>
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Applications Management</h1>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+              <label htmlFor="statusFilter" className="text-sm text-gray-700">Filter by status:</label>
               <select
                 id="statusFilter"
                 value={statusFilter}
@@ -155,15 +150,15 @@ const Application = () => {
               {filteredApplications.map((application) => (
                 <div
                   key={application._id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
                   onClick={() => handleViewApplication(application)}
                 >
                   <div className="p-5">
-                    <div className="flex justify-between items-start mb-3">
-                      <h2 className="text-xl font-semibold text-gray-800">
+                    <div className="flex justify-between items-start gap-3 mb-3">
+                      <h2 className="text-lg font-semibold text-gray-800 break-all">
                         ID: {application.application_id}
                       </h2>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[application.status]}`}>
+                      <span className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium ${statusColors[application.status] || "bg-gray-100 text-gray-700"}`}>
                         {getStatusLabel(application.status)}
                       </span>
                     </div>
@@ -180,7 +175,7 @@ const Application = () => {
                     
                     <p className="text-gray-600 mb-4">
                       <span className="font-medium">Appointment: </span>
-                      {application.treatmentdateandtime || 'Not scheduled'}
+                      {application.treatmentdateandtime ? formatDateTime(application.treatmentdateandtime) : 'Not scheduled'}
                     </p>
                     
                     <div className="flex justify-between items-center">
@@ -205,8 +200,8 @@ const Application = () => {
         </>
       ) : (
         selectedApplication && (
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <div className="flex justify-between items-center mb-6">
+          <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
               <button 
                 onClick={handleBack} 
                 className="flex items-center text-blue-600 hover:text-blue-800"
@@ -217,8 +212,8 @@ const Application = () => {
                 Back to Applications
               </button>
               
-              <div className="flex items-center">
-                <h3 className="mr-3 text-gray-700 font-medium">Update Status:</h3>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <h3 className="text-gray-700 font-medium">Update Status:</h3>
                 <select
                   value={selectedApplication.status}
                   onChange={handleStatusChange}
@@ -235,14 +230,14 @@ const Application = () => {
 
             {/* Application Details */}
             <div className="mb-8 text-center">
-              <h1 className="text-3xl font-bold text-blue-800">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
                 Application Details
               </h1>
               <p className="text-gray-600 text-lg mt-2">
                 ID: {selectedApplication.application_id}
               </p>
               <div className="mt-2 inline-block">
-                <span className={`px-4 py-1 rounded-full text-sm font-medium ${statusColors[selectedApplication.status]}`}>
+                <span className={`px-4 py-1 rounded-full text-sm font-medium ${statusColors[selectedApplication.status] || "bg-gray-100 text-gray-700"}`}>
                   {getStatusLabel(selectedApplication.status)}
                 </span>
               </div>
@@ -254,7 +249,7 @@ const Application = () => {
                 Appointment Details
               </h2>
               <p className="text-blue-700 font-medium text-lg">
-                {selectedApplication.treatmentdateandtime || 'Not scheduled yet'}
+                {selectedApplication.treatmentdateandtime ? formatDateTime(selectedApplication.treatmentdateandtime) : 'Not scheduled yet'}
               </p>
             </div>
 
@@ -612,15 +607,15 @@ const Application = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end mt-8 space-x-4">
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-end mt-8 gap-3">
               <button
-                className="py-2 px-6 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors font-medium"
+                className="py-2 px-6 border-2 border-gray-200 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                 onClick={handleBack}
               >
                 Back
               </button>
               <button
-                className="py-2 px-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-medium"
+                className="py-2 px-6 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white rounded-lg hover:shadow-lg transition-shadow font-medium"
                 onClick={() => window.print()}
               >
                 Print Details

@@ -9,7 +9,6 @@ import {
   Users,
   Stethoscope,
   ArrowRight,
-  Heart,
   Pencil,
 } from "lucide-react";
 import axios from "axios";
@@ -59,7 +58,7 @@ const HospitalCards = ({ onHospitalSelect, refreshKey }) => {
   }, [refreshKey]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-10">
       {hospitals?.map((hospital, index) => (
         <motion.div
           key={hospital?._id || index}
@@ -95,31 +94,24 @@ const HospitalCards = ({ onHospitalSelect, refreshKey }) => {
                 </motion.span>
               ))}
             </div>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="absolute top-4 right-4 p-2 rounded-full bg-white/90 backdrop-blur-sm text-[#3252DF] hover:bg-[#3252DF] hover:text-white transition-colors"
-            >
-              <Heart className="w-4 h-4" />
-            </motion.button>
           </div>
 
           {/* Content */}
-          <div className="p-6">
+          <div className="p-5 sm:p-6">
             <div className="mb-4">
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="text-lg font-bold text-gray-900">
+              <div className="flex justify-between items-start gap-3 mb-2">
+                <h3 className="min-w-0 text-lg font-bold text-gray-900">
                   {hospital.hospital_name}
                 </h3>
-                <div className="flex items-center gap-1 px-2 py-1 bg-blue-50 rounded-full">
+                <div className="flex shrink-0 items-center gap-1 px-2 py-1 bg-blue-50 rounded-full">
                   <Star className="w-4 h-4 text-yellow-400 fill-current" />
                   <span className="text-sm font-semibold text-[#3252DF]">
                     {hospital.rating}
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-1 text-gray-500">
-                <MapPin className="w-4 h-4" />
+              <div className="flex items-start gap-1 text-gray-500">
+                <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
                 <p className="text-sm">{hospital.address}</p>
               </div>
               <div className="mt-1 flex items-center gap-1 text-green-600">
@@ -157,13 +149,13 @@ const HospitalCards = ({ onHospitalSelect, refreshKey }) => {
 
             {/* Specialties */}
             <div className="grid grid-cols-2 gap-2 mb-4">
-              {hospital?.specialties?.slice(0, 14).map((specialty, idx) => (
+              {hospital?.specialties?.slice(0, 6).map((specialty, idx) => (
                 <motion.div
                   key={idx}
                   whileHover={{ x: 2 }}
                   className="flex items-center gap-2 group"
                 >
-                  <Stethoscope className="w-3 h-3 text-[#3252DF] group-hover:scale-110 transition-transform" />
+                  <Stethoscope className="w-3 h-3 shrink-0 text-[#3252DF] group-hover:scale-110 transition-transform" />
                   <span className="text-xs text-gray-600 group-hover:text-[#3252DF] transition-colors">
                     {specialty}
                   </span>
@@ -172,25 +164,24 @@ const HospitalCards = ({ onHospitalSelect, refreshKey }) => {
             </div>
 
             {/* Treatment Info & CTA */}
-            <div className="flex items-center justify-between pt-4 border-t">
+            <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100">
               <div>
                 <p className="text-xs text-gray-500">Treatment starts from</p>
                 <p className="text-lg font-bold text-[#3252DF]">
-                  ₹{hospital?.treatmentCost?.toLocaleString()}
+                  ₹{hospital?.treatmentCost?.toLocaleString("en-IN")}
                   <span className="text-xs font-normal text-gray-500">
                     /procedure
                   </span>
                 </p>
               </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg text-sm font-medium flex items-center gap-2 hover:shadow-lg transition-all"
+              <button
+                type="button"
+                className="inline-flex shrink-0 items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white text-sm font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
                 onClick={() => onHospitalSelect(hospital)}
               >
                 <Pencil className="w-4 h-4" />
                 Edit
-              </motion.button>
+              </button>
             </div>
           </div>
         </motion.div>

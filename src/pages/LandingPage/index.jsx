@@ -11,7 +11,6 @@ const LandingPage = () => {
   return (
     <div>
        <Layout>
-        <div className='mt-28'></div>
         <Hero />
         <Treatment />
         <PopularHospitals />

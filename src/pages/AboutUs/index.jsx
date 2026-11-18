@@ -2,6 +2,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import Layout from "@/components/Layout/Layout";
+import PageHeader from "@/components/PageHeader";
 import {
   Stethoscope,
   UserCheck,
@@ -21,7 +22,7 @@ const AboutUs = () => {
       icon: <Stethoscope className="w-8 h-8 text-blue-600" />,
       title: "Expert Medical Care",
       description:
-        "Access to India's top medical professionals and cutting-edge treatments.",
+        "Specialists at leading hospitals in Delhi NCR, Bengaluru and Pune, with treatment plans reviewed before you travel.",
     },
     {
       icon: <Plane className="w-8 h-8 text-blue-600" />,
@@ -33,25 +34,25 @@ const AboutUs = () => {
       icon: <Shield className="w-8 h-8 text-blue-600" />,
       title: "Quality Assurance",
       description:
-        "Partnerships with JCI-accredited hospitals and internationally recognized facilities.",
+        "We list only JCI and/or NABH-accredited hospitals, with doctors, facilities and indicative ₹ costs shown upfront.",
     },
   ];
 
   const stats = [
     {
       icon: <UserCheck className="w-6 h-6 text-blue-600" />,
-      value: "5000+",
-      label: "Happy Patients",
+      value: "3 cities",
+      label: "Delhi NCR, Bengaluru & Pune",
     },
     {
       icon: <Award className="w-6 h-6 text-blue-600" />,
-      value: "50+",
-      label: "Partner Hospitals",
+      value: "JCI / NABH",
+      label: "Accredited partner hospitals",
     },
     {
       icon: <Clock className="w-6 h-6 text-blue-600" />,
       value: "24/7",
-      label: "Support Available",
+      label: "Patient coordinator support",
     },
   ];
 
@@ -81,50 +82,15 @@ const AboutUs = () => {
 
   return (
     <Layout>
-      <div className=" bg-gray-50 mt-28">
-        {/* Hero Section with Gradient Background */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="relative text-white"
-          style={{
-            background: "linear-gradient(to right, #000428, #004e92)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="absolute inset-0">
-            <img
-              src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-              alt="Modern hospital facility"
-              className="w-full h-full object-cover opacity-20"
-            />
-          </div>
-          <div className="relative container mx-auto px-4 py-16 md:py-20">
-            {" "}
-            {/* Reduced padding */}
-            <motion.h1
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-3xl md:text-5xl font-bold mb-4 text-center"
-            >
-              Welcome to MedNdi Medical Tourism
-            </motion.h1>
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="text-lg text-center max-w-2xl mx-auto"
-            >
-              Your bridge to world-class healthcare in India
-            </motion.p>
-          </div>
-        </motion.div>
-
+      <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
         {/* Main Content */}
-        <div className="container mx-auto px-4 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
+          <PageHeader
+            eyebrow="About MedNdi"
+            title="Your bridge to quality treatment in India"
+            subtitle="MedNdi helps international patients compare accredited hospitals in Delhi NCR, Bengaluru and Pune, understand costs upfront, and plan every step of the trip with one coordinator."
+          />
+
           {/* About Section */}
           {/* <motion.div 
           variants={containerVariants}
@@ -141,6 +107,7 @@ const AboutUs = () => {
                   <div>
                     <img
                       src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/hospital1.png"; }}
                       alt="Medical team"
                       className="rounded-lg shadow-lg w-full h-[300px] object-cover"
                     />
@@ -173,7 +140,7 @@ const AboutUs = () => {
                 whileHover="hover"
                 variants={hoverVariants}
               >
-                <Card className="h-full">
+                <Card className="h-full rounded-2xl overflow-hidden">
                   <CardContent className="p-6">
                     <div className="flex flex-col items-center text-center">
                       <motion.div
@@ -200,16 +167,18 @@ const AboutUs = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="relative bg-white rounded-lg shadow-lg p-8 mb-16 overflow-hidden"
+            className="relative bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-16 overflow-hidden"
           >
             <div className="absolute inset-0">
               <img
                 src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-                alt="Medical background"
+                alt=""
+                aria-hidden="true"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
                 className="w-full h-full object-cover opacity-5"
               />
             </div>
-            <div className="relative grid md:grid-cols-3 gap-8">
+            <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
               {stats.map((stat, index) => (
                 <motion.div
                   key={index}
@@ -223,7 +192,7 @@ const AboutUs = () => {
                     {stat.icon}
                   </motion.div>
                   <motion.span
-                    className="text-3xl font-bold mt-2"
+                    className="text-2xl md:text-3xl font-bold text-[#152C5B] mt-2"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -245,7 +214,7 @@ const AboutUs = () => {
             viewport={{ once: true }}
             className="max-w-6xl mx-auto"
           >
-            <h2 className="text-3xl font-bold mb-8 text-center">
+            <h2 className="font-poppins text-2xl md:text-3xl font-bold text-[#283841] mb-8 text-center">
               Why Choose MedNdi
             </h2>
 
@@ -253,15 +222,16 @@ const AboutUs = () => {
               {/* Card 1 */}
               <motion.div
                 variants={itemVariants}
-                className="w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] min-w-[280px]"
+                className="w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)]"
                 whileHover={{ y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="h-full">
+                <Card className="h-full rounded-2xl overflow-hidden">
                   <CardContent className="p-0">
                     <div className="relative h-48">
                       <img
                         src="https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/hospital1.png"; }}
                         alt="Medical Excellence"
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
@@ -274,9 +244,9 @@ const AboutUs = () => {
                             Medical Excellence
                           </h3>
                           <p className="text-gray-600">
-                            Access to JCI-accredited hospitals and
-                            internationally trained medical professionals
-                            ensuring world-class treatment standards.
+                            Access to JCI and NABH-accredited hospitals and
+                            experienced specialists across our three
+                            partner cities.
                           </p>
                         </div>
                       </div>
@@ -288,15 +258,16 @@ const AboutUs = () => {
               {/* Card 2 */}
               <motion.div
                 variants={itemVariants}
-                className="w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] min-w-[280px]"
+                className="w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)]"
                 whileHover={{ y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="h-full">
+                <Card className="h-full rounded-2xl overflow-hidden">
                   <CardContent className="p-0">
                     <div className="relative h-48">
                       <img
                         src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/hospital1.png"; }}
                         alt="Personalized Care"
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
@@ -323,15 +294,16 @@ const AboutUs = () => {
               {/* Card 3 */}
               <motion.div
                 variants={itemVariants}
-                className="w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] min-w-[280px]"
+                className="w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)]"
                 whileHover={{ y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="h-full">
+                <Card className="h-full rounded-2xl overflow-hidden">
                   <CardContent className="p-0">
                     <div className="relative h-48">
                       <img
                         src="https://images.unsplash.com/photo-1516549655169-df83a0774514?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/hospital1.png"; }}
                         alt="Advanced Facilities"
                         className="w-full h-48 object-cover rounded-t-lg"
                       />

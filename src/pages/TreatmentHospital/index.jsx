@@ -47,9 +47,6 @@ const  TreatmentHospital = () => {
   return (
     <div>
         <Layout>
-        <div className='mt-28'>
-
-        </div>
         <TreatmentInfo treatment={treatment} loading={loading} error={error} />
 
         {!loading && !error && treatment && (

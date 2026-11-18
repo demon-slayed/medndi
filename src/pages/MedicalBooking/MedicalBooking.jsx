@@ -11,8 +11,11 @@ import BookingReview from '@/components/booking/BookingReview';
 import {
   Phone,
   Mail,
-  AlertCircle
+  AlertCircle,
+  ArrowLeft,
+  ArrowRight
 } from 'lucide-react';
+import PageHeader from '@/components/PageHeader';
 import { motion } from 'framer-motion';
 import Layout from '@/components/Layout/Layout';
 import useAppStore from '@/store/useAppStore';
@@ -81,7 +84,7 @@ const MedicalBooking = () => {
   if (!hasSelection || !hospitalOffersTreatment) {
     return (
       <Layout>
-        <div className="min-h-[60vh] mt-28 flex items-center justify-center px-4">
+        <div className="min-h-[60vh] flex items-center justify-center px-4">
           <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center">
             <AlertCircle className="w-10 h-10 text-[#3252DF] mx-auto" />
             <h1 className="mt-4 text-2xl font-semibold text-gray-900">
@@ -94,7 +97,7 @@ const MedicalBooking = () => {
             </p>
             <Link
               to={hasSelection ? `/treatment-details/${treatment.treatment_id}` : '/treatments'}
-              className="mt-6 inline-block px-6 py-2.5 rounded-lg bg-[#3252DF] text-white font-medium hover:bg-[#2341CE]"
+              className="mt-6 inline-block px-6 py-2.5 rounded-lg bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
             >
               {hasSelection ? 'See hospitals' : 'Browse treatments'}
             </Link>
@@ -106,21 +109,24 @@ const MedicalBooking = () => {
 
   return (
     <Layout>
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
 
-      <div className="max-w-7xl mt-24 mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
+        <PageHeader
+          eyebrow="Book your treatment"
+          title={treatment?.treatment_name || "Book your treatment"}
+          subtitle={hospital?.hospital_name ? `at ${hospital.hospital_name}` : undefined}
+        />
+
         {/* Stepper */}
         <Stepper currentStep={currentStep} />
-        {/* <h1>
-  hii {JSON.stringify(selectedDateAndTime)} {JSON.stringify(selectedHotel)}  {JSON.stringify(selectedTravelManagement)} {JSON.stringify(selectedPlan)}
-</h1> */}
 
 
         {/* 
           We wrap our layout in a grid. Notice that if currentStep === 2,
           we make the main content area span all 3 columns (i.e., no sidebar).
         */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           
           {/* Main content area - dynamically adjusts columns when there's no sidebar */}
           <div 
@@ -131,7 +137,7 @@ const MedicalBooking = () => {
             {/* Step 1: Choose Date */}
             {currentStep === 1 && (
               <>
-                <h2 className="text-2xl font-semibold text-gray-900 max-sm:text-xl max-sm:text-center">Choose Appointment Date</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">Choose appointment date</h2>
                 <AppointmentCalendar
                   selectedDate={selectedDate}
                   onDateSelect={setSelectedDate}
@@ -142,7 +148,7 @@ const MedicalBooking = () => {
             {/* Step 2: Select Hotel */}
             {currentStep === 2 && (
               <>
-                <h2 className="text-2xl font-semibold text-gray-900">Select Your Hotel</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">Select your hotel</h2>
                 <HotelSelection
                   handleNextStep= {handleNextStep}
                   // onSelect={(hotel) => setSelectedHotel(hotel)}
@@ -166,12 +172,13 @@ const MedicalBooking = () => {
             )}
 
             {/* Navigation buttons */}
-            <div className="flex justify-between mt-8">
+            <div className="flex justify-between gap-3 mt-8">
               {currentStep > 1 && (
                 <button
                   onClick={handlePrevStep}
-                  className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-2 px-6 py-2.5 border-2 border-gray-200 bg-white text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
                 >
+                  <ArrowLeft className="w-4 h-4" />
                   <span>Back</span>
                 </button>
               )}
@@ -179,9 +186,10 @@ const MedicalBooking = () => {
               {currentStep < 5 && (
                 <button
                   onClick={handleNextStep}
-                  className="ml-auto flex items-center gap-2 px-6 py-2 bg-[#3252DF] text-white rounded-lg hover:bg-[#2341CE] transition-colors"
+                  className="ml-auto flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
                 >
-                  {currentStep === 1 ? 'Select Hotel' : 'Next'}
+                  {currentStep === 1 ? 'Select hotel' : 'Next'}
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               )}
             </div>
@@ -200,7 +208,7 @@ const MedicalBooking = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-6 bg-white rounded-lg shadow-lg p-6"
+                className="mt-6 bg-white rounded-2xl shadow-lg p-6"
               >
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Need Help?</h3>
                 <div className="space-y-4">
@@ -210,7 +218,7 @@ const MedicalBooking = () => {
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Call us at</p>
-                      <p className="font-medium">+91 1800 123 4567</p>
+                      <a href="tel:+9118001234567" className="font-medium hover:text-[#3252DF]">+91 1800 123 4567</a>
                     </div>
                   </div>
 
@@ -220,7 +228,7 @@ const MedicalBooking = () => {
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Email support</p>
-                      <p className="font-medium">support@medndi.com</p>
+                      <a href="mailto:care@medndi.com" className="font-medium hover:text-[#3252DF]">care@medndi.com</a>
                     </div>
                   </div>
                 </div>

@@ -98,7 +98,7 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl p-8">
+    <div className="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg p-4 sm:p-8">
       {/* Calendar Header */}
       <div className="flex justify-between items-center mb-6">
         <motion.button
@@ -109,7 +109,7 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
               new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
             )
           }
-          className="p-2 hover:bg-white rounded-full transition-colors"
+          className="p-2 hover:bg-white rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
         >
           <ArrowLeft className="w-5 h-5 text-[#3252DF]" />
         </motion.button>
@@ -132,7 +132,7 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
               new Date(currentMonth.setMonth(currentMonth.getMonth() + 1))
             )
           }
-          className="p-2 hover:bg-white rounded-full transition-colors"
+          className="p-2 hover:bg-white rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
         >
           <ArrowRight className="w-5 h-5 text-[#3252DF]" />
         </motion.button>
@@ -140,18 +140,18 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
 
       {/* Calendar Grid */}
       <div className="mb-6">
-        <div className="grid grid-cols-7 gap-2 mb-4">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2 sm:mb-4">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
             <div
               key={day}
-              className="text-center text-sm font-medium text-gray-500"
+              className="text-center text-xs sm:text-sm font-medium text-gray-500"
             >
               {day}
             </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2">
           {Array.from({ length: firstDayOfMonth }).map((_, index) => (
             <div key={`empty-${index}`} />
           ))}
@@ -176,7 +176,9 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
                 onHoverEnd={() => setHoveredDay(null)}
                 onClick={() => handleDateSelect(day)}
                 disabled={disabled}
-                className={`relative max-sm:w-[30px] p-3 max-sm:p-[12%] rounded-lg transition-all ${
+                aria-label={currentDate.toDateString()}
+                aria-pressed={Boolean(isSelected)}
+                className={`relative w-full aspect-square sm:aspect-auto flex items-center justify-center p-0 sm:p-3 text-sm sm:text-base rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 ${
                   isSelected
                     ? "bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white shadow-lg"
                     : disabled
@@ -194,7 +196,7 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white p-2 rounded-lg shadow-lg text-xs whitespace-nowrap z-20"
+                    className="max-sm:hidden absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white p-2 rounded-lg shadow-lg text-xs whitespace-nowrap z-20"
                   >
                     {isToday ? "Today - Available" : "Available for booking"}
                   </motion.div>
@@ -232,7 +234,7 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
                       {period}
                     </span>
                   </div>
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                     {timeSlots[period].map((slot) => (
                       <motion.button
                         key={slot.time}
@@ -240,7 +242,7 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleTimeSelect(slot.time)}
                         disabled={!slot.available}
-                        className={`p-3 rounded-lg border transition-all max-sm:flex max-sm:flex-col max-sm:items-center ${
+                        className={`p-3 rounded-lg border bg-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 ${
                           selectedTime &&
                           selectedTime.toTimeString().startsWith(slot.time)
                             ? "border-[#3252DF] bg-blue-50 text-[#3252DF]"
@@ -274,7 +276,7 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="flex items-center gap-3 justify-between p-4 max-sm:p-2 bg-green-50 rounded-lg border border-green-200"
+                className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between p-4 bg-green-50 rounded-lg border border-green-200"
               >
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-5 h-5 text-green-500" />
@@ -289,7 +291,7 @@ const AppointmentCalendar = ({ selectedDate, onDateSelect }) => {
                 </div>
                 <motion.button
   whileTap={{ scale: 0.95, backgroundColor: "#1d34a5" }} // scale & color on click
-  className="px-4 max-sm:px-2 py-2 max-sm:text-xs bg-[#3252DF] text-white rounded-lg hover:bg-[#2341CE] transition-colors"
+  className="px-4 py-2 bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
   onClick={() => handleSelectDateAndTime(selectedTime)}
 >
   Confirm Time
