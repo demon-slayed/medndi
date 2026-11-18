@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Application from '../models/application.js';
 import User from '../models/userModel.js';
 import { v4 as uuidv4 } from "uuid"; 
@@ -27,6 +28,17 @@ export const createApplication = async (req, res) => {
       treatmentdateandtime,
       total_cost,
     } = req.body;
+    // One malformed reference would break populate for every listing of this user's bookings
+    const isId = (value) => mongoose.Types.ObjectId.isValid(value);
+    if (!isId(treatment_id) || !isId(hospital_id)) {
+      return res.status(400).json({ message: "Please choose a valid treatment and hospital." });
+    }
+    for (const [field, value] of Object.entries({ hotel_id, insurance_id })) {
+      if (value != null && value !== "" && !isId(value)) {
+        return res.status(400).json({ message: `Invalid ${field}.` });
+      }
+    }
+
     const application_id = `APP-${uuidv4().split("-")[0].toUpperCase()}`;
     const newApplication = new Application({
       application_id,
