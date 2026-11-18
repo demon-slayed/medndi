@@ -32,7 +32,7 @@ export const createHotelController = async(req,res) => {
 // get All Hotel
 export const getAllHotelsController = async(req, res) => {
     try {
-        const hotels = await Hotel.find().populate("hospital_id", "hospital_nearby");
+        const hotels = await Hotel.find().populate("hospital_id");
         return res.status(200).json({
             success: true,
             message: "All Hotels fetched successfullly",
@@ -51,7 +51,7 @@ export const getAllHotelsController = async(req, res) => {
 export const getHotelByIdController = async(req, res) => {
     try {        
         const { hotel_id } = req.params;
-        const hotel = await Hotel.findOne({hotel_id}).populate("hospital_id", "hospital_nearby");
+        const hotel = await Hotel.findOne({hotel_id}).populate("hospital_id");
         if(!hotel){
             return res.status(404).json({
                 success: false,

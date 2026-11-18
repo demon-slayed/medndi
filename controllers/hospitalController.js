@@ -1,4 +1,5 @@
 import Hospital from "../models/hospitalModel.js";
+import Treatment from "../models/treatmentModel.js";
 
 //  Get all hospitals
 export const getHospitals = async (req, res) => {
@@ -57,6 +58,7 @@ export const deleteHospital = async (req, res) => {
         const deletedHospital = await Hospital.findOneAndDelete({ _id: req.params._id });
 
         if (!deletedHospital) return res.status(404).json({ message: "Hospital not found" });
+        await Treatment.updateMany({}, { $pull: { available_hospitals: deletedHospital._id } });
 
         res.status(200).json({ message: "Hospital deleted successfully" });
     } catch (error) {

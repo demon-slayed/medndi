@@ -19,10 +19,9 @@ export const requireSignIn =async (req, res, next) => {
         req.user = decode
         next();       
     } catch (error) {      
-        return res.status(500).send({
+        return res.status(401).json({
             success: false,
-            message: "Server error while verying token",
-            error: error
+            message: "Session expired or invalid, please log in again."
         })
     }
 }

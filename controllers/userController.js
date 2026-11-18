@@ -2,6 +2,15 @@ import User from "../models/userModel.js";
 import { hashPassword, verifyPassword } from "../utils/bcryptHelper.js";
 import { createJWT } from "../utils/webtokenHelper.js";
 
+// Cross-site cookies (Vercel -> API) need SameSite=None + Secure; on local http that would be rejected by some browsers.
+const isProduction = process.env.NODE_ENV === "production";
+const authCookieOptions = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? "None" : "Lax",
+  path: "/",
+};
+
 // register controller
 export const registerController = async (req, res) => {
   try {
@@ -89,16 +98,15 @@ export const loginController = async (req, res) => {
 
     // Set the token in an HTTP-Only Cookie
     res.cookie("authToken", jwtToken, {
-      httpOnly: true,
-      secure: true, // Required for cross-domain cookies
-      sameSite: "None", // Required for cross-domain cookies
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days 7 days
+      ...authCookieOptions,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
+    const { password: _password, ...safeUser } = user.toObject();
     return res.status(200).json({
       success: true,
       message: "User validated, Logged In successfully",
-      user: user,
+      user: safeUser,
       // JWT: jwtToken
     });
   } catch (error) {
@@ -144,9 +152,10 @@ export const userDetailsController = async (req, res) => {
 export const userUpdateController = async (req, res) => {
   try {
     const userId = req.user.user_id;
+    const { role, password, user_id, email, _id, ...allowedUpdates } = req.body;
     const updatedUser = await User.findOneAndUpdate(
       { user_id: userId },
-      { $set: { ...req.body } },
+      { $set: { ...allowedUpdates, updated_at: Date.now() } },
       { new: true, runValidators: true }
     ).select("-password -createdAt -updatedAt");
 
@@ -184,12 +193,7 @@ export const userDeleteController = async (req, res) => {
 
 // Express logout controller
 export const logoutController = async (req, res) => {
-  res.clearCookie("authToken", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    path: "/",
-  });
+  res.clearCookie("authToken", authCookieOptions);
   return res
     .status(200)
     .json({ success: true, message: "Logged out successfully" });

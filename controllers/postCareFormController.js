@@ -78,8 +78,7 @@ export const createPostCareForm = async (req, res) => {
 
     await newPostCareForm.save();
 
-    // Also update the application with the post-treatment ID
-    application.PostTreatment_id = post_treatment_id;
+    application.post_treatment = true;
     await application.save();
 
     res.status(201).json({

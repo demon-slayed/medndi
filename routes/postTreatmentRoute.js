@@ -33,6 +33,6 @@ router.get('/getall', requireSignIn, getAllPostTreatments);
 router.get('/getbyid/:id', requireSignIn, getPostTreatmentById);
 router.put('/update/:id', requireSignIn, isAdmin, updatePostTreatment);
 router.delete('/delete/:id', requireSignIn, isAdmin, deletePostTreatment);
-router.post('/file-upload', upload.single('myfile'), uploadFileController)
+router.post('/file-upload', requireSignIn, upload.single('myfile'), uploadFileController)
 
 export default router;

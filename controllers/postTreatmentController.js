@@ -100,14 +100,15 @@ export const uploadFileController = async (req, res)=>{
          })
      }
              
+     if (!process.env.CLOUD_NAME) {
+         return res.status(200).send({
+             success: true,
+             filePath: `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
+         })
+     }
+
      const uploadResult = await cloudinary.uploader.upload(req.file.path);
-     await fs.unlink(req.file.path,
-         (err => {
-             if (err) console.log(err);
-             else {
-                 console.log("\nDeleted file: example_file.txt");
-             }
-         }));
+     await fs.unlink(req.file.path);
 
      return res.status(200).send({
          success: true,

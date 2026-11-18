@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Treatment from "../models/treatmentModel.js";
+import Hospital from "../models/hospitalModel.js";
 
 //  Get all treatments
 export const getTreatments = async (req, res) => {
@@ -26,15 +27,17 @@ export const getTreatmentById = async (req, res) => {
 // get treatment by
 export const getTreatmentsByHospital = async (req, res) => {
     try {
-      const hospitalId = req.params.hospital_id;
-  
-      // Optional: validate if hospitalId is a valid ObjectId
-      if (!mongoose.Types.ObjectId.isValid(hospitalId)) {
-        return res.status(400).json({ error: "Invalid hospital ID" });
+      // Accept either the Mongo _id or the public hospital_id code used in URLs
+      const { hospital_id } = req.params;
+      const hospital = mongoose.Types.ObjectId.isValid(hospital_id)
+        ? await Hospital.findById(hospital_id)
+        : await Hospital.findOne({ hospital_id });
+      if (!hospital) {
+        return res.status(404).json({ error: "Hospital not found" });
       }
   
       const treatments = await Treatment.find({
-        available_hospitals: hospitalId,
+        available_hospitals: hospital._id,
       }).populate("available_hospitals");
   
       res.status(200).json(treatments);

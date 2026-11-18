@@ -5,7 +5,7 @@ import { isAdmin } from '../middlewares/isAdminMiddleware.js';
 const router = express.Router();
 
 // Create a new post-care form
-router.post('/create', requireSignIn, isAdmin, createPostCareForm);
+router.post('/create', requireSignIn, createPostCareForm);
 
 // Get all post-care forms - admin only
 router.get('/getall', requireSignIn, isAdmin, getAllPostCareForms);

@@ -13,7 +13,7 @@ import { requireSignIn } from '../middlewares/authMiddleware.js';
 const router = express.Router();
 
 router.post('/create', requireSignIn, createApplication);
-router.get('/getall', requireSignIn, getAllApplications);
+router.get('/getall', requireSignIn, isAdmin, getAllApplications);
 router.get('/getById/:id', requireSignIn, getApplicationById);
 router.get('/getByUserId/:user_id', requireSignIn, getApplicationByUserId);
 router.put('/update/:_id', requireSignIn, isAdmin, updateApplication);

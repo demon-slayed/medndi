@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon -L server.js"
+    "server": "nodemon -L server.js",
+    "seed": "node scripts/seed.js"
   },
   "author": "",
   "license": "ISC",

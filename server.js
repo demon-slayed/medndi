@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from 'express'
 import connectDB from './config/db.js';
 import dotenv from 'dotenv'
@@ -27,13 +28,12 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
-dotenv.config();
 
 const app = express();
 app.use(cors({
     origin: ["http://localhost:5173", "http://localhost:4173", "https://arogini-frontend-z4pz.vercel.app", "https://arogini-frontend-7skl.vercel.app", "https://arogini-frontend-z4pz-git-viv-vivek-ranjans-projects-ece138e0.vercel.app"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
   }));
 
@@ -43,6 +43,7 @@ const PORT = process.env.PORT || 8080;
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+app.use('/uploads', express.static(uploadsDir));
 
 
 

@@ -3,6 +3,7 @@ import multer from 'multer';
 import path from 'path';
 import { analysePDF } from '../gemini/PdfParse.js';
 import { v4 as uuidv4 } from 'uuid';
+import { requireSignIn } from '../middlewares/authMiddleware.js';
 
 
 const router = express.Router();
@@ -43,6 +44,6 @@ const router = express.Router();
     }
   });
 
-  router.post('/analyze-pdf', upload.single('pdfFile'), analysePDF)
+  router.post('/analyze-pdf', requireSignIn, upload.single('pdfFile'), analysePDF)
 
 export default router

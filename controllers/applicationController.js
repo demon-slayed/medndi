@@ -1,10 +1,24 @@
 import Application from '../models/application.js';
+import User from '../models/userModel.js';
 import { v4 as uuidv4 } from "uuid"; 
+
+const withRelations = (query) =>
+  query
+    .populate('user_id', '-password')
+    .populate('treatment_id')
+    .populate('hospital_id')
+    .populate('hotel_id')
+    .populate('insurance_id');
 
 export const createApplication = async (req, res) => {
   try {
+    // Applications store the User's _id; take it from the session, never from the body.
+    const me = await User.findOne({ user_id: req.user.user_id });
+    if (!me) {
+      return res.status(401).json({ message: "User not found, please log in again." });
+    }
+    const user_id = me._id.toString();
     const {
-      user_id,
       treatment_id,
       hospital_id,
       hotel_id,
@@ -45,19 +59,14 @@ export const createApplication = async (req, res) => {
 // get application by user id
 export const getApplicationByUserId = async (req, res) => {
   try {
-    const { user_id } = req.params
-
-    const applications = await Application.find({ user_id })
-      .populate('user_id')
-      .populate('treatment_id')
-      .populate('hospital_id')
-      .populate('hotel_id')
-      .populate('insurance_id');
-
-    if (!applications || applications.length === 0) {
-      return res.status(404).json({ message: 'No applications found for this user.', user: user_id });
+    // Patients only ever see their own applications; admins may look up anyone.
+    const me = await User.findOne({ user_id: req.user.user_id });
+    if (!me) {
+      return res.status(401).json({ message: "User not found, please log in again." });
     }
+    const user_id = me.role === 'Admin' ? req.params.user_id : me._id.toString();
 
+    const applications = await withRelations(Application.find({ user_id }).sort({ created_at: -1 }));
     res.status(200).json(applications);
   } catch (error) {
     console.error("Error fetching user applications:", error);
@@ -69,13 +78,7 @@ export const getApplicationByUserId = async (req, res) => {
 // Get all applications
 export const getAllApplications = async (req, res) => {
   try {
-    const applications = await Application.find()
-      .populate('user_id')
-      .populate('treatment_id')
-      .populate('hospital_id')
-      .populate('hotel_id')
-      // .populate('travel_plan_id')
-      .populate('insurance_id');
+    const applications = await withRelations(Application.find().sort({ created_at: -1 }));
     res.status(200).json(applications);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -85,13 +88,7 @@ export const getAllApplications = async (req, res) => {
 // Get an application by ID
 export const getApplicationById = async (req, res) => {
   try {
-    const application = await Application.findById(req.params.id)
-      .populate('user_id')
-      .populate('treatment_id')
-      .populate('hospital_id')
-      .populate('hotel_id')
-      .populate('travel_plan_id')
-      .populate('insurance_id');
+    const application = await withRelations(Application.findById(req.params.id));
 
     if (!application) {
       return res.status(404).json({ message: 'Application not found' });
@@ -107,7 +104,7 @@ export const updateApplication = async (req, res) => {
   try {
     const updatedApplication = await Application.findByIdAndUpdate(
       req.params._id,
-      req.body,
+      { ...req.body, updated_at: Date.now() },
       { new: true, runValidators: true }
     );
     if (!updatedApplication) {
