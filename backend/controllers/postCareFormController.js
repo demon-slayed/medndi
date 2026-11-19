@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 import PostCareForm from '../models/postCareFormModel.js';
 import Application from '../models/application.js';
+import User from '../models/userModel.js';
+import PostTreatment from '../models/postTreatmentModel.js';
+import Treatment from '../models/treatmentModel.js';
+import { sendMail } from '../utils/mailer.js';
+import { postCareEmail } from '../utils/emailTemplates.js';
 
 
 // Create a new post-care form
@@ -80,6 +85,20 @@ export const createPostCareForm = async (req, res) => {
 
     application.post_treatment = true;
     await application.save();
+
+    const [me, service, treatment] = await Promise.all([
+      User.findOne({ user_id: req.user?.user_id }),
+      PostTreatment.findById(post_treatment_id).select('service_name'),
+      Treatment.findById(application.treatment_id).select('treatment_name'),
+    ]);
+    sendMail({
+      to: me?.email || email,
+      ...postCareEmail(me ?? { fullName: patient_name }, {
+        service: service?.service_name ?? 'Post-care support',
+        treatment: treatment?.treatment_name,
+        followupDates: preferred_followup_dates,
+      }),
+    });
 
     res.status(201).json({
       success: true,

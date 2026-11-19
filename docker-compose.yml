@@ -28,6 +28,13 @@ services:
       CORS_ORIGINS: ${CORS_ORIGINS:-}
       # Requests arrive through nginx; trust it for the client IP and http/https scheme
       TRUST_PROXY: "1"
+      # Transactional email (welcome, sign-in alert, booking and post-care confirmations)
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-465}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      MAIL_FROM: ${MAIL_FROM:-}
+      SITE_URL: ${SITE_URL:-https://medndi.com}
       CLOUD_NAME: ${CLOUD_NAME:-}
       CLOUD_API_KEY: ${CLOUD_API_KEY:-}
       CLOUD_API_SECRET: ${CLOUD_API_SECRET:-}

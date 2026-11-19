@@ -67,6 +67,23 @@ Before you start, point DNS A records for `medndi.com` and `www.medndi.com` at t
 Only port 443/80 on the host nginx is public; the containers are reachable
 from localhost only.
 
+## Emails to users
+
+MedNdi emails users when they sign up, log in, submit a booking and submit a
+post-care request, from `info@medndi.com` (GoDaddy Professional Email).
+
+1. Add the mailbox password to `.env` (the other mail settings are already filled in):
+   ```
+   SMTP_PASS=<password of info@medndi.com>
+   ```
+2. Apply it: `./deploy.sh`
+3. Check the login works: `docker compose exec backend npm run mail:check`
+   (prints `SMTP login OK`).
+4. Watch sending: `docker compose logs -f backend | grep "\[mail\]"`
+
+If the check times out, the server's provider may block outgoing mail ports;
+try `SMTP_PORT=587` in `.env`, then run `./deploy.sh` again.
+
 ## Update to new code
 
 ```sh

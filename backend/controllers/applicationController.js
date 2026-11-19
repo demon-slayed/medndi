@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 import Application from '../models/application.js';
 import User from '../models/userModel.js';
 import Treatment from '../models/treatmentModel.js';
+import Hospital from '../models/hospitalModel.js';
+import Hotel from '../models/hotelSchema.js';
+import Insurance from '../models/insuranceModel.js';
+import { sendMail } from '../utils/mailer.js';
+import { bookingEmail } from '../utils/emailTemplates.js';
 import { recordActivity } from '../utils/activity.js';
 import { v4 as uuidv4 } from "uuid"; 
 
@@ -56,8 +61,25 @@ export const createApplication = async (req, res) => {
 
     // Save to database
     const savedApplication = await newApplication.save();
-    const bookedTreatment = await Treatment.findById(treatment_id).select('treatment_name');
+    const [bookedTreatment, bookedHospital, bookedHotel, bookedInsurance] = await Promise.all([
+      Treatment.findById(treatment_id).select('treatment_name'),
+      Hospital.findById(hospital_id).select('hospital_name'),
+      hotel_id ? Hotel.findById(hotel_id).select('hotel_name') : null,
+      insurance_id ? Insurance.findById(insurance_id).select('name') : null,
+    ]);
     await recordActivity(req, me, 'booking', `Booked ${bookedTreatment?.treatment_name ?? 'a treatment'} (${application_id})`);
+    sendMail({
+      to: me.email,
+      ...bookingEmail(me, {
+        applicationId: application_id,
+        treatment: bookedTreatment?.treatment_name ?? 'Your treatment',
+        hospital: bookedHospital?.hospital_name ?? 'Selected hospital',
+        hotel: bookedHotel?.hotel_name,
+        insurance: bookedInsurance?.name,
+        appointment: treatmentdateandtime,
+        totalCost: total_cost,
+      }),
+    });
 
     res.status(201).json({
       message: "Application created successfully",

@@ -2,6 +2,8 @@ import User from "../models/userModel.js";
 import { hashPassword, verifyPassword } from "../utils/bcryptHelper.js";
 import { createJWT } from "../utils/webtokenHelper.js";
 import { recordActivity } from "../utils/activity.js";
+import { sendMail } from "../utils/mailer.js";
+import { loginAlertEmail, welcomeEmail } from "../utils/emailTemplates.js";
 
 // Cross-site cookies (Vercel -> API) need SameSite=None + Secure; on plain http that would be rejected.
 // COOKIE_SECURE / COOKIE_SAMESITE override the defaults (e.g. same-origin Docker deploy over http).
@@ -53,6 +55,7 @@ export const registerController = async (req, res) => {
       fullName,
     });
     await recordActivity(req, user, "signup", "Created an account");
+    sendMail({ to: user.email, ...welcomeEmail(user) });
 
     return res.status(201).json({
       success: true,
@@ -102,6 +105,10 @@ export const loginController = async (req, res) => {
     user.login_count = (user.login_count ?? 0) + 1;
     await user.save();
     await recordActivity(req, user, "login", "Logged in");
+    sendMail({
+      to: user.email,
+      ...loginAlertEmail(user, { ip: req.ip, userAgent: req.get("user-agent"), at: user.last_login_at }),
+    });
 
     // Create JWT token for user
     const user_id = user?.user_id;
