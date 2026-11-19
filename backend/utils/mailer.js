@@ -21,8 +21,15 @@ const getTransporter = () => {
 
 export const mailFrom = () => process.env.MAIL_FROM || `MedNdi <${process.env.SMTP_USER || "info@medndi.com"}>`;
 
+// Demo/test addresses can't receive mail; sending to them only creates bounces that hurt deliverability
+const isUndeliverable = (address) => /@(.+\.)?(test|example|invalid|localhost)$|@example\.(com|org|net)$/i.test(address || "");
+
 // Fire-and-forget: callers don't await this, and failures never reach the user's request.
 export const sendMail = ({ to, subject, html, text }) => {
+  if (isUndeliverable(to)) {
+    console.log(`[mail] skipped "${subject}" to ${to} (test address)`);
+    return;
+  }
   const transport = getTransporter();
   if (!transport || !to) {
     console.log(`[mail] skipped "${subject}" to ${to || "nobody"} (SMTP not configured)`);
