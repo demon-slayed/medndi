@@ -1,0 +1,73 @@
+[
+  {
+    "insurance_id": "INS-BASIC",
+    "name": "MedNdi Basic Cover",
+    "description": "Covers medical complications during your treatment stay in India.",
+    "features": [
+      "Complication cover up to ₹5,00,000",
+      "Emergency ambulance cover up to ₹25,000",
+      "24/7 assistance helpline"
+    ],
+    "price": 4999,
+    "emi_options": [
+      "3 months"
+    ],
+    "eligibility_criteria": "Age 18-65, planned treatment at a partner hospital",
+    "government_schemes": []
+  },
+  {
+    "insurance_id": "INS-PLUS",
+    "name": "MedNdi Plus",
+    "description": "Complication cover plus travel protection and follow-up care.",
+    "features": [
+      "Complication cover up to ₹15,00,000",
+      "Trip cancellation cover up to ₹1,00,000",
+      "6 months of follow-up teleconsultations"
+    ],
+    "price": 9999,
+    "emi_options": [
+      "3 months",
+      "6 months"
+    ],
+    "eligibility_criteria": "Age 18-70, planned treatment at a partner hospital",
+    "government_schemes": [
+      "Ayushman Bharat PM-JAY (eligible Indian residents)"
+    ]
+  },
+  {
+    "insurance_id": "INS-PREMIUM",
+    "name": "MedNdi Premium",
+    "description": "Comprehensive cover for the patient and one travelling companion.",
+    "features": [
+      "Complication cover up to ₹40,00,000",
+      "Companion medical cover up to ₹5,00,000",
+      "Medical repatriation",
+      "Extended hotel stay cover up to ₹75,000"
+    ],
+    "price": 17999,
+    "emi_options": [
+      "3 months",
+      "6 months",
+      "12 months"
+    ],
+    "eligibility_criteria": "Age 0-75, planned treatment at a partner hospital",
+    "government_schemes": []
+  },
+  {
+    "insurance_id": "INS-TRANSPLANT",
+    "name": "MedNdi Transplant Shield",
+    "description": "Specialised cover for organ and bone marrow transplant patients and their donors.",
+    "features": [
+      "Complication cover up to ₹25,00,000",
+      "Donor complication cover up to ₹5,00,000",
+      "Readmission cover for 90 days"
+    ],
+    "price": 24999,
+    "emi_options": [
+      "6 months",
+      "12 months"
+    ],
+    "eligibility_criteria": "Age 1-65, transplant approved by hospital authorisation committee",
+    "government_schemes": []
+  }
+]

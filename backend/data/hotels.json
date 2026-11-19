@@ -1,0 +1,1033 @@
+[
+  {
+    "hotel_id": "HOTEL-APOLLO-DEL-1",
+    "hospital": "HOSP-APOLLO-DEL",
+    "hotel_name": "Crowne Plaza New Delhi Okhla",
+    "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Okhla Phase I, New Delhi",
+    "distance": "3.5 km",
+    "price_per_night": 9500,
+    "rating": 4.5,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-APOLLO-DEL-2",
+    "hospital": "HOSP-APOLLO-DEL",
+    "hotel_name": "The Suryaa New Delhi",
+    "image": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "New Friends Colony, New Delhi",
+    "distance": "4.8 km",
+    "price_per_night": 9000,
+    "rating": 4.3,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-APOLLO-DEL-3",
+    "hospital": "HOSP-APOLLO-DEL",
+    "hotel_name": "Eros Hotel New Delhi, Nehru Place",
+    "image": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Nehru Place, New Delhi",
+    "distance": "6.5 km",
+    "price_per_night": 11500,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-APOLLO-DEL-4",
+    "hospital": "HOSP-APOLLO-DEL",
+    "hotel_name": "Holiday Inn New Delhi Mayur Vihar Noida",
+    "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Mayur Vihar Phase I, Delhi",
+    "distance": "8.0 km",
+    "price_per_night": 7000,
+    "rating": 4.3,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MEDANTA-GGN-1",
+    "hospital": "HOSP-MEDANTA-GGN",
+    "hotel_name": "Lemon Tree Hotel, Sohna Road",
+    "image": "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Sohna Road, Gurugram",
+    "distance": "3.0 km",
+    "price_per_night": 4500,
+    "rating": 4.1,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MEDANTA-GGN-2",
+    "hospital": "HOSP-MEDANTA-GGN",
+    "hotel_name": "Radisson Gurugram Sohna Road City Center",
+    "image": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Sector 48, Sohna Road, Gurugram",
+    "distance": "3.5 km",
+    "price_per_night": 6500,
+    "rating": 4.2,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MEDANTA-GGN-3",
+    "hospital": "HOSP-MEDANTA-GGN",
+    "hotel_name": "ibis Gurgaon Golf Course Road",
+    "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Golf Course Road, Gurugram",
+    "distance": "6.0 km",
+    "price_per_night": 4200,
+    "rating": 4,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MEDANTA-GGN-4",
+    "hospital": "HOSP-MEDANTA-GGN",
+    "hotel_name": "Crowne Plaza Gurgaon",
+    "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Sector 29, Gurugram",
+    "distance": "5.5 km",
+    "price_per_night": 10500,
+    "rating": 4.5,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MEDANTA-GGN-5",
+    "hospital": "HOSP-MEDANTA-GGN",
+    "hotel_name": "The Westin Gurgaon, New Delhi",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Sector 29, MG Road, Gurugram",
+    "distance": "6.0 km",
+    "price_per_night": 13500,
+    "rating": 4.6,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MAX-SAKET-1",
+    "hospital": "HOSP-MAX-SAKET",
+    "hotel_name": "Sheraton New Delhi Hotel",
+    "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "District Centre, Saket, New Delhi",
+    "distance": "1.2 km",
+    "price_per_night": 12500,
+    "rating": 4.6,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MAX-SAKET-2",
+    "hospital": "HOSP-MAX-SAKET",
+    "hotel_name": "Svelte Hotel & Personal Suites",
+    "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Select Citywalk, Saket, New Delhi",
+    "distance": "1.0 km",
+    "price_per_night": 9500,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MAX-SAKET-3",
+    "hospital": "HOSP-MAX-SAKET",
+    "hotel_name": "Eros Hotel New Delhi, Nehru Place",
+    "image": "https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Nehru Place, New Delhi",
+    "distance": "6.0 km",
+    "price_per_night": 11500,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MAX-SAKET-4",
+    "hospital": "HOSP-MAX-SAKET",
+    "hotel_name": "Hyatt Regency Delhi",
+    "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Bhikaji Cama Place, New Delhi",
+    "distance": "8.5 km",
+    "price_per_night": 16000,
+    "rating": 4.6,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-BLK-DEL-1",
+    "hospital": "HOSP-BLK-DEL",
+    "hotel_name": "Jaypee Siddharth",
+    "image": "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Rajendra Place, New Delhi",
+    "distance": "0.6 km",
+    "price_per_night": 9000,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-BLK-DEL-2",
+    "hospital": "HOSP-BLK-DEL",
+    "hotel_name": "Radisson Blu Marina Hotel Connaught Place",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Connaught Place, New Delhi",
+    "distance": "5.0 km",
+    "price_per_night": 10000,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-BLK-DEL-3",
+    "hospital": "HOSP-BLK-DEL",
+    "hotel_name": "The Park New Delhi",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Parliament Street, Connaught Place, New Delhi",
+    "distance": "5.5 km",
+    "price_per_night": 11000,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-BLK-DEL-4",
+    "hospital": "HOSP-BLK-DEL",
+    "hotel_name": "Ginger New Delhi, Rail Yatri Niwas",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Ajmeri Gate, New Delhi",
+    "distance": "5.5 km",
+    "price_per_night": 3500,
+    "rating": 3.9,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-FMRI-GGN-1",
+    "hospital": "HOSP-FMRI-GGN",
+    "hotel_name": "Le Meridien Gurgaon, Delhi NCR",
+    "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "MG Road, Gurugram",
+    "distance": "4.5 km",
+    "price_per_night": 11000,
+    "rating": 4.5,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-FMRI-GGN-2",
+    "hospital": "HOSP-FMRI-GGN",
+    "hotel_name": "Trident Gurgaon",
+    "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Udyog Vihar Phase V, Gurugram",
+    "distance": "6.5 km",
+    "price_per_night": 15000,
+    "rating": 4.7,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-FMRI-GGN-3",
+    "hospital": "HOSP-FMRI-GGN",
+    "hotel_name": "Hilton Garden Inn Gurgaon Baani Square",
+    "image": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Sector 50, Gurugram",
+    "distance": "4.0 km",
+    "price_per_night": 7500,
+    "rating": 4.3,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-FMRI-GGN-4",
+    "hospital": "HOSP-FMRI-GGN",
+    "hotel_name": "Lemon Tree Hotel, Sector 60, Gurugram",
+    "image": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Sector 60, Gurugram",
+    "distance": "7.0 km",
+    "price_per_night": 4500,
+    "rating": 4.1,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-FMRI-GGN-5",
+    "hospital": "HOSP-FMRI-GGN",
+    "hotel_name": "ibis Gurgaon Golf Course Road",
+    "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Golf Course Road, Gurugram",
+    "distance": "3.5 km",
+    "price_per_night": 4200,
+    "rating": 4,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-FORTIS-NOIDA-1",
+    "hospital": "HOSP-FORTIS-NOIDA",
+    "hotel_name": "Park Plaza Noida",
+    "image": "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Sector 55, Noida",
+    "distance": "2.5 km",
+    "price_per_night": 6500,
+    "rating": 4.2,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-FORTIS-NOIDA-2",
+    "hospital": "HOSP-FORTIS-NOIDA",
+    "hotel_name": "Radisson Blu MBD Hotel Noida",
+    "image": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Sector 18, Noida",
+    "distance": "7.0 km",
+    "price_per_night": 9000,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-FORTIS-NOIDA-3",
+    "hospital": "HOSP-FORTIS-NOIDA",
+    "hotel_name": "Fortune Inn Grazia",
+    "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Sector 27, Noida",
+    "distance": "6.5 km",
+    "price_per_night": 5000,
+    "rating": 4.1,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-FORTIS-NOIDA-4",
+    "hospital": "HOSP-FORTIS-NOIDA",
+    "hotel_name": "Holiday Inn New Delhi Mayur Vihar Noida",
+    "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Mayur Vihar Phase I, Delhi",
+    "distance": "11.0 km",
+    "price_per_night": 7000,
+    "rating": 4.3,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-NARAYANA-BLR-1",
+    "hospital": "HOSP-NARAYANA-BLR",
+    "hotel_name": "Lemon Tree Hotel, Electronic City",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Electronic City Phase I, Bengaluru",
+    "distance": "5.5 km",
+    "price_per_night": 4500,
+    "rating": 4.1,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-NARAYANA-BLR-2",
+    "hospital": "HOSP-NARAYANA-BLR",
+    "hotel_name": "ibis Bengaluru Hosur Road",
+    "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Bommanahalli, Hosur Road, Bengaluru",
+    "distance": "11.0 km",
+    "price_per_night": 4000,
+    "rating": 4,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-NARAYANA-BLR-3",
+    "hospital": "HOSP-NARAYANA-BLR",
+    "hotel_name": "Keys Select by Lemon Tree Hotels, Hosur Road",
+    "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Hosur Road, Bengaluru",
+    "distance": "9.0 km",
+    "price_per_night": 3500,
+    "rating": 3.9,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-NARAYANA-BLR-4",
+    "hospital": "HOSP-NARAYANA-BLR",
+    "hotel_name": "Grand Mercure Bangalore",
+    "image": "https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Koramangala, Bengaluru",
+    "distance": "15.0 km",
+    "price_per_night": 9500,
+    "rating": 4.5,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MANIPAL-OAR-BLR-1",
+    "hospital": "HOSP-MANIPAL-OAR-BLR",
+    "hotel_name": "The Leela Palace Bengaluru",
+    "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "HAL Old Airport Road, Bengaluru",
+    "distance": "1.5 km",
+    "price_per_night": 17500,
+    "rating": 4.8,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MANIPAL-OAR-BLR-2",
+    "hospital": "HOSP-MANIPAL-OAR-BLR",
+    "hotel_name": "The Royal Orchid Hotel",
+    "image": "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "HAL Old Airport Road, Bengaluru",
+    "distance": "1.0 km",
+    "price_per_night": 8000,
+    "rating": 4.3,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MANIPAL-OAR-BLR-3",
+    "hospital": "HOSP-MANIPAL-OAR-BLR",
+    "hotel_name": "The Paul Bangalore",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+    "description": "Serviced rooms with kitchen facilities, convenient for extended stays.",
+    "location": "Domlur, Bengaluru",
+    "distance": "2.0 km",
+    "price_per_night": 7500,
+    "rating": 4.3,
+    "amenities": [
+      "Free WiFi",
+      "Kitchenette",
+      "Laundry",
+      "Hospital Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-MANIPAL-OAR-BLR-4",
+    "hospital": "HOSP-MANIPAL-OAR-BLR",
+    "hotel_name": "Lemon Tree Premier, Ulsoor Lake",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Ulsoor, Bengaluru",
+    "distance": "4.5 km",
+    "price_per_night": 6000,
+    "rating": 4.2,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-ASTER-CMI-BLR-1",
+    "hospital": "HOSP-ASTER-CMI-BLR",
+    "hotel_name": "Courtyard by Marriott Bengaluru Hebbal",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Hebbal, Bengaluru",
+    "distance": "1.5 km",
+    "price_per_night": 8000,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-ASTER-CMI-BLR-2",
+    "hospital": "HOSP-ASTER-CMI-BLR",
+    "hotel_name": "Hilton Bengaluru Embassy Manyata Business Park",
+    "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Nagavara, Bengaluru",
+    "distance": "3.5 km",
+    "price_per_night": 11000,
+    "rating": 4.6,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-ASTER-CMI-BLR-3",
+    "hospital": "HOSP-ASTER-CMI-BLR",
+    "hotel_name": "Taj Yeshwantpur, Bengaluru",
+    "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Yeshwantpur, Bengaluru",
+    "distance": "6.5 km",
+    "price_per_night": 10000,
+    "rating": 4.5,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-ASTER-CMI-BLR-4",
+    "hospital": "HOSP-ASTER-CMI-BLR",
+    "hotel_name": "Sheraton Grand Bangalore Hotel at Brigade Gateway",
+    "image": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Malleshwaram West, Bengaluru",
+    "distance": "8.0 km",
+    "price_per_night": 12000,
+    "rating": 4.6,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-SAKRA-BLR-1",
+    "hospital": "HOSP-SAKRA-BLR",
+    "hotel_name": "Courtyard by Marriott Bengaluru Outer Ring Road",
+    "image": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Devarabeesanahalli, Bengaluru",
+    "distance": "0.8 km",
+    "price_per_night": 8500,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-SAKRA-BLR-2",
+    "hospital": "HOSP-SAKRA-BLR",
+    "hotel_name": "Fairfield by Marriott Bengaluru Outer Ring Road",
+    "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Bellandur, Bengaluru",
+    "distance": "1.5 km",
+    "price_per_night": 5500,
+    "rating": 4.2,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-SAKRA-BLR-3",
+    "hospital": "HOSP-SAKRA-BLR",
+    "hotel_name": "Radisson Blu Bengaluru Outer Ring Road",
+    "image": "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Marathahalli, Bengaluru",
+    "distance": "3.5 km",
+    "price_per_night": 9500,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-SAKRA-BLR-4",
+    "hospital": "HOSP-SAKRA-BLR",
+    "hotel_name": "ibis Bengaluru Outer Ring Road",
+    "image": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Marathahalli, Bengaluru",
+    "distance": "3.0 km",
+    "price_per_night": 3800,
+    "rating": 4,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-RUBY-PUN-1",
+    "hospital": "HOSP-RUBY-PUN",
+    "hotel_name": "Sheraton Grand Pune Bund Garden Hotel",
+    "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Bund Garden Road, Pune",
+    "distance": "1.5 km",
+    "price_per_night": 10500,
+    "rating": 4.5,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-RUBY-PUN-2",
+    "hospital": "HOSP-RUBY-PUN",
+    "hotel_name": "Conrad Pune",
+    "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Mangaldas Road, Pune",
+    "distance": "1.8 km",
+    "price_per_night": 13000,
+    "rating": 4.7,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-RUBY-PUN-3",
+    "hospital": "HOSP-RUBY-PUN",
+    "hotel_name": "The Westin Pune Koregaon Park",
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Koregaon Park Annexe, Pune",
+    "distance": "4.0 km",
+    "price_per_night": 11500,
+    "rating": 4.6,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-RUBY-PUN-4",
+    "hospital": "HOSP-RUBY-PUN",
+    "hotel_name": "Hotel Sunderban",
+    "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Koregaon Park, Pune",
+    "distance": "2.5 km",
+    "price_per_night": 5500,
+    "rating": 4.1,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-SAHYADRI-PUN-1",
+    "hospital": "HOSP-SAHYADRI-PUN",
+    "hotel_name": "Hotel Shreyas",
+    "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Apte Road, Deccan Gymkhana, Pune",
+    "distance": "1.0 km",
+    "price_per_night": 3500,
+    "rating": 4,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-SAHYADRI-PUN-2",
+    "hospital": "HOSP-SAHYADRI-PUN",
+    "hotel_name": "Ramee Grand Hotel and Spa",
+    "image": "https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Apte Road, Shivajinagar, Pune",
+    "distance": "1.2 km",
+    "price_per_night": 6000,
+    "rating": 4.1,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-SAHYADRI-PUN-3",
+    "hospital": "HOSP-SAHYADRI-PUN",
+    "hotel_name": "The Pride Hotel Pune",
+    "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "University Road, Shivajinagar, Pune",
+    "distance": "2.5 km",
+    "price_per_night": 7000,
+    "rating": 4.2,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-SAHYADRI-PUN-4",
+    "hospital": "HOSP-SAHYADRI-PUN",
+    "hotel_name": "JW Marriott Hotel Pune",
+    "image": "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Senapati Bapat Road, Pune",
+    "distance": "3.0 km",
+    "price_per_night": 14000,
+    "rating": 4.7,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-DMH-PUN-1",
+    "hospital": "HOSP-DMH-PUN",
+    "hotel_name": "Hotel Shreyas",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Apte Road, Deccan Gymkhana, Pune",
+    "distance": "1.8 km",
+    "price_per_night": 3500,
+    "rating": 4,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-DMH-PUN-2",
+    "hospital": "HOSP-DMH-PUN",
+    "hotel_name": "Ramee Grand Hotel and Spa",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Apte Road, Shivajinagar, Pune",
+    "distance": "2.0 km",
+    "price_per_night": 6000,
+    "rating": 4.1,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-DMH-PUN-3",
+    "hospital": "HOSP-DMH-PUN",
+    "hotel_name": "The Pride Hotel Pune",
+    "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "University Road, Shivajinagar, Pune",
+    "distance": "3.0 km",
+    "price_per_night": 7000,
+    "rating": 4.2,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-DMH-PUN-4",
+    "hospital": "HOSP-DMH-PUN",
+    "hotel_name": "JW Marriott Hotel Pune",
+    "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80",
+    "description": "Full-service premium hotel with dining, wellness facilities and concierge.",
+    "location": "Senapati Bapat Road, Pune",
+    "distance": "2.5 km",
+    "price_per_night": 14000,
+    "rating": 4.7,
+    "amenities": [
+      "Free WiFi",
+      "Pool",
+      "Gym",
+      "Restaurant",
+      "Airport Shuttle"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-JUPITER-PUN-1",
+    "hospital": "HOSP-JUPITER-PUN",
+    "hotel_name": "The Orchid Hotel Pune",
+    "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Balewadi High Street, Pune",
+    "distance": "2.0 km",
+    "price_per_night": 7000,
+    "rating": 4.3,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-JUPITER-PUN-2",
+    "hospital": "HOSP-JUPITER-PUN",
+    "hotel_name": "Sayaji Pune",
+    "image": "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Wakad, Pune",
+    "distance": "4.0 km",
+    "price_per_night": 6500,
+    "rating": 4.2,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-JUPITER-PUN-3",
+    "hospital": "HOSP-JUPITER-PUN",
+    "hotel_name": "Courtyard by Marriott Pune Hinjewadi",
+    "image": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1200&q=80",
+    "description": "Comfortable business hotel with good road access to the hospital.",
+    "location": "Hinjewadi, Pune",
+    "distance": "6.5 km",
+    "price_per_night": 8500,
+    "rating": 4.4,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Gym",
+      "Airport Shuttle",
+      "Laundry"
+    ]
+  },
+  {
+    "hotel_id": "HOTEL-JUPITER-PUN-4",
+    "hospital": "HOSP-JUPITER-PUN",
+    "hotel_name": "ibis Pune Hinjewadi",
+    "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+    "description": "Value-for-money rooms suited to longer recovery stays and attendants.",
+    "location": "Hinjewadi, Pune",
+    "distance": "6.0 km",
+    "price_per_night": 3800,
+    "rating": 4,
+    "amenities": [
+      "Free WiFi",
+      "Restaurant",
+      "Laundry",
+      "Wheelchair Accessible"
+    ]
+  }
+]

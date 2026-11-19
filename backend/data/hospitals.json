@@ -1,0 +1,1501 @@
+[
+  {
+    "hospital_id": "HOSP-APOLLO-DEL",
+    "city": "Delhi NCR",
+    "hospital_name": "Indraprastha Apollo Hospitals",
+    "address": "Sarita Vihar, Delhi-Mathura Road, New Delhi, Delhi 110076",
+    "accreditation": "JCI, NABH",
+    "rating": 4.8,
+    "treatmentCost": 200000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1586773860383-dab5f3bc1bcc?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512678080530-7760d81faba6?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "96%",
+      "experience": "35+ years",
+      "patients": "1,00,000+"
+    },
+    "badges": [
+      "JCI Accredited",
+      "NABH Certified",
+      "Transplant Centre"
+    ],
+    "specialties": [
+      "Cardiology",
+      "Orthopedics",
+      "Oncology",
+      "Transplant",
+      "Neurosciences",
+      "Ophthalmology",
+      "Urology"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "700+",
+        "trend": "stable"
+      },
+      {
+        "label": "Specialists",
+        "value": "300+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "130+",
+        "trend": "up"
+      },
+      {
+        "label": "Countries Served",
+        "value": "100+",
+        "trend": "up"
+      }
+    ],
+    "description": "Indraprastha Apollo is a large multi-speciality tertiary-care hospital in South-East Delhi and part of the Apollo Hospitals group. It runs established programmes in cardiac sciences, organ transplantation, orthopaedics and cancer care, and has a dedicated desk for international patients.",
+    "highlights": [
+      {
+        "title": "Organ Transplant Programme",
+        "description": "Long-running liver and kidney transplant programme with dedicated transplant ICUs."
+      },
+      {
+        "title": "Robotic Surgery",
+        "description": "Robot-assisted procedures across urology, gynaecology and general surgery."
+      },
+      {
+        "title": "International Patient Services",
+        "description": "Help with medical visas, travel planning and interpreters."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "International Patient Desk",
+        "description": "Coordinators help with visa letters, airport pickup and appointments"
+      },
+      {
+        "label": "Pharmacy",
+        "description": "24x7 in-house pharmacy"
+      },
+      {
+        "label": "Attendant Lounge",
+        "description": "Waiting and rest area for family members"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Rohan Malhotra",
+        "specialty": "Cardiothoracic Surgery",
+        "experience": "22 years",
+        "rating": 4.8,
+        "image": "https://randomuser.me/api/portraits/men/32.jpg",
+        "qualifications": "MBBS, MS, MCh (CTVS)",
+        "expertise": "Coronary bypass, valve repair"
+      },
+      {
+        "name": "Dr. Kavita Sethi",
+        "specialty": "Orthopedics",
+        "experience": "18 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/women/44.jpg",
+        "qualifications": "MBBS, MS (Ortho), Fellowship in Arthroplasty",
+        "expertise": "Knee and hip replacement"
+      },
+      {
+        "name": "Dr. Imran Qureshi",
+        "specialty": "Hepatobiliary & Transplant Surgery",
+        "experience": "20 years",
+        "rating": 4.9,
+        "image": "https://randomuser.me/api/portraits/men/46.jpg",
+        "qualifications": "MBBS, MS, MCh (GI Surgery)",
+        "expertise": "Living donor liver transplant"
+      }
+    ],
+    "website": "https://www.apollohospitals.com"
+  },
+  {
+    "hospital_id": "HOSP-MEDANTA-GGN",
+    "city": "Delhi NCR",
+    "hospital_name": "Medanta - The Medicity",
+    "address": "CH Baktawar Singh Road, Sector 38, Gurugram, Haryana 122001",
+    "accreditation": "JCI, NABH",
+    "rating": 4.8,
+    "treatmentCost": 220000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "96%",
+      "experience": "15+ years",
+      "patients": "1,00,000+"
+    },
+    "badges": [
+      "JCI Accredited",
+      "NABH Certified"
+    ],
+    "specialties": [
+      "Cardiology",
+      "Neurosciences",
+      "Transplant",
+      "Orthopedics",
+      "Urology",
+      "Oncology",
+      "Bariatric Surgery"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "1,250+",
+        "trend": "stable"
+      },
+      {
+        "label": "Specialists",
+        "value": "800+",
+        "trend": "up"
+      },
+      {
+        "label": "Operation Theatres",
+        "value": "45+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "100+",
+        "trend": "up"
+      }
+    ],
+    "description": "Medanta - The Medicity is a large multi-super-speciality hospital campus in Gurugram. It is known for its heart, neurosciences, liver transplant and kidney and urology institutes, and receives a large number of international patients.",
+    "highlights": [
+      {
+        "title": "Liver Transplant Institute",
+        "description": "High-volume living donor liver transplant programme."
+      },
+      {
+        "title": "Neurosciences Institute",
+        "description": "Brain, spine and stroke care with dedicated neuro critical care."
+      },
+      {
+        "title": "Robotic Urology",
+        "description": "Robot-assisted prostate and kidney surgery."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Interpreters",
+        "description": "Language assistance for common international patient languages"
+      },
+      {
+        "label": "Forex & Banking",
+        "description": "Currency exchange and ATM on campus"
+      },
+      {
+        "label": "Free Wi-Fi",
+        "description": "Internet access in patient rooms and lounges"
+      },
+      {
+        "label": "International Patient Desk",
+        "description": "Coordinators help with visa letters, airport pickup and appointments"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Vikram Rathore",
+        "specialty": "Neurosurgery",
+        "experience": "21 years",
+        "rating": 4.8,
+        "image": "https://randomuser.me/api/portraits/men/51.jpg",
+        "qualifications": "MBBS, MS, MCh (Neurosurgery)",
+        "expertise": "Brain tumours, minimally invasive spine surgery"
+      },
+      {
+        "name": "Dr. Neha Bansal",
+        "specialty": "Hepatology",
+        "experience": "16 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/women/65.jpg",
+        "qualifications": "MBBS, MD, DM (Hepatology)",
+        "expertise": "Liver transplant evaluation and care"
+      },
+      {
+        "name": "Dr. Aditya Chauhan",
+        "specialty": "Urology",
+        "experience": "17 years",
+        "rating": 4.6,
+        "image": "https://randomuser.me/api/portraits/men/22.jpg",
+        "qualifications": "MBBS, MS, MCh (Urology)",
+        "expertise": "Robotic prostatectomy, TURP"
+      }
+    ],
+    "website": "https://www.medanta.org"
+  },
+  {
+    "hospital_id": "HOSP-MAX-SAKET",
+    "city": "Delhi NCR",
+    "hospital_name": "Max Super Speciality Hospital, Saket",
+    "address": "Press Enclave Road, Saket, New Delhi, Delhi 110017",
+    "accreditation": "NABH, NABL",
+    "rating": 4.6,
+    "treatmentCost": 180000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "95%",
+      "experience": "20+ years",
+      "patients": "75,000+"
+    },
+    "badges": [
+      "NABH Certified",
+      "Cancer Care Centre"
+    ],
+    "specialties": [
+      "Oncology",
+      "Orthopedics",
+      "Cardiology",
+      "Fertility",
+      "Bariatric Surgery",
+      "Gynaecology",
+      "General Surgery",
+      "Ophthalmology"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "500+",
+        "trend": "stable"
+      },
+      {
+        "label": "Specialists",
+        "value": "400+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "100+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "60+",
+        "trend": "up"
+      }
+    ],
+    "description": "Max Super Speciality Hospital in Saket is a tertiary-care hospital in South Delhi and the flagship facility of Max Healthcare. It offers comprehensive cancer care, joint replacement, cardiac care, fertility services and metabolic and bariatric surgery.",
+    "highlights": [
+      {
+        "title": "Comprehensive Cancer Care",
+        "description": "Medical, surgical and radiation oncology with a multidisciplinary tumour board."
+      },
+      {
+        "title": "Joint Replacement",
+        "description": "Computer-navigated and robot-assisted knee and hip replacement."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Pharmacy",
+        "description": "24x7 in-house pharmacy"
+      },
+      {
+        "label": "Attendant Lounge",
+        "description": "Waiting and rest area for family members"
+      },
+      {
+        "label": "Cafeteria",
+        "description": "Vegetarian and non-vegetarian meal options"
+      },
+      {
+        "label": "Interpreters",
+        "description": "Language assistance for common international patient languages"
+      },
+      {
+        "label": "Forex & Banking",
+        "description": "Currency exchange and ATM on campus"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Sameer Khanna",
+        "specialty": "Medical Oncology",
+        "experience": "19 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/men/41.jpg",
+        "qualifications": "MBBS, MD, DM (Medical Oncology)",
+        "expertise": "Breast and lung cancer, immunotherapy"
+      },
+      {
+        "name": "Dr. Ritu Vashisht",
+        "specialty": "Reproductive Medicine",
+        "experience": "15 years",
+        "rating": 4.8,
+        "image": "https://randomuser.me/api/portraits/women/28.jpg",
+        "qualifications": "MBBS, MS (OBG), Fellowship in Reproductive Medicine",
+        "expertise": "IVF, ICSI, fertility preservation"
+      }
+    ],
+    "website": "https://www.maxhealthcare.in"
+  },
+  {
+    "hospital_id": "HOSP-BLK-DEL",
+    "city": "Delhi NCR",
+    "hospital_name": "BLK-Max Super Speciality Hospital",
+    "address": "Pusa Road, Rajendra Place, New Delhi, Delhi 110005",
+    "accreditation": "JCI, NABH",
+    "rating": 4.7,
+    "treatmentCost": 170000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1626315869436-d6781ba69d6e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "95%",
+      "experience": "60+ years",
+      "patients": "80,000+"
+    },
+    "badges": [
+      "JCI Accredited",
+      "NABH Certified",
+      "BMT Centre"
+    ],
+    "specialties": [
+      "Oncology",
+      "Transplant",
+      "Cardiology",
+      "Orthopedics",
+      "Neurosciences",
+      "Urology",
+      "General Surgery"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "650+",
+        "trend": "stable"
+      },
+      {
+        "label": "Specialists",
+        "value": "300+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "125+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "50+",
+        "trend": "up"
+      }
+    ],
+    "description": "BLK-Max Super Speciality Hospital is a large multi-speciality hospital on Pusa Road in Central Delhi, operated in partnership with Max Healthcare. It is known for its bone marrow transplant and cancer programmes, alongside cardiac, orthopaedic, neuro and transplant services.",
+    "highlights": [
+      {
+        "title": "Bone Marrow Transplant",
+        "description": "One of the larger BMT programmes in North India."
+      },
+      {
+        "title": "Central Delhi Location",
+        "description": "Close to Rajendra Place metro station and Karol Bagh."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Forex & Banking",
+        "description": "Currency exchange and ATM on campus"
+      },
+      {
+        "label": "Free Wi-Fi",
+        "description": "Internet access in patient rooms and lounges"
+      },
+      {
+        "label": "International Patient Desk",
+        "description": "Coordinators help with visa letters, airport pickup and appointments"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Harish Venkatesh",
+        "specialty": "Haemato-Oncology & BMT",
+        "experience": "21 years",
+        "rating": 4.8,
+        "image": "https://randomuser.me/api/portraits/men/60.jpg",
+        "qualifications": "MBBS, MD, DM (Clinical Haematology)",
+        "expertise": "Allogeneic BMT, lymphoma"
+      },
+      {
+        "name": "Dr. Shalini Arora",
+        "specialty": "Cardiothoracic Surgery",
+        "experience": "18 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/women/52.jpg",
+        "qualifications": "MBBS, MS, MCh (CTVS)",
+        "expertise": "Valve replacement, off-pump CABG"
+      }
+    ],
+    "website": "https://www.blkmaxhospital.com"
+  },
+  {
+    "hospital_id": "HOSP-FMRI-GGN",
+    "city": "Delhi NCR",
+    "hospital_name": "Fortis Memorial Research Institute",
+    "address": "Sector 44, opposite HUDA City Centre, Gurugram, Haryana 122002",
+    "accreditation": "JCI, NABH",
+    "rating": 4.7,
+    "treatmentCost": 200000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1632833239869-a37e3a5806d2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1504439468489-c8920d796a29?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "95%",
+      "experience": "10+ years",
+      "patients": "60,000+"
+    },
+    "badges": [
+      "JCI Accredited",
+      "NABH Certified"
+    ],
+    "specialties": [
+      "Neurosciences",
+      "Oncology",
+      "Transplant",
+      "Orthopedics",
+      "Cardiology",
+      "Fertility",
+      "Gynaecology"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "300+",
+        "trend": "up"
+      },
+      {
+        "label": "Specialists",
+        "value": "300+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "80+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "80+",
+        "trend": "up"
+      }
+    ],
+    "description": "Fortis Memorial Research Institute (FMRI) is a multi-super-speciality quaternary-care hospital in Gurugram, close to the HUDA City Centre metro station. It offers neurosciences, oncology, organ transplant, orthopaedics and bone marrow transplant services.",
+    "highlights": [
+      {
+        "title": "Bone Marrow Transplant Unit",
+        "description": "HEPA-filtered BMT rooms for adult and paediatric patients."
+      },
+      {
+        "title": "Neuro & Spine",
+        "description": "Brain tumour, epilepsy and spine surgery with intra-operative imaging."
+      },
+      {
+        "title": "Metro Connectivity",
+        "description": "Short distance from HUDA City Centre metro station."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Attendant Lounge",
+        "description": "Waiting and rest area for family members"
+      },
+      {
+        "label": "Cafeteria",
+        "description": "Vegetarian and non-vegetarian meal options"
+      },
+      {
+        "label": "Interpreters",
+        "description": "Language assistance for common international patient languages"
+      },
+      {
+        "label": "Forex & Banking",
+        "description": "Currency exchange and ATM on campus"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Arjun Bhatia",
+        "specialty": "Haemato-Oncology & BMT",
+        "experience": "17 years",
+        "rating": 4.8,
+        "image": "https://randomuser.me/api/portraits/men/36.jpg",
+        "qualifications": "MBBS, MD, DM (Clinical Haematology)",
+        "expertise": "Bone marrow transplant, leukaemia"
+      },
+      {
+        "name": "Dr. Pooja Mittal",
+        "specialty": "Neurosurgery",
+        "experience": "15 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/women/33.jpg",
+        "qualifications": "MBBS, MCh (Neurosurgery)",
+        "expertise": "Brain tumour surgery, epilepsy surgery"
+      },
+      {
+        "name": "Dr. Karan Saluja",
+        "specialty": "Nephrology",
+        "experience": "19 years",
+        "rating": 4.6,
+        "image": "https://randomuser.me/api/portraits/men/75.jpg",
+        "qualifications": "MBBS, MD, DM (Nephrology)",
+        "expertise": "Kidney transplant, dialysis"
+      }
+    ],
+    "website": "https://www.fortishealthcare.com"
+  },
+  {
+    "hospital_id": "HOSP-FORTIS-NOIDA",
+    "city": "Delhi NCR",
+    "hospital_name": "Fortis Hospital, Noida",
+    "address": "B-22, Sector 62, Noida, Uttar Pradesh 201301",
+    "accreditation": "NABH",
+    "rating": 4.5,
+    "treatmentCost": 150000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1512678080530-7760d81faba6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1551190822-a9333d879b1f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1586773860383-dab5f3bc1bcc?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "94%",
+      "experience": "15+ years",
+      "patients": "50,000+"
+    },
+    "badges": [
+      "NABH Certified"
+    ],
+    "specialties": [
+      "Orthopedics",
+      "Neurosciences",
+      "Cardiology",
+      "Transplant",
+      "Urology",
+      "General Surgery",
+      "Gynaecology"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "200+",
+        "trend": "stable"
+      },
+      {
+        "label": "Specialists",
+        "value": "150+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "50+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "30+",
+        "trend": "up"
+      }
+    ],
+    "description": "Fortis Hospital Noida is a multi-speciality hospital in Sector 62, Noida, part of the Fortis Healthcare network. It provides orthopaedics, spine and neurosciences, cardiac care, kidney transplant and urology services.",
+    "highlights": [
+      {
+        "title": "Bone & Joint Programme",
+        "description": "Joint replacement and sports injury surgery."
+      },
+      {
+        "title": "Kidney Transplant",
+        "description": "Renal transplant programme with in-house dialysis."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Free Wi-Fi",
+        "description": "Internet access in patient rooms and lounges"
+      },
+      {
+        "label": "International Patient Desk",
+        "description": "Coordinators help with visa letters, airport pickup and appointments"
+      },
+      {
+        "label": "Pharmacy",
+        "description": "24x7 in-house pharmacy"
+      },
+      {
+        "label": "Attendant Lounge",
+        "description": "Waiting and rest area for family members"
+      },
+      {
+        "label": "Cafeteria",
+        "description": "Vegetarian and non-vegetarian meal options"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Nitin Agarwal",
+        "specialty": "Orthopedics & Spine",
+        "experience": "16 years",
+        "rating": 4.6,
+        "image": "https://randomuser.me/api/portraits/men/18.jpg",
+        "qualifications": "MBBS, MS (Ortho), Fellowship in Spine Surgery",
+        "expertise": "Spine fusion, knee replacement"
+      },
+      {
+        "name": "Dr. Anjali Tyagi",
+        "specialty": "Urology",
+        "experience": "14 years",
+        "rating": 4.5,
+        "image": "https://randomuser.me/api/portraits/women/12.jpg",
+        "qualifications": "MBBS, MS, MCh (Urology)",
+        "expertise": "Endourology, prostate surgery"
+      }
+    ],
+    "website": "https://www.fortishealthcare.com"
+  },
+  {
+    "hospital_id": "HOSP-NARAYANA-BLR",
+    "city": "Bengaluru",
+    "hospital_name": "Narayana Health City",
+    "address": "258/A, Bommasandra Industrial Area, Hosur Road, Bengaluru, Karnataka 560099",
+    "accreditation": "JCI, NABH",
+    "rating": 4.7,
+    "treatmentCost": 160000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "96%",
+      "experience": "20+ years",
+      "patients": "1,00,000+"
+    },
+    "badges": [
+      "JCI Accredited",
+      "NABH Certified",
+      "Cardiac Centre"
+    ],
+    "specialties": [
+      "Cardiology",
+      "Oncology",
+      "Transplant",
+      "Neurosciences",
+      "Orthopedics",
+      "General Surgery"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "1,000+",
+        "trend": "stable"
+      },
+      {
+        "label": "Specialists",
+        "value": "300+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "200+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "70+",
+        "trend": "up"
+      }
+    ],
+    "description": "Narayana Health City is a large healthcare campus on Hosur Road, Bengaluru, and the flagship of the Narayana Health group. It is known for high-volume cardiac surgery, including paediatric cardiac care, alongside oncology and bone marrow transplant services.",
+    "highlights": [
+      {
+        "title": "Cardiac Sciences",
+        "description": "High-volume adult and paediatric cardiac surgery programme."
+      },
+      {
+        "title": "Cancer Centre",
+        "description": "Medical, surgical and radiation oncology with BMT services."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Cafeteria",
+        "description": "Vegetarian and non-vegetarian meal options"
+      },
+      {
+        "label": "Interpreters",
+        "description": "Language assistance for common international patient languages"
+      },
+      {
+        "label": "Forex & Banking",
+        "description": "Currency exchange and ATM on campus"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Suresh Hegde",
+        "specialty": "Cardiac Surgery",
+        "experience": "23 years",
+        "rating": 4.9,
+        "image": "https://randomuser.me/api/portraits/men/67.jpg",
+        "qualifications": "MBBS, MS, MCh (CTVS)",
+        "expertise": "CABG, valve replacement, paediatric cardiac surgery"
+      },
+      {
+        "name": "Dr. Lakshmi Rao",
+        "specialty": "Haematology & BMT",
+        "experience": "16 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/women/47.jpg",
+        "qualifications": "MBBS, MD, DM (Clinical Haematology)",
+        "expertise": "Bone marrow transplant, thalassaemia"
+      }
+    ],
+    "website": "https://www.narayanahealth.org"
+  },
+  {
+    "hospital_id": "HOSP-MANIPAL-OAR-BLR",
+    "city": "Bengaluru",
+    "hospital_name": "Manipal Hospital, Old Airport Road",
+    "address": "98, HAL Old Airport Road, Kodihalli, Bengaluru, Karnataka 560017",
+    "accreditation": "NABH, NABL",
+    "rating": 4.6,
+    "treatmentCost": 180000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "95%",
+      "experience": "25+ years",
+      "patients": "90,000+"
+    },
+    "badges": [
+      "NABH Certified",
+      "Multi-Organ Transplant"
+    ],
+    "specialties": [
+      "Oncology",
+      "Orthopedics",
+      "Neurosciences",
+      "Transplant",
+      "Urology",
+      "Ophthalmology",
+      "Cardiology",
+      "General Surgery"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "600+",
+        "trend": "stable"
+      },
+      {
+        "label": "Specialists",
+        "value": "250+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "120+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "60+",
+        "trend": "up"
+      }
+    ],
+    "description": "Manipal Hospital on Old Airport Road is the flagship hospital of the Manipal Hospitals group in Bengaluru. It offers oncology, orthopaedics, neurosciences, multi-organ transplant, urology and eye care.",
+    "highlights": [
+      {
+        "title": "Multi-Organ Transplant",
+        "description": "Kidney, liver and bone marrow transplant programmes."
+      },
+      {
+        "title": "Comprehensive Cancer Centre",
+        "description": "Integrated surgical, medical and radiation oncology."
+      },
+      {
+        "title": "Central Location",
+        "description": "Close to Indiranagar and the city centre."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "International Patient Desk",
+        "description": "Coordinators help with visa letters, airport pickup and appointments"
+      },
+      {
+        "label": "Pharmacy",
+        "description": "24x7 in-house pharmacy"
+      },
+      {
+        "label": "Attendant Lounge",
+        "description": "Waiting and rest area for family members"
+      },
+      {
+        "label": "Cafeteria",
+        "description": "Vegetarian and non-vegetarian meal options"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Prakash Shetty",
+        "specialty": "Urology & Renal Transplant",
+        "experience": "20 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/men/55.jpg",
+        "qualifications": "MBBS, MS, MCh (Urology)",
+        "expertise": "Kidney transplant, robotic urology"
+      },
+      {
+        "name": "Dr. Meenakshi Iyer",
+        "specialty": "Ophthalmology",
+        "experience": "14 years",
+        "rating": 4.6,
+        "image": "https://randomuser.me/api/portraits/women/21.jpg",
+        "qualifications": "MBBS, MS (Ophthalmology), FICO",
+        "expertise": "Cataract and refractive surgery"
+      },
+      {
+        "name": "Dr. Rahul Nair",
+        "specialty": "Surgical Oncology",
+        "experience": "18 years",
+        "rating": 4.8,
+        "image": "https://randomuser.me/api/portraits/men/29.jpg",
+        "qualifications": "MBBS, MS, MCh (Surgical Oncology)",
+        "expertise": "GI and head-and-neck cancer surgery"
+      }
+    ],
+    "website": "https://www.manipalhospitals.com"
+  },
+  {
+    "hospital_id": "HOSP-ASTER-CMI-BLR",
+    "city": "Bengaluru",
+    "hospital_name": "Aster CMI Hospital",
+    "address": "43/2, New Airport Road (NH 44), Sahakara Nagar, Hebbal, Bengaluru, Karnataka 560092",
+    "accreditation": "NABH, NABL",
+    "rating": 4.6,
+    "treatmentCost": 170000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "95%",
+      "experience": "10+ years",
+      "patients": "50,000+"
+    },
+    "badges": [
+      "NABH Certified",
+      "Liver Transplant Centre"
+    ],
+    "specialties": [
+      "Transplant",
+      "Neurosciences",
+      "Orthopedics",
+      "Fertility",
+      "Gynaecology",
+      "General Surgery",
+      "Cardiology",
+      "Bariatric Surgery"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "500+",
+        "trend": "up"
+      },
+      {
+        "label": "Specialists",
+        "value": "200+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "100+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "40+",
+        "trend": "up"
+      }
+    ],
+    "description": "Aster CMI Hospital is a multi-speciality hospital in Hebbal, North Bengaluru, on the road to Kempegowda International Airport. It offers liver transplant and gastroenterology, neurosciences, orthopaedics and fertility services.",
+    "highlights": [
+      {
+        "title": "Integrated Liver Care",
+        "description": "Hepatology, liver surgery and transplant in one unit."
+      },
+      {
+        "title": "Airport Access",
+        "description": "Located on the main road to Bengaluru airport."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Interpreters",
+        "description": "Language assistance for common international patient languages"
+      },
+      {
+        "label": "Forex & Banking",
+        "description": "Currency exchange and ATM on campus"
+      },
+      {
+        "label": "Free Wi-Fi",
+        "description": "Internet access in patient rooms and lounges"
+      },
+      {
+        "label": "International Patient Desk",
+        "description": "Coordinators help with visa letters, airport pickup and appointments"
+      },
+      {
+        "label": "Pharmacy",
+        "description": "24x7 in-house pharmacy"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Varun Reddy",
+        "specialty": "Liver Transplant Surgery",
+        "experience": "17 years",
+        "rating": 4.8,
+        "image": "https://randomuser.me/api/portraits/men/71.jpg",
+        "qualifications": "MBBS, MS, MCh (GI Surgery)",
+        "expertise": "Adult and paediatric liver transplant"
+      },
+      {
+        "name": "Dr. Deepa Kamath",
+        "specialty": "Reproductive Medicine",
+        "experience": "13 years",
+        "rating": 4.6,
+        "image": "https://randomuser.me/api/portraits/women/63.jpg",
+        "qualifications": "MBBS, DNB (OBG), Fellowship in IVF",
+        "expertise": "IVF, recurrent implantation failure"
+      }
+    ],
+    "website": "https://www.asterhospitals.in"
+  },
+  {
+    "hospital_id": "HOSP-SAKRA-BLR",
+    "city": "Bengaluru",
+    "hospital_name": "Sakra World Hospital",
+    "address": "52/2, Devarabeesanahalli, Varthur Hobli, Outer Ring Road, Bellandur, Bengaluru, Karnataka 560103",
+    "accreditation": "NABH",
+    "rating": 4.5,
+    "treatmentCost": 160000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1504439468489-c8920d796a29?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1632833239869-a37e3a5806d2?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "94%",
+      "experience": "10+ years",
+      "patients": "45,000+"
+    },
+    "badges": [
+      "NABH Certified"
+    ],
+    "specialties": [
+      "Orthopedics",
+      "Neurosciences",
+      "Cardiology",
+      "Bariatric Surgery",
+      "Urology",
+      "General Surgery",
+      "Gynaecology"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "300+",
+        "trend": "up"
+      },
+      {
+        "label": "Specialists",
+        "value": "150+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "60+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "35+",
+        "trend": "up"
+      }
+    ],
+    "description": "Sakra World Hospital is a multi-speciality hospital on the Outer Ring Road near Bellandur in East Bengaluru. It is known for orthopaedics and spine care, neurosciences, cardiac care and metabolic surgery.",
+    "highlights": [
+      {
+        "title": "Spine & Joint Care",
+        "description": "Joint replacement, arthroscopy and minimally invasive spine surgery."
+      },
+      {
+        "title": "Metabolic Surgery",
+        "description": "Bariatric surgery with dietitian and endocrinology support."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Pharmacy",
+        "description": "24x7 in-house pharmacy"
+      },
+      {
+        "label": "Attendant Lounge",
+        "description": "Waiting and rest area for family members"
+      },
+      {
+        "label": "Cafeteria",
+        "description": "Vegetarian and non-vegetarian meal options"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Abhishek Menon",
+        "specialty": "Orthopedics",
+        "experience": "16 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/men/85.jpg",
+        "qualifications": "MBBS, MS (Ortho), Fellowship in Joint Replacement",
+        "expertise": "Knee replacement, sports surgery"
+      },
+      {
+        "name": "Dr. Sneha Pillai",
+        "specialty": "Bariatric & Metabolic Surgery",
+        "experience": "12 years",
+        "rating": 4.6,
+        "image": "https://randomuser.me/api/portraits/women/58.jpg",
+        "qualifications": "MBBS, MS (General Surgery), FMAS",
+        "expertise": "Laparoscopic sleeve gastrectomy"
+      }
+    ],
+    "website": "https://www.sakraworldhospital.com"
+  },
+  {
+    "hospital_id": "HOSP-RUBY-PUN",
+    "city": "Pune",
+    "hospital_name": "Ruby Hall Clinic",
+    "address": "40, Sassoon Road, near Pune Railway Station, Pune, Maharashtra 411001",
+    "accreditation": "NABH, NABL",
+    "rating": 4.6,
+    "treatmentCost": 150000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1551190822-a9333d879b1f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1586773860383-dab5f3bc1bcc?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "95%",
+      "experience": "60+ years",
+      "patients": "1,00,000+"
+    },
+    "badges": [
+      "NABH Certified",
+      "Established 1959"
+    ],
+    "specialties": [
+      "Cardiology",
+      "Oncology",
+      "Transplant",
+      "Orthopedics",
+      "Ophthalmology",
+      "Neurosciences",
+      "Urology"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "550+",
+        "trend": "stable"
+      },
+      {
+        "label": "Specialists",
+        "value": "250+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "100+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "40+",
+        "trend": "up"
+      }
+    ],
+    "description": "Ruby Hall Clinic is one of Pune's longest-established multi-speciality hospitals, located on Sassoon Road near Pune railway station. It provides cardiac care, oncology, organ transplant, orthopaedics and ophthalmology services.",
+    "highlights": [
+      {
+        "title": "Cardiac Care",
+        "description": "Interventional cardiology and cardiac surgery programmes."
+      },
+      {
+        "title": "Transplant Services",
+        "description": "Kidney and bone marrow transplant."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Forex & Banking",
+        "description": "Currency exchange and ATM on campus"
+      },
+      {
+        "label": "Free Wi-Fi",
+        "description": "Internet access in patient rooms and lounges"
+      },
+      {
+        "label": "International Patient Desk",
+        "description": "Coordinators help with visa letters, airport pickup and appointments"
+      },
+      {
+        "label": "Pharmacy",
+        "description": "24x7 in-house pharmacy"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Sanjay Deshpande",
+        "specialty": "Cardiac Surgery",
+        "experience": "22 years",
+        "rating": 4.8,
+        "image": "https://randomuser.me/api/portraits/men/62.jpg",
+        "qualifications": "MBBS, MS, MCh (CTVS)",
+        "expertise": "CABG, valve surgery"
+      },
+      {
+        "name": "Dr. Aparna Joshi",
+        "specialty": "Ophthalmology",
+        "experience": "15 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/women/37.jpg",
+        "qualifications": "MBBS, MS (Ophthalmology)",
+        "expertise": "Phaco cataract surgery, glaucoma"
+      }
+    ],
+    "website": "https://www.rubyhall.com"
+  },
+  {
+    "hospital_id": "HOSP-SAHYADRI-PUN",
+    "city": "Pune",
+    "hospital_name": "Sahyadri Super Speciality Hospital, Deccan Gymkhana",
+    "address": "30-C, Karve Road, Erandwane, Deccan Gymkhana, Pune, Maharashtra 411004",
+    "accreditation": "NABH",
+    "rating": 4.5,
+    "treatmentCost": 150000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "94%",
+      "experience": "25+ years",
+      "patients": "60,000+"
+    },
+    "badges": [
+      "NABH Certified"
+    ],
+    "specialties": [
+      "Neurosciences",
+      "Orthopedics",
+      "Transplant",
+      "Cardiology",
+      "General Surgery",
+      "Gynaecology"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "200+",
+        "trend": "stable"
+      },
+      {
+        "label": "Specialists",
+        "value": "120+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "50+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "25+",
+        "trend": "up"
+      }
+    ],
+    "description": "Sahyadri Super Speciality Hospital at Deccan Gymkhana is part of the Sahyadri Hospitals network in Pune. It offers neurosciences, orthopaedics, cardiac care and liver transplant services.",
+    "highlights": [
+      {
+        "title": "Neuro & Spine",
+        "description": "Brain and spine surgery with neuro-rehabilitation."
+      },
+      {
+        "title": "Liver Transplant",
+        "description": "Hepatology and liver transplant programme."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Attendant Lounge",
+        "description": "Waiting and rest area for family members"
+      },
+      {
+        "label": "Cafeteria",
+        "description": "Vegetarian and non-vegetarian meal options"
+      },
+      {
+        "label": "Interpreters",
+        "description": "Language assistance for common international patient languages"
+      },
+      {
+        "label": "Forex & Banking",
+        "description": "Currency exchange and ATM on campus"
+      },
+      {
+        "label": "Free Wi-Fi",
+        "description": "Internet access in patient rooms and lounges"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Mandar Kulkarni",
+        "specialty": "Neurosurgery",
+        "experience": "19 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/men/27.jpg",
+        "qualifications": "MBBS, MCh (Neurosurgery)",
+        "expertise": "Brain tumours, spine surgery"
+      },
+      {
+        "name": "Dr. Rashmi Patwardhan",
+        "specialty": "Orthopedics",
+        "experience": "14 years",
+        "rating": 4.6,
+        "image": "https://randomuser.me/api/portraits/women/68.jpg",
+        "qualifications": "MBBS, MS (Ortho)",
+        "expertise": "Hip and knee replacement"
+      }
+    ],
+    "website": "https://www.sahyadrihospital.com"
+  },
+  {
+    "hospital_id": "HOSP-DMH-PUN",
+    "city": "Pune",
+    "hospital_name": "Deenanath Mangeshkar Hospital",
+    "address": "Erandwane, near Mhatre Bridge, Pune, Maharashtra 411004",
+    "accreditation": "NABH",
+    "rating": 4.6,
+    "treatmentCost": 140000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "95%",
+      "experience": "20+ years",
+      "patients": "80,000+"
+    },
+    "badges": [
+      "NABH Certified",
+      "Charitable Trust Hospital"
+    ],
+    "specialties": [
+      "Cardiology",
+      "Fertility",
+      "Ophthalmology",
+      "Transplant",
+      "Oncology",
+      "Gynaecology",
+      "Orthopedics",
+      "General Surgery"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "800+",
+        "trend": "stable"
+      },
+      {
+        "label": "Specialists",
+        "value": "300+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "100+",
+        "trend": "stable"
+      },
+      {
+        "label": "Countries Served",
+        "value": "20+",
+        "trend": "up"
+      }
+    ],
+    "description": "Deenanath Mangeshkar Hospital and Research Centre is a large charitable-trust hospital in Erandwane, Pune. It provides cardiac care, oncology, kidney transplant, fertility services and ophthalmology.",
+    "highlights": [
+      {
+        "title": "Trust Hospital",
+        "description": "Run by a charitable trust with transparent package pricing."
+      },
+      {
+        "title": "Fertility Centre",
+        "description": "IVF and assisted reproduction services."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Free Wi-Fi",
+        "description": "Internet access in patient rooms and lounges"
+      },
+      {
+        "label": "International Patient Desk",
+        "description": "Coordinators help with visa letters, airport pickup and appointments"
+      },
+      {
+        "label": "Pharmacy",
+        "description": "24x7 in-house pharmacy"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Ajit Gokhale",
+        "specialty": "Interventional Cardiology",
+        "experience": "21 years",
+        "rating": 4.8,
+        "image": "https://randomuser.me/api/portraits/men/79.jpg",
+        "qualifications": "MBBS, MD, DM (Cardiology)",
+        "expertise": "Angioplasty, heart failure"
+      },
+      {
+        "name": "Dr. Vaishali Bhave",
+        "specialty": "Reproductive Medicine",
+        "experience": "16 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/women/49.jpg",
+        "qualifications": "MBBS, MD (OBG), Fellowship in Reproductive Medicine",
+        "expertise": "IVF, ICSI"
+      }
+    ],
+    "website": "https://www.dmhospital.org"
+  },
+  {
+    "hospital_id": "HOSP-JUPITER-PUN",
+    "city": "Pune",
+    "hospital_name": "Jupiter Hospital, Baner",
+    "address": "Survey No. 6/1, Baner-Balewadi Road, Baner, Pune, Maharashtra 411045",
+    "accreditation": "NABH",
+    "rating": 4.5,
+    "treatmentCost": 160000,
+    "hospital_image": [
+      "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1626315869436-d6781ba69d6e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "stats": {
+      "successRate": "94%",
+      "experience": "5+ years",
+      "patients": "30,000+"
+    },
+    "badges": [
+      "NABH Certified"
+    ],
+    "specialties": [
+      "Transplant",
+      "Orthopedics",
+      "Bariatric Surgery",
+      "Fertility",
+      "Oncology",
+      "Gynaecology",
+      "Neurosciences",
+      "Cardiology"
+    ],
+    "key_highlights": [
+      {
+        "label": "Bed Capacity",
+        "value": "350+",
+        "trend": "up"
+      },
+      {
+        "label": "Specialists",
+        "value": "150+",
+        "trend": "up"
+      },
+      {
+        "label": "ICU Beds",
+        "value": "70+",
+        "trend": "up"
+      },
+      {
+        "label": "Countries Served",
+        "value": "20+",
+        "trend": "up"
+      }
+    ],
+    "description": "Jupiter Hospital in Baner is a multi-speciality hospital in West Pune, part of the Jupiter Lifeline Hospitals group. It offers liver transplant, orthopaedics, bariatric surgery, fertility and cancer care.",
+    "highlights": [
+      {
+        "title": "Liver Transplant",
+        "description": "Living donor liver transplant with dedicated transplant ICU."
+      },
+      {
+        "title": "West Pune Access",
+        "description": "Convenient for Baner, Balewadi, Aundh and Hinjewadi."
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Cafeteria",
+        "description": "Vegetarian and non-vegetarian meal options"
+      },
+      {
+        "label": "Interpreters",
+        "description": "Language assistance for common international patient languages"
+      },
+      {
+        "label": "Forex & Banking",
+        "description": "Currency exchange and ATM on campus"
+      },
+      {
+        "label": "Free Wi-Fi",
+        "description": "Internet access in patient rooms and lounges"
+      }
+    ],
+    "doctors": [
+      {
+        "name": "Dr. Nikhil Sawant",
+        "specialty": "Liver Transplant Surgery",
+        "experience": "15 years",
+        "rating": 4.7,
+        "image": "https://randomuser.me/api/portraits/men/15.jpg",
+        "qualifications": "MBBS, MS, MCh (GI Surgery)",
+        "expertise": "Liver transplant, HPB surgery"
+      },
+      {
+        "name": "Dr. Priyanka Shinde",
+        "specialty": "Bariatric Surgery",
+        "experience": "11 years",
+        "rating": 4.6,
+        "image": "https://randomuser.me/api/portraits/women/24.jpg",
+        "qualifications": "MBBS, MS, FALS (Bariatric)",
+        "expertise": "Sleeve gastrectomy, gastric bypass"
+      }
+    ],
+    "website": "https://www.jupiterhospital.com"
+  }
+]
