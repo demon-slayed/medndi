@@ -116,7 +116,7 @@ export default function ApplicationStatusStepper({currentStatus}) {
           <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <h4 className="font-semibold text-red-700">Application not approved</h4>
-            <p className="text-sm text-red-600">Our team couldn&apos;t approve this request. Please contact care@medndi.com for next steps.</p>
+            <p className="text-sm text-red-600">Our team couldn&apos;t approve this request. Please contact info@medndi.com for next steps.</p>
           </div>
         </div>
       )}

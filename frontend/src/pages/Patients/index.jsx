@@ -287,11 +287,11 @@ export default function PatientDashboard() {
                 +91 1800 123 4567
               </a>
               <a
-                href="mailto:care@medndi.com"
+                href="mailto:info@medndi.com"
                 className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#3252DF] to-[#4466ff] text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40 focus-visible:ring-offset-2"
               >
                 <Mail className="w-4 h-4" />
-                care@medndi.com
+                info@medndi.com
               </a>
             </div>
           </motion.div>

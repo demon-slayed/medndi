@@ -108,9 +108,9 @@ const BookingConfirmation = ({ booking }) => {
             <Phone className="w-4 h-4 text-[#3252DF]" />
             +91 1800 123 4567
           </a>
-          <a href="mailto:care@medndi.com" className="inline-flex items-center gap-2 hover:text-[#3252DF]">
+          <a href="mailto:info@medndi.com" className="inline-flex items-center gap-2 hover:text-[#3252DF]">
             <Mail className="w-4 h-4 text-[#3252DF]" />
-            care@medndi.com
+            info@medndi.com
           </a>
         </div>
       </div>

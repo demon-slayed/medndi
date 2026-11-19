@@ -187,7 +187,7 @@ const ContactPage = () => {
                     <Mail className="w-5 h-5 text-blue-600 mt-1" />
                     <div>
                       <h3 className="font-semibold">Email</h3>
-                      <p className="text-gray-600"><a href="mailto:care@medndi.com" className="hover:text-[#3252DF]">care@medndi.com</a></p>
+                      <p className="text-gray-600"><a href="mailto:info@medndi.com" className="hover:text-[#3252DF]">info@medndi.com</a></p>
                       <p className="text-sm text-gray-500">We reply within one working day</p>
                     </div>
                   </div>

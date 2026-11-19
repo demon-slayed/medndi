@@ -22,7 +22,7 @@ export const DEMO_PATIENT = { email: "patient@medndi.test", password: "Patient@1
 // Demo accounts from before the MedNdi rename; removed on every seed.
 const LEGACY_DEMO_EMAILS = ["admin@arogini.test", "patient@arogini.test"];
 
-const TREATMENT_CONTACT = { email: "care@medndi.com", phone: "+91 1800 123 4567" };
+const TREATMENT_CONTACT = { email: "info@medndi.com", phone: "+91 1800 123 4567" };
 
 const readData = (file) => JSON.parse(fs.readFileSync(new URL(`../data/${file}`, import.meta.url), "utf8"));
 

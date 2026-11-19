@@ -33,7 +33,7 @@ const Footer = () => {
 
   const contactInfo = [
     { icon: Phone, info: "+91 1800 123 4567", label: "24/7 Support" },
-    { icon: Mail, info: "care@medndi.com", label: "Email Us" },
+    { icon: Mail, info: "info@medndi.com", label: "Email Us" },
     { icon: MapPin, info: "New Delhi, India", label: "Head Office" }
   ];
 

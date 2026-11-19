@@ -266,7 +266,7 @@ const MedicalBooking = () => {
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Email support</p>
-                      <a href="mailto:care@medndi.com" className="font-medium hover:text-[#3252DF]">care@medndi.com</a>
+                      <a href="mailto:info@medndi.com" className="font-medium hover:text-[#3252DF]">info@medndi.com</a>
                     </div>
                   </div>
                 </div>
