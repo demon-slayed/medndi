@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import Application from '../models/application.js';
 import User from '../models/userModel.js';
+import Treatment from '../models/treatmentModel.js';
+import { recordActivity } from '../utils/activity.js';
 import { v4 as uuidv4 } from "uuid"; 
 
 const withRelations = (query) =>
@@ -54,6 +56,8 @@ export const createApplication = async (req, res) => {
 
     // Save to database
     const savedApplication = await newApplication.save();
+    const bookedTreatment = await Treatment.findById(treatment_id).select('treatment_name');
+    await recordActivity(req, me, 'booking', `Booked ${bookedTreatment?.treatment_name ?? 'a treatment'} (${application_id})`);
 
     res.status(201).json({
       message: "Application created successfully",

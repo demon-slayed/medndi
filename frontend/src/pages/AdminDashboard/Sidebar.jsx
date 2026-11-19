@@ -6,6 +6,7 @@ import {
   Grip,
   SquarePen,
   Menu,
+  Users,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import image1 from "../../components/avatar/2.jpg";
@@ -18,6 +19,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
     // { icon: LayoutDashboard, label: "Dashboard" },
     { icon: Grip, label: "Application" },
     { icon: SquarePen, label: "Create" },
+    { icon: Users, label: "Users" },
   ];
 
   // If activeTab is undefined or empty, default to the first tab (Dashboard)

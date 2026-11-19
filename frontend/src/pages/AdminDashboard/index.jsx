@@ -5,6 +5,7 @@ import Dashboard from "./components/Dashboard";
 import Header from "@/components/Layout/Header";
 import Application from "./components/Application";
 import Create from "./components/Create";
+import Users from "./components/Users";
 
 
 const DashboardPage = () => {
@@ -19,6 +20,8 @@ const DashboardPage = () => {
         return <Application />;
       case "create":
          return <Create />
+      case "users":
+        return <Users />;
       default:
         return <Create />;
     }

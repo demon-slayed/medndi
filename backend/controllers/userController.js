@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import { hashPassword, verifyPassword } from "../utils/bcryptHelper.js";
 import { createJWT } from "../utils/webtokenHelper.js";
+import { recordActivity } from "../utils/activity.js";
 
 // Cross-site cookies (Vercel -> API) need SameSite=None + Secure; on plain http that would be rejected.
 // COOKIE_SECURE / COOKIE_SAMESITE override the defaults (e.g. same-origin Docker deploy over http).
@@ -51,6 +52,7 @@ export const registerController = async (req, res) => {
       age,
       fullName,
     });
+    await recordActivity(req, user, "signup", "Created an account");
 
     return res.status(201).json({
       success: true,
@@ -95,6 +97,11 @@ export const loginController = async (req, res) => {
         message: "Either Email or Password is incorrect!",
       });
     }
+
+    user.last_login_at = new Date();
+    user.login_count = (user.login_count ?? 0) + 1;
+    await user.save();
+    await recordActivity(req, user, "login", "Logged in");
 
     // Create JWT token for user
     const user_id = user?.user_id;

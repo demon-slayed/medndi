@@ -18,6 +18,8 @@ const userSchema = new mongoose.Schema({
     role: { type: String, enum: ["Admin", "User"], default: 'User' },
     address: { type: String },
     nationality: { type: String },
+    last_login_at: { type: Date },
+    login_count: { type: Number, default: 0 },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now }
 });
