@@ -1,13 +1,13 @@
-// MedNdi wordmark: "Med" in the current text colour, "Ndi" on a rounded tag.
+// MedNDI wordmark: "Med" in the current text colour, "NDI" on a rounded tag.
 const MedNdiLogo = ({ className = "", textColor = "#fff", tagColor = "#fff", accentColor = "#3252DF", ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={150}
+    width={160}
     height={62}
-    viewBox="0 0 150 62"
+    viewBox="0 0 160 62"
     fill="none"
     role="img"
-    aria-label="MedNdi"
+    aria-label="MedNDI"
     className={className}
     {...props}
   >
@@ -22,9 +22,9 @@ const MedNdiLogo = ({ className = "", textColor = "#fff", tagColor = "#fff", acc
     >
       Med
     </text>
-    <rect width={62} height={38} x={82} y={12} fill={tagColor} rx={6} />
+    <rect width={72} height={38} x={82} y={12} fill={tagColor} rx={6} />
     <text
-      x={113}
+      x={118}
       y={42}
       textAnchor="middle"
       fill={accentColor}
@@ -33,7 +33,7 @@ const MedNdiLogo = ({ className = "", textColor = "#fff", tagColor = "#fff", acc
       fontWeight={700}
       letterSpacing={-0.5}
     >
-      Ndi
+      NDI
     </text>
   </svg>
 );

@@ -84,7 +84,7 @@ const ClientsReview = () => {
             </span>
           </h2>
           <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-            Experiences shared by patients who travelled to India for treatment with MedNdi.
+            Experiences shared by patients who travelled to India for treatment with MedNDI.
           </p>
         </div>
 

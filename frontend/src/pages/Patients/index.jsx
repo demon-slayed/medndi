@@ -118,7 +118,7 @@ export default function PatientDashboard() {
   const summary = loading
     ? "Loading your bookings…"
     : loadError
-    ? "Here's your MedNdi dashboard."
+    ? "Here's your MedNDI dashboard."
     : application.length === 0
     ? "You don't have any bookings yet. Find a treatment to get started."
     : `You have ${application.length} ${application.length === 1 ? "booking" : "bookings"}. Latest: ${
@@ -275,7 +275,7 @@ export default function PatientDashboard() {
             <div>
               <h2 className="text-lg font-semibold text-gray-900">Need help with your booking?</h2>
               <p className="text-sm text-gray-600 mt-1">
-                Your MedNdi care coordinator is available 24/7.
+                Your MedNDI care coordinator is available 24/7.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">

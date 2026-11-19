@@ -174,7 +174,7 @@ const Register = () => {
           className="relative z-10 bg-white/10 rounded-2xl p-6 backdrop-blur-sm"
         >
           <div className="text-white/90 text-sm mb-4">
-            Every hospital on MedNdi is JCI and/or NABH accredited
+            Every hospital on MedNDI is JCI and/or NABH accredited
           </div>
           <div className="flex flex-wrap gap-2">
             {accreditations.map((item) => (
@@ -200,7 +200,7 @@ const Register = () => {
           <button
             type="button"
             onClick={() => navigate("/")}
-            aria-label="MedNdi home"
+            aria-label="MedNDI home"
             className="lg:hidden mb-8 inline-flex rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3252DF]/40"
           >
             <MedNdiLogo textColor="#152C5B" tagColor="#3252DF" accentColor="#fff" />

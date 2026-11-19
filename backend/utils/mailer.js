@@ -19,7 +19,7 @@ const getTransporter = () => {
   return transporter;
 };
 
-export const mailFrom = () => process.env.MAIL_FROM || `MedNdi <${process.env.SMTP_USER || "info@medndi.com"}>`;
+export const mailFrom = () => process.env.MAIL_FROM || `MedNDI <${process.env.SMTP_USER || "info@medndi.com"}>`;
 
 // Demo/test addresses can't receive mail; sending to them only creates bounces that hurt deliverability
 const isUndeliverable = (address) => /@(.+\.)?(test|example|invalid|localhost)$|@example\.(com|org|net)$/i.test(address || "");

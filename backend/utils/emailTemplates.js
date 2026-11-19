@@ -46,11 +46,11 @@ const layout = ({ preheader, body }) => `<!doctype html>
       <tr><td align="center">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:12px;overflow:hidden;">
           <tr><td style="background:#0d1230;padding:20px 24px;">
-            <span style="color:#ffffff;font-size:22px;font-weight:700;">Med</span><span style="background:#ffffff;color:#3252DF;font-size:22px;font-weight:700;padding:0 6px;border-radius:4px;margin-left:2px;">Ndi</span>
+            <span style="color:#ffffff;font-size:22px;font-weight:700;">Med</span><span style="background:#ffffff;color:#3252DF;font-size:22px;font-weight:700;padding:0 6px;border-radius:4px;margin-left:2px;">NDI</span>
           </td></tr>
           <tr><td style="padding:28px 24px;color:#111827;font-size:15px;line-height:1.6;">${body}</td></tr>
           <tr><td style="padding:16px 24px 24px;color:#6B7280;font-size:12px;line-height:1.5;border-top:1px solid #E5E7EB;">
-            MedNdi · Treatment in Delhi NCR, Bengaluru and Pune<br>
+            MedNDI · Treatment in Delhi NCR, Bengaluru and Pune<br>
             Questions? Write to <a href="mailto:${SUPPORT_EMAIL}" style="color:#3252DF;">${SUPPORT_EMAIL}</a>
           </td></tr>
         </table>
@@ -62,28 +62,28 @@ const layout = ({ preheader, body }) => `<!doctype html>
 export const welcomeEmail = (user) => {
   const name = firstName(user);
   return {
-    subject: "Welcome to MedNdi",
+    subject: "Welcome to MedNDI",
     html: layout({
-      preheader: "Your MedNdi account is ready.",
+      preheader: "Your MedNDI account is ready.",
       body: `
         <h1 style="font-size:22px;margin:0 0 12px;">Welcome, ${escapeHtml(name)}!</h1>
-        <p>Your MedNdi account is ready. You can now compare accredited hospitals, see treatment costs and book your treatment with hotel, travel and insurance in one place.</p>
+        <p>Your MedNDI account is ready. You can now compare accredited hospitals, see treatment costs and book your treatment with hotel, travel and insurance in one place.</p>
         <p style="margin:24px 0;">${button(`${SITE_URL()}/treatments`, "Find a treatment")}</p>
         <p>Have a medical report? Upload it to our report analyser from your dashboard to get a quick summary before you talk to a doctor.</p>`,
     }),
-    text: `Welcome, ${name}!\n\nYour MedNdi account is ready. Browse treatments: ${SITE_URL()}/treatments\n\nQuestions? ${SUPPORT_EMAIL}`,
+    text: `Welcome, ${name}!\n\nYour MedNDI account is ready. Browse treatments: ${SITE_URL()}/treatments\n\nQuestions? ${SUPPORT_EMAIL}`,
   };
 };
 
 export const loginAlertEmail = (user, { ip, userAgent, at }) => {
   const when = formatIST(at);
   return {
-    subject: "New sign-in to your MedNdi account",
+    subject: "New sign-in to your MedNDI account",
     html: layout({
       preheader: `You signed in on ${when}.`,
       body: `
         <h1 style="font-size:22px;margin:0 0 12px;">New sign-in</h1>
-        <p>Hi ${escapeHtml(firstName(user))}, your MedNdi account was just signed in to.</p>
+        <p>Hi ${escapeHtml(firstName(user))}, your MedNDI account was just signed in to.</p>
         ${detailsTable([
           ["When", when],
           ["Device", userAgent ? userAgent.slice(0, 120) : "Unknown"],
@@ -91,7 +91,7 @@ export const loginAlertEmail = (user, { ip, userAgent, at }) => {
         ])}
         <p>If this was you, there's nothing to do. If you don't recognise it, reply to this email or write to <a href="mailto:${SUPPORT_EMAIL}" style="color:#3252DF;">${SUPPORT_EMAIL}</a> right away and we'll secure your account.</p>`,
     }),
-    text: `New sign-in to your MedNdi account\n\nWhen: ${when}\nDevice: ${userAgent || "Unknown"}\nIP: ${ip || "Unknown"}\n\nNot you? Contact ${SUPPORT_EMAIL} right away.`,
+    text: `New sign-in to your MedNDI account\n\nWhen: ${when}\nDevice: ${userAgent || "Unknown"}\nIP: ${ip || "Unknown"}\n\nNot you? Contact ${SUPPORT_EMAIL} right away.`,
   };
 };
 
@@ -111,7 +111,7 @@ export const bookingEmail = (user, { applicationId, treatment, hospital, hotel, 
       preheader: `We've received your request for ${treatment} at ${hospital}.`,
       body: `
         <h1 style="font-size:22px;margin:0 0 12px;">We've received your booking request</h1>
-        <p>Hi ${escapeHtml(firstName(user))}, thank you for choosing MedNdi. Here are your details:</p>
+        <p>Hi ${escapeHtml(firstName(user))}, thank you for choosing MedNDI. Here are your details:</p>
         ${detailsTable(rows)}
         <p style="margin:0 0 6px;font-weight:600;">What happens next</p>
         <ol style="margin:0 0 16px;padding-left:20px;">

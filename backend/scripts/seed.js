@@ -19,7 +19,7 @@ dotenv.config();
 
 export const DEMO_ADMIN = { email: "admin@medndi.test", password: "Admin@123" };
 export const DEMO_PATIENT = { email: "patient@medndi.test", password: "Patient@123" };
-// Demo accounts from before the MedNdi rename; removed on every seed.
+// Demo accounts from before the MedNDI rename; removed on every seed.
 const LEGACY_DEMO_EMAILS = ["admin@arogini.test", "patient@arogini.test"];
 
 const TREATMENT_CONTACT = { email: "info@medndi.com", phone: "+91 1800 123 4567" };
@@ -113,7 +113,7 @@ async function seed() {
   await PostTreatment.insertMany(postTreatmentData);
 
   await User.deleteMany({ email: { $in: LEGACY_DEMO_EMAILS } });
-  await upsertUser(DEMO_ADMIN, { fullName: "MedNdi Admin", role: "Admin", age: 35, height: 175, weight: 72, gender: "Male" });
+  await upsertUser(DEMO_ADMIN, { fullName: "MedNDI Admin", role: "Admin", age: 35, height: 175, weight: 72, gender: "Male" });
   await upsertUser(DEMO_PATIENT, { fullName: "Demo Patient", role: "User", age: 42, height: 168, weight: 70, gender: "Female", nationality: "Kenyan" });
 
   const perCity = hospitalData.reduce((acc, h) => ({ ...acc, [h.city || "Other"]: (acc[h.city || "Other"] || 0) + 1 }), {});

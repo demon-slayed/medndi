@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# One-command deploy for MedNdi: builds and starts MongoDB, the API and the web app.
+# One-command deploy for MedNDI: builds and starts MongoDB, the API and the web app.
 # Safe to re-run after pulling new code; data is kept in Docker volumes.
 set -eu
 
@@ -48,9 +48,9 @@ done
 echo ""
 bind=$(grep -E '^APP_BIND=' .env | cut -d= -f2)
 if [ "${bind:-0.0.0.0}" = "127.0.0.1" ]; then
-  echo "MedNdi is running on 127.0.0.1:$port. Point your nginx site at it (see nginx-medndi.conf)."
+  echo "MedNDI is running on 127.0.0.1:$port. Point your nginx site at it (see nginx-medndi.conf)."
 else
-  echo "MedNdi is running on port $port (http://<this-server-ip>:$port)"
+  echo "MedNDI is running on port $port (http://<this-server-ip>:$port)"
 fi
 echo "Demo logins:  patient@medndi.test / Patient@123   admin@medndi.test / Admin@123"
 echo "Reset demo data:  docker compose exec backend npm run seed"

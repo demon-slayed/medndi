@@ -86,9 +86,9 @@ const AboutUs = () => {
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
           <PageHeader
-            eyebrow="About MedNdi"
+            eyebrow="About MedNDI"
             title="Your bridge to quality treatment in India"
-            subtitle="MedNdi helps international patients compare accredited hospitals in Delhi NCR, Bengaluru and Pune, understand costs upfront, and plan every step of the trip with one coordinator."
+            subtitle="MedNDI helps international patients compare accredited hospitals in Delhi NCR, Bengaluru and Pune, understand costs upfront, and plan every step of the trip with one coordinator."
           />
 
           {/* About Section */}
@@ -114,7 +114,7 @@ const AboutUs = () => {
                   </div>
                   <div>
                     <p className="text-gray-600 mb-4 text-lg font-poppins">
-                       <span className=' text-[#3552DF] text-2xl'>MedNdi Medical Tourism</span> has been at the forefront of revolutionizing healthcare tourism in India. We bridge the gap between international patients and India's premier medical facilities.
+                       <span className=' text-[#3552DF] text-2xl'>MedNDI Medical Tourism</span> has been at the forefront of revolutionizing healthcare tourism in India. We bridge the gap between international patients and India's premier medical facilities.
                     </p>
                     <p className="text-gray-600">
                       Our mission is to provide seamless medical tourism experiences by combining cutting-edge medical treatments with comprehensive patient care services.
@@ -215,7 +215,7 @@ const AboutUs = () => {
             className="max-w-6xl mx-auto"
           >
             <h2 className="font-poppins text-2xl md:text-3xl font-bold text-[#283841] mb-8 text-center">
-              Why Choose MedNdi
+              Why Choose MedNDI
             </h2>
 
             <div className="flex flex-wrap gap-6 justify-center">

@@ -1,7 +1,7 @@
 [
   {
     "insurance_id": "INS-BASIC",
-    "name": "MedNdi Basic Cover",
+    "name": "MedNDI Basic Cover",
     "description": "Covers medical complications during your treatment stay in India.",
     "features": [
       "Complication cover up to ₹5,00,000",
@@ -17,7 +17,7 @@
   },
   {
     "insurance_id": "INS-PLUS",
-    "name": "MedNdi Plus",
+    "name": "MedNDI Plus",
     "description": "Complication cover plus travel protection and follow-up care.",
     "features": [
       "Complication cover up to ₹15,00,000",
@@ -36,7 +36,7 @@
   },
   {
     "insurance_id": "INS-PREMIUM",
-    "name": "MedNdi Premium",
+    "name": "MedNDI Premium",
     "description": "Comprehensive cover for the patient and one travelling companion.",
     "features": [
       "Complication cover up to ₹40,00,000",
@@ -55,7 +55,7 @@
   },
   {
     "insurance_id": "INS-TRANSPLANT",
-    "name": "MedNdi Transplant Shield",
+    "name": "MedNDI Transplant Shield",
     "description": "Specialised cover for organ and bone marrow transplant patients and their donors.",
     "features": [
       "Complication cover up to ₹25,00,000",

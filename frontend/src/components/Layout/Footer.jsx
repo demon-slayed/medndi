@@ -19,7 +19,7 @@ const Footer = () => {
     { name: "Find Hospitals", link: "/hospitals" },
     { name: "Browse Treatments", link: "/treatments" },
     { name: "Patient Portal", link: "/patient" },
-    { name: "About MedNdi", link: "/about" },
+    { name: "About MedNDI", link: "/about" },
     { name: "Contact Support", link: "/contact" }
   ];
 
@@ -155,7 +155,7 @@ const Footer = () => {
         <div className="mt-16 pt-8 border-t border-gray-200">
           <div className="flex flex-wrap items-center justify-between gap-4 max-sm:justify-center">
             <p className="text-sm text-gray-600">
-              © {new Date().getFullYear()} MedNdi. All rights reserved.
+              © {new Date().getFullYear()} MedNDI. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <Link to="/about" className="text-sm text-gray-600 hover:text-[#3252DF]">About Us</Link>

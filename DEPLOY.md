@@ -1,4 +1,4 @@
-# Deploying MedNdi
+# Deploying MedNDI
 
 One command starts MongoDB, the API and the web app with Docker Compose.
 On first start the database is seeded with the demo hospitals, treatments,
@@ -69,7 +69,7 @@ from localhost only.
 
 ## Emails to users
 
-MedNdi emails users when they sign up, log in, submit a booking and submit a
+MedNDI emails users when they sign up, log in, submit a booking and submit a
 post-care request, from `info@medndi.com` (GoDaddy Professional Email).
 
 1. Add the mailbox password to `.env` (the other mail settings are already filled in):

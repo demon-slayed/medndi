@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Building2, MapPin, Stethoscope, Headphones } from 'lucide-react';
 
-// Hospital groups whose facilities are listed on MedNdi
+// Hospital groups whose facilities are listed on MedNDI
 const partners = [
   "Apollo Hospitals",
   "Medanta",
@@ -83,7 +83,7 @@ const OurPartners = () => {
           ))}
         </motion.ul>
         <p className="mt-6 text-center text-xs text-gray-500">
-          Hospital names are shown to identify facilities listed on MedNdi.
+          Hospital names are shown to identify facilities listed on MedNDI.
         </p>
       </div>
     </section>

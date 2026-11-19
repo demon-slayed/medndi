@@ -34,7 +34,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
         {/* Logo */}
         <div className="mb-8">
           <h1 className="text-3xl ml-4 font-bold text-[#152C5B]">
-            Med<span className="text-[#3252DF]">Ndi</span>
+            Med<span className="text-[#3252DF]">NDI</span>
           </h1>
           <p className="ml-4 mt-1 text-xs font-medium uppercase tracking-wider text-gray-400">Admin</p>
         </div>

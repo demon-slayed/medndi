@@ -1,4 +1,4 @@
-# MedNdi
+# MedNDI
 
 Medical-tourism platform for treatment in India: patients browse hospitals and
 treatments across Delhi NCR, Bengaluru and Pune, book a treatment with hotel,
